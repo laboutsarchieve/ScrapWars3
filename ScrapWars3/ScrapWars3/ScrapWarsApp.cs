@@ -8,13 +8,16 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using GameTools.Events;
+using ScrapWars3.Screens;
 
 namespace ScrapWars3
 {
     public class ScrapWarsApp : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        Screen currentScreen;
+        Screen previousScreen;
 
         public ScrapWarsApp()
         {
@@ -24,16 +27,29 @@ namespace ScrapWars3
 
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
+            
+            graphics.ApplyChanges();
+
+            ScrapWarsEventManager.SetManager(new BasicEventManager());
+            currentScreen = new MainMenu(GraphicsDevice, Window);
+            previousScreen = currentScreen;
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void UnloadContent()
         {
+        }
+
+        private void ChangeScreen(Screen newScreen)
+        {
+            previousScreen = currentScreen;
+            currentScreen = newScreen;
         }
 
         protected override void Update(GameTime gameTime)
@@ -41,12 +57,14 @@ namespace ScrapWars3
             if(Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            currentScreen.Update(gameTime);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            currentScreen.Draw(gameTime);
 
             base.Draw(gameTime);
         }
