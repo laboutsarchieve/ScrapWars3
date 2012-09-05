@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GameTools.Events;
 using ScrapWars3.Screens;
+using ScrapWars3.Resources;
 
 namespace ScrapWars3
 {
@@ -27,8 +28,8 @@ namespace ScrapWars3
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
             
             graphics.ApplyChanges();
 
@@ -40,6 +41,8 @@ namespace ScrapWars3
 
         protected override void LoadContent()
         {
+            ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
+            FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
         }
 
         protected override void UnloadContent()

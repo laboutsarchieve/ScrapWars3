@@ -1,5 +1,5 @@
 Standards:
-Highest Supported Resolution: 1600X900, Will add supported for 4:3 later.
+Highest Supported Resolution: 800X600, Will add supported for 16:9 later.
 
 These may be subsets of Screen
 {
