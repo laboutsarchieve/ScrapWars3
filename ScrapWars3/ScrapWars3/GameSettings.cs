@@ -13,7 +13,7 @@ namespace ScrapWars3
             Resolution = maxResolution;
         }
 
-        private static Vector2 maxResolution = new Vector2(1600,900);
+        private static Vector2 maxResolution = new Vector2(1600,1200);
         private static Vector2 artScale;
         private static Vector2 resolution;
 

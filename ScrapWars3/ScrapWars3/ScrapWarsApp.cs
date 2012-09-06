@@ -43,7 +43,10 @@ namespace ScrapWars3
         protected override void LoadContent()
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
-            ScreenTextureRepo.warRoomTeamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
+            ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
+            ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
+            ScreenTextureRepo.optionScreen = Content.Load<Texture2D>(@"art\progart_options_screen");
+
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
 
             currentScreen = new MainMenu(this, GraphicsDevice, Window);
@@ -62,8 +65,7 @@ namespace ScrapWars3
 
         protected override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Exit();
+            ExtendedKeyboard.Update();
 
             currentScreen.Update(gameTime);
 

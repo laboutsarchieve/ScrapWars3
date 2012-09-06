@@ -117,11 +117,14 @@
     <Compile Include="Resources\ScreenTextureRepo.cs" />
     <Compile Include="ScrapWarsApp.cs" />
     <Compile Include="ScrapWarsEventManager.cs" />
+    <Compile Include="ExtendedKeyboard.cs" />
     <Compile Include="Screens\Battle.cs" />
+    <Compile Include="Screens\UnitCustomize.cs" />
+    <Compile Include="Screens\UnitSelect.cs" />
     <Compile Include="Screens\OptionsScreen.cs" />
     <Compile Include="Screens\MainMenu.cs" />
     <Compile Include="Screens\Screen.cs" />
-    <Compile Include="Screens\WarRoom.cs" />
+    <Compile Include="Screens\TeamSelect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

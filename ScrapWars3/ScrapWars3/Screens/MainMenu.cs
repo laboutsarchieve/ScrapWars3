@@ -64,10 +64,7 @@ namespace ScrapWars3.Screens
         }
         private void ProcessInput( )
         {
-            prevKeyboardState = currKeyboardState;
-            currKeyboardState = Keyboard.GetState();
-
-            if (currKeyboardState.IsKeyDown(Keys.Enter) || currKeyboardState.IsKeyDown(Keys.Space))
+            if (ExtendedKeyboard.IsKeyDown(Keys.Enter) || ExtendedKeyboard.IsKeyDown(Keys.Space))
             {
                 if (currSelection == Options.Exit)
                     scrapWarsApp.Exit();
@@ -75,14 +72,10 @@ namespace ScrapWars3.Screens
                     scrapWarsApp.ChangeScreen(GetScreenFromCurrentSelection());
             }
 
-            if (IsKeyDownFirst(Keys.Up) || IsKeyDownFirst(Keys.W)) 
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Up) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.W)) 
                 SetSelection((int)currSelection - 1); // Move the selection up by one
-            if (IsKeyDownFirst(Keys.Down) || IsKeyDownFirst(Keys.S))
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Down) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.S))
                 SetSelection((int)currSelection + 1); // Move the selection down by one            
-        }
-        private bool IsKeyDownFirst( Keys key )
-        {
-            return currKeyboardState.IsKeyDown(key) && prevKeyboardState.IsKeyUp(key);
         }
         private void SetSelection(int option)
         {
@@ -108,7 +101,7 @@ namespace ScrapWars3.Screens
                 case Options.Battle:
                     return new Battle(scrapWarsApp, graphics, window);
                 case Options.CustomizeSquad:
-                    return new WarRoom(scrapWarsApp, graphics, window);
+                    return new TeamSelect(scrapWarsApp, graphics, window);
                 case Options.Options:
                     return new OptionsScreen(scrapWarsApp, graphics, window);
                 default:

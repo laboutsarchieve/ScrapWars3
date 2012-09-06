@@ -1,0 +1,15 @@
+1. Make Main Menu
+2. Make Team Customize Mock-up
+3. Make Unit Select Mock-up
+4. Make Unit customize Mock-up
+5. Make and fill out Unit class
+6. Make and fill out Team class
+7. Make 2-4 functional
+8. Implement team saving
+9. Mock-up Battle Screen
+10. Make Card Classes
+11. Make basic AI
+12. Make Battle Screen Functional
+
+Iterate
+

@@ -9,9 +9,10 @@ namespace ScrapWars3.Resources
     static class ScreenTextureRepo
     {
         public static Texture2D mainMenu;
-        public static Texture2D warRoomTeamSelect;
-        public static Texture2D warRoomTeamUnitSelect;
-        public static Texture2D warRoomTeamCustomizeUnit;
+        public static Texture2D teamSelect;
+        public static Texture2D unitSelect;
+        public static Texture2D customizeUnit;
         public static Texture2D battleGUIFrame;
+        public static Texture2D optionScreen;
     }
 }
