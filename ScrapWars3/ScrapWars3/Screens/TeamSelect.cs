@@ -17,11 +17,17 @@ namespace ScrapWars3.Screens
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (ExtendedKeyboard.IsKeyDown(Keys.Escape))
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
                 scrapWarsApp.ChangeScreen(new MainMenu(scrapWarsApp, graphics, window));
+
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter))
+                SelectCurrentTeam();
             // TODO: Process input
         }
-
+        private void SelectCurrentTeam( )
+        {
+            scrapWarsApp.ChangeScreen(new UnitSelect(scrapWarsApp, graphics, window));
+        }
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();

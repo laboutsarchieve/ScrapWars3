@@ -45,6 +45,8 @@ namespace ScrapWars3
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
             ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
             ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
+            ScreenTextureRepo.unitSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
+            ScreenTextureRepo.customizeUnit = Content.Load<Texture2D>(@"art\progart_unit_customize");
             ScreenTextureRepo.optionScreen = Content.Load<Texture2D>(@"art\progart_options_screen");
 
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");

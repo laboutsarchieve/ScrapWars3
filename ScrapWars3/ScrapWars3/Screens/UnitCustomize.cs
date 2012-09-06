@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Resources;
+using Microsoft.Xna.Framework.Input;
 
 namespace ScrapWars3.Screens
 {
@@ -16,6 +17,9 @@ namespace ScrapWars3.Screens
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
+                scrapWarsApp.ChangeScreen(new UnitSelect(scrapWarsApp, graphics, window));
+
             // TODO: Process controls
         }
 

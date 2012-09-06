@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Resources;
+using Microsoft.Xna.Framework.Input;
 
 namespace ScrapWars3.Screens
 {
@@ -16,7 +17,20 @@ namespace ScrapWars3.Screens
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
+                scrapWarsApp.ChangeScreen(new TeamSelect(scrapWarsApp, graphics, window));
+
+            // This will be more complicated when team card customization is added
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter))
+                SelectCurrentUnit();
+
+
             // TODO: Process controls
+        }
+
+        private void SelectCurrentUnit()
+        {
+            scrapWarsApp.ChangeScreen(new UnitCustomize(scrapWarsApp, graphics, window));
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
