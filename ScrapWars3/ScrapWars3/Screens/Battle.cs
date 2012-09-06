@@ -9,7 +9,8 @@ namespace ScrapWars3.Screens
 {
     class Battle : Screen
     {
-        public Battle(GraphicsDevice graphics, GameWindow window) : base(graphics, window)
+        public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
+            : base(scrapWarsApp, graphics, window)
         {
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)

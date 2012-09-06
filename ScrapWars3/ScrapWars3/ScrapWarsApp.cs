@@ -14,7 +14,7 @@ using ScrapWars3.Resources;
 
 namespace ScrapWars3
 {
-    public class ScrapWarsApp : Microsoft.Xna.Framework.Game
+    class ScrapWarsApp : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         Screen currentScreen;
@@ -28,28 +28,33 @@ namespace ScrapWars3
 
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
-            
+            GameSettings.Resolution = new Vector2(800, 600);
+            Vector2 currentResolution = GameSettings.Resolution;
+
+            graphics.PreferredBackBufferWidth = (int)currentResolution.X;
+            graphics.PreferredBackBufferHeight = (int)currentResolution.Y;            
             graphics.ApplyChanges();
 
             ScrapWarsEventManager.SetManager(new BasicEventManager());
-            currentScreen = new MainMenu(GraphicsDevice, Window);
-            previousScreen = currentScreen;
+            
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
+            ScreenTextureRepo.warRoomTeamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
+
+            currentScreen = new MainMenu(this, GraphicsDevice, Window);
+            previousScreen = currentScreen;
         }
 
         protected override void UnloadContent()
         {
         }
 
-        private void ChangeScreen(Screen newScreen)
+        public void ChangeScreen(Screen newScreen)
         {
             previousScreen = currentScreen;
             currentScreen = newScreen;
