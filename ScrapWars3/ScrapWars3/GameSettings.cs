@@ -17,6 +17,13 @@ namespace ScrapWars3
         private static Vector2 artScale;
         private static Vector2 resolution;
 
+        public static Vector2 CenterOfScreen
+        {
+            get
+            {
+                return new Vector2(resolution.X/2, resolution.Y/2);
+            }
+        }
         public static Vector2 Resolution
         {
             get { return GameSettings.resolution; }

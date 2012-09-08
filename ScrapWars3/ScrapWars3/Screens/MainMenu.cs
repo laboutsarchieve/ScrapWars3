@@ -24,8 +24,6 @@ namespace ScrapWars3.Screens
                                 "Options",
                                 "Exit" };
 
-        KeyboardState prevKeyboardState;
-
         Options currSelection;
         Color[] menuColors = new Color[4];
 
@@ -37,7 +35,6 @@ namespace ScrapWars3.Screens
         float menuTop;
 
         float imageDisplacement;
-        private KeyboardState currKeyboardState;
 
         public MainMenu(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)
@@ -54,8 +51,8 @@ namespace ScrapWars3.Screens
         {
             lineHeight = FontRepo.mainMenuFont.LineSpacing;
 
-            menuTop = GameSettings.Resolution.Y/2 - (menuOptions.Length * 0.5f * lineHeight);
-            menuMiddle = GameSettings.Resolution.X/2;
+            menuTop = GameSettings.CenterOfScreen.Y - (menuOptions.Length * 0.5f * lineHeight);
+            menuMiddle = GameSettings.CenterOfScreen.X;
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {

@@ -6,23 +6,28 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Resources;
 using Microsoft.Xna.Framework.Input;
+using ScrapWars3.Data;
 
 namespace ScrapWars3.Screens
 {
     class UnitCustomize : Screen
     {
-        public UnitCustomize(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
+        Team team;
+        Unit unit;
+
+        public UnitCustomize(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Team team, Unit unit)
             : base(scrapWarsApp, graphics, window)
         {
+            this.team = team;
+            this.unit = unit;
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
-                scrapWarsApp.ChangeScreen(new UnitSelect(scrapWarsApp, graphics, window));
+                scrapWarsApp.ChangeScreen(new UnitSelect(scrapWarsApp, graphics, window, team));
 
             // TODO: Process controls
         }
-
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();
