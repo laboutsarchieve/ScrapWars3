@@ -38,7 +38,7 @@ namespace ScrapWars3
 
             ScrapWarsEventManager.SetManager(new BasicEventManager());
 
-            LoadGameData( );
+            LoadProtoGameData( );
             
             base.Initialize();
         }
@@ -48,8 +48,8 @@ namespace ScrapWars3
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
             ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
             ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
-            ScreenTextureRepo.unitSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
-            ScreenTextureRepo.customizeUnit = Content.Load<Texture2D>(@"art\progart_unit_customize");
+            ScreenTextureRepo.mechSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
+            ScreenTextureRepo.customizeMech = Content.Load<Texture2D>(@"art\progart_unit_customize");
             ScreenTextureRepo.optionScreen = Content.Load<Texture2D>(@"art\progart_options_screen");
 
             GameTextureRepo.teamLogos[0] = Content.Load<Texture2D>(@"art\progart_team_logo0");
@@ -57,18 +57,44 @@ namespace ScrapWars3
             GameTextureRepo.teamLogos[2] = Content.Load<Texture2D>(@"art\progart_team_logo2");
 
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
-            FontRepo.teamSelectFont = FontRepo.mainMenuFont;
+            FontRepo.SelectScreenFont = FontRepo.mainMenuFont;
+
+            LoadDebugContent();
 
             currentScreen = new MainMenu(this, GraphicsDevice, Window);
             previousScreen = currentScreen;
         }
+        protected void LoadDebugContent()
+        {
+            GameTextureRepo.debugMechA = Content.Load<Texture2D>(@"art\progart_MechA");
+            GameTextureRepo.debugMechB = Content.Load<Texture2D>(@"art\progart_MechB");
+            GameTextureRepo.debugMechC = Content.Load<Texture2D>(@"art\progart_MechC");
 
-        private void LoadGameData( )
+        }
+        private void LoadProtoGameData( )
         {
             // This is faked at the moment
-            TeamDatabase.teams.Add(new Team("Frags", 0, Color.Blue));
-            TeamDatabase.teams.Add(new Team("Scrapyard", 1, Color.Red));
-            TeamDatabase.teams.Add(new Team("Boomers", 2, Color.Yellow));
+            Team Frag = new Team("Frags", 0, Color.Blue);
+            Frag.AddMech(new Mech("DebugMechA",0, MechType.DebugMechA));
+            Frag.AddMech(new Mech("DebugMechA", 1, MechType.DebugMechA));
+            Frag.AddMech(new Mech("DebugMechB", 2, MechType.DebugMechB));
+
+            Team Scrapyard = new Team("Scrapyard", 1, Color.Red);
+            Scrapyard.AddMech(new Mech("DebugMechA", 3, MechType.DebugMechA));
+            Scrapyard.AddMech(new Mech("DebugMechC", 4, MechType.DebugMechC));
+            Scrapyard.AddMech(new Mech("DebugMechC", 5, MechType.DebugMechC));
+            Scrapyard.AddMech(new Mech("DebugMechB", 6, MechType.DebugMechB));
+
+            Team Boomer = new Team("Boomers", 2, Color.Yellow);
+            Boomer.AddMech(new Mech("DebugMechC", 7, MechType.DebugMechC));
+            Boomer.AddMech(new Mech("DebugMechC", 8, MechType.DebugMechC));
+            Boomer.AddMech(new Mech("DebugMechC", 9, MechType.DebugMechC));
+            Boomer.AddMech(new Mech("DebugMechB", 10, MechType.DebugMechB));
+            Boomer.AddMech(new Mech("DebugMechB", 11, MechType.DebugMechB));
+
+            TeamDatabase.teams.Add(Frag);
+            TeamDatabase.teams.Add(Scrapyard);
+            TeamDatabase.teams.Add(Boomer);
         }
 
         protected override void UnloadContent()

@@ -5,7 +5,10 @@ using System.Text;
 
 namespace ScrapWars3.Data
 {
-    class Unit
+    enum MechType
     {
+        DebugMechA,
+        DebugMechB,
+        DebugMechC
     }
 }

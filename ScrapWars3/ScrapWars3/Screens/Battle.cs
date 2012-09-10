@@ -41,7 +41,7 @@ namespace ScrapWars3.Screens
         {
             //Draw Tiles
             //Draw Obstacles
-            //Draw Units
+            //Draw Mechs
         }
     }
 }

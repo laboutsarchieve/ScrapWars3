@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using ScrapWars3.Data;
 
 namespace ScrapWars3.Resources
 {
@@ -10,5 +11,27 @@ namespace ScrapWars3.Resources
     {
         private static int numLogos = 10;
         public static Texture2D[] teamLogos = new Texture2D[numLogos];
+
+        public static Texture2D errorTexture;
+
+        public static Texture2D debugMechA;
+        public static Texture2D debugMechB;
+        public static Texture2D debugMechC;
+
+        public static Texture2D GetMechTexture(MechType mechType)
+        {
+            // Big Fat
+            switch (mechType)
+            {
+                case MechType.DebugMechA:
+                    return debugMechA;                    
+                case MechType.DebugMechB:
+                    return debugMechB;                    
+                case MechType.DebugMechC:
+                    return debugMechC;
+                default:
+                    return errorTexture;
+            }
+        }
     }
 }

@@ -12,15 +12,33 @@ namespace ScrapWars3.Data
     {
         private string name;
         private int logoIndex;
-        private Color logoColor;        
+        private Color logoColor;
+
+        private List<Mech> mechs;        
 
         public Team( string name, int logoIndex, Color logoColor)
         {            
             Name = name;
             LogoIndex = logoIndex;
             LogoColor = logoColor;
-        }
 
+            mechs = new List<Mech>();
+        }
+        public void AddMech( Mech newMech )
+        {
+            mechs.Add(newMech);
+        }
+        public void removeMechs( int mechID )
+        {
+            for (int index = 0; index < mechs.Count; index++)
+            {
+                if (mechs[index].MechId == mechID)
+                {
+                    mechs.RemoveAt(index);
+                    break;
+                }
+            }
+        }
         public Texture2D Logo
         {
             get{ return GameTextureRepo.teamLogos[logoIndex]; }
@@ -39,6 +57,10 @@ namespace ScrapWars3.Data
         {
             get { return name; }            
             set { name = value; }
+        }
+        internal Mech[] Mechs //This is returned as an array to prevent modification of the list
+        {
+            get { return mechs.ToArray( ); }
         }
     }
 }

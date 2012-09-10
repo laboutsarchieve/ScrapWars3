@@ -61,6 +61,9 @@ Battle
 - The main game where bots fight
 - Contains a frame, battlefield, sprites and words
 - Can Transition to MainMenu
-- The top section contains battle cards and is 1600 by 300
-- The battlefield is 1600 by 700
-- The bottom section contains stats and is 1600 by 200
+- The top section contains battle cards and is 1600 by 160
+- The battlefield is 1600 by 800
+- The bottom section contains stats and is 1600 by 160
+
+Unit
+- Units will need to fire out of arbitrary locations
