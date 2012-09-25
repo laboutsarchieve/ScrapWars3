@@ -110,12 +110,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Map.cs" />
     <Compile Include="Data\MechFactory.cs" />
     <Compile Include="Data\MechType.cs" />
     <Compile Include="Data\Team.cs" />
     <Compile Include="Data\TeamDatabase.cs" />
     <Compile Include="Data\Mech.cs" />
+    <Compile Include="Data\Tile.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Logic\MapGenerator.cs" />
+    <Compile Include="Logic\MechAI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resources\FontRepo.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="ScrapWarsEventManager.cs" />
     <Compile Include="ExtendedKeyboard.cs" />
     <Compile Include="Screens\Battle.cs" />
+    <Compile Include="Screens\MapSelection.cs" />
     <Compile Include="Screens\MechCustomize.cs" />
     <Compile Include="Screens\MechSelect.cs" />
     <Compile Include="Screens\OptionsScreen.cs" />

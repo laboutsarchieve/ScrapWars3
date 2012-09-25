@@ -18,6 +18,11 @@ namespace ScrapWars3.Resources
         public static Texture2D debugMechB;
         public static Texture2D debugMechC;
 
+        public static Texture2D tileDirt;
+        public static Texture2D tileGrass;
+        public static Texture2D tileSand;
+        public static Texture2D tileWater;
+
         public static Texture2D GetMechTexture(MechType mechType)
         {
             // Big Fat

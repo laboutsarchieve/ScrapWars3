@@ -56,6 +56,13 @@ namespace ScrapWars3
             GameTextureRepo.teamLogos[1] = Content.Load<Texture2D>(@"art\progart_team_logo1");
             GameTextureRepo.teamLogos[2] = Content.Load<Texture2D>(@"art\progart_team_logo2");
 
+            GameTextureRepo.tileDirt = Content.Load<Texture2D>(@"art\progart_dirt");
+            GameTextureRepo.tileGrass = Content.Load<Texture2D>(@"art\progart_grass");
+            GameTextureRepo.tileSand = Content.Load<Texture2D>(@"art\progart_sand");
+            GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
+
+            GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
+
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
             FontRepo.SelectScreenFont = FontRepo.mainMenuFont;
 

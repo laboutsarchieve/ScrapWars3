@@ -61,7 +61,7 @@ namespace ScrapWars3.Screens
         }
         private void ProcessInput( )
         {
-            if (ExtendedKeyboard.IsKeyDown(Keys.Enter) || ExtendedKeyboard.IsKeyDown(Keys.Space))
+            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
             {
                 if (currSelection == Options.Exit)
                     scrapWarsApp.Exit();
@@ -77,7 +77,7 @@ namespace ScrapWars3.Screens
         private void SetSelection(int option)
         {
             if (option < 0)
-                option = 3;
+                option = menuOptions.Length-1;
 
             option %= menuOptions.Length;
 
@@ -96,7 +96,7 @@ namespace ScrapWars3.Screens
             switch (currSelection)
             {
                 case Options.Battle:
-                    return new Battle(scrapWarsApp, graphics, window);
+                    return new MapSelection(scrapWarsApp, graphics, window);
                 case Options.CustomizeSquad:
                     return new TeamSelect(scrapWarsApp, graphics, window);
                 case Options.Options:
