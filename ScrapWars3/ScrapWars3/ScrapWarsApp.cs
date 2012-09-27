@@ -46,6 +46,7 @@ namespace ScrapWars3
         protected override void LoadContent()
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
+            ScreenTextureRepo.mapGen = Content.Load<Texture2D>(@"art\progart_map_gen_screen");
             ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
             ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
             ScreenTextureRepo.mechSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
@@ -62,6 +63,10 @@ namespace ScrapWars3
             GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
 
             GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
+                        
+            GameTextureRepo.pixel = new Texture2D(GraphicsDevice,1,1);
+            Color[] whitePixel = {Color.White};
+            GameTextureRepo.pixel.SetData<Color>(whitePixel);
 
             FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
             FontRepo.SelectScreenFont = FontRepo.mainMenuFont;
@@ -131,3 +136,4 @@ namespace ScrapWars3
         }
     }
 }
+

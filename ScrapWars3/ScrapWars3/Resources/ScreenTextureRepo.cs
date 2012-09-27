@@ -14,5 +14,6 @@ namespace ScrapWars3.Resources
         public static Texture2D customizeMech;
         public static Texture2D battleGUIFrame;
         public static Texture2D optionScreen;
+        public static Texture2D mapGen;
     }
 }

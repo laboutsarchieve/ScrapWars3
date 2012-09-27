@@ -17,7 +17,7 @@ namespace ScrapWars3.Screens
         public TeamSelect(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)
         {
-            currentTeam = 1;
+            currentTeam = 0;
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
@@ -64,7 +64,7 @@ namespace ScrapWars3.Screens
         }
         public void DrawTeams()
         {
-            DrawSingleTeam(currentTeam, GameSettings.CenterOfScreen, TeamDatabase.teams[currentTeam].LogoColor);
+            DrawSingleTeam(currentTeam, GameSettings.CenterOfScreen, TeamDatabase.teams[currentTeam].TeamColor);
 
             if(currentTeam != 0)
                 DrawSingleTeam(currentTeam - 1, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), Color.White);
@@ -79,7 +79,7 @@ namespace ScrapWars3.Screens
             spriteBatch.Draw(team.Logo,
                              center,
                              null,
-                             team.LogoColor,
+                             team.TeamColor,
                              0.0f,
                              new Vector2(team.Logo.Width / 2, team.Logo.Height / 2),
                              GameSettings.ArtScale,

@@ -8,17 +8,17 @@ namespace ScrapWars3.Data
 {
     class Mech
     {
-        string name;        
+        string name;
         MechType mechType;
-        int mechId;        
-        Color mechColor;
+        int mechId;
+
+        Vector2 location;
 
         public Mech(string name, int mechId, MechType mechType)
         {
             this.name = name;
             this.mechType = mechType;
             this.mechId = mechId;
-            mechColor = Color.White;
         }
         public string Name
         {
@@ -32,9 +32,11 @@ namespace ScrapWars3.Data
         {
             get { return mechId; }
         }
-        public Color MechColor
+
+        public Vector2 Location
         {
-            get { return mechColor; }
+            get { return location; }
+            set { location = value; }
         }
     }
 }

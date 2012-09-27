@@ -22,6 +22,7 @@ namespace ScrapWars3.Resources
         public static Texture2D tileGrass;
         public static Texture2D tileSand;
         public static Texture2D tileWater;
+        public static Texture2D pixel;
 
         public static Texture2D GetMechTexture(MechType mechType)
         {

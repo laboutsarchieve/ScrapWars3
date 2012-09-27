@@ -72,7 +72,7 @@ namespace ScrapWars3.Screens
             spriteBatch.Draw(team.Logo,
                              Vector2.Zero,
                              null,
-                             team.LogoColor,
+                             team.TeamColor,
                              0.0f,
                              Vector2.Zero,
                              GameSettings.ArtScale,
@@ -89,18 +89,18 @@ namespace ScrapWars3.Screens
         public void DrawMechs()
         {
             Mech mech = mechs[currentMech];
-            DrawSingleMech(mech, GameSettings.CenterOfScreen, mech.MechColor);
+            DrawSingleMech(mech, GameSettings.CenterOfScreen, team.TeamColor);
 
             if (currentMech != 0)
             {
                 mech = mechs[currentMech - 1];
-                DrawSingleMech(mech, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), mech.MechColor);
+                DrawSingleMech(mech, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), team.TeamColor);
             }
 
             if (currentMech != mechs.Length - 1)
             {
                 mech = mechs[currentMech + 1];
-                DrawSingleMech(mech, new Vector2(3 * GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), mech.MechColor);
+                DrawSingleMech(mech, new Vector2(3 * GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), team.TeamColor);
             }
         }
         public void DrawSingleMech(Mech mech, Vector2 center, Color mechColor)
@@ -120,7 +120,7 @@ namespace ScrapWars3.Screens
             Vector2 nameLocation = new Vector2(center.X - FontRepo.SelectScreenFont.MeasureString(mech.Name).X / 2,
                                                center.Y - mechTexture.Height * GameSettings.ArtScale.Y - FontRepo.SelectScreenFont.MeasureString(mech.Name).Y);
 
-            spriteBatch.DrawString(FontRepo.SelectScreenFont, mech.Name, nameLocation, team.LogoColor);
+            spriteBatch.DrawString(FontRepo.SelectScreenFont, mech.Name, nameLocation, team.TeamColor);
         }
     }
 }

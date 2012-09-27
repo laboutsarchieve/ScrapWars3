@@ -27,14 +27,16 @@ namespace ScrapWars3.Screens
         Options currSelection;
         Color[] menuColors = new Color[4];
 
-        Color mainMenuColor = Color.White;
+        Color mainMenuColor = Color.Black;
         Color selectionColor = Color.Yellow;
 
         float lineHeight;
-        float menuMiddle;
-        float menuTop;
+
+        Rectangle menuBounds;
+
 
         float imageDisplacement;
+
 
         public MainMenu(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)
@@ -51,41 +53,51 @@ namespace ScrapWars3.Screens
         {
             lineHeight = FontRepo.mainMenuFont.LineSpacing;
 
-            menuTop = GameSettings.CenterOfScreen.Y - (menuOptions.Length * 0.5f * lineHeight);
-            menuMiddle = GameSettings.CenterOfScreen.X;
+            int longestStringLength = 0;
+
+            foreach(string option in menuOptions)
+            {
+                if(FontRepo.mainMenuFont.MeasureString(option).X > longestStringLength)
+                    longestStringLength = (int)FontRepo.mainMenuFont.MeasureString(option).X;
+            }
+
+            int menuTop = (int)(GameSettings.CenterOfScreen.Y - (menuOptions.Length * 0.5f * lineHeight));
+            int menuLeft = (int)(GameSettings.CenterOfScreen.X - longestStringLength/2);
+
+            menuBounds = new Rectangle(menuLeft, menuTop, longestStringLength, (int)lineHeight * menuOptions.Length);
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            imageDisplacement = (imageDisplacement + 1) % (ScreenTextureRepo.mainMenu.Width * GameSettings.ArtScale.X);
+            imageDisplacement = (imageDisplacement + 0.25f) % (ScreenTextureRepo.mainMenu.Width * GameSettings.ArtScale.X);
             ProcessInput();
         }
-        private void ProcessInput( )
+        private void ProcessInput()
         {
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
             {
-                if (currSelection == Options.Exit)
+                if(currSelection == Options.Exit)
                     scrapWarsApp.Exit();
                 else
                     scrapWarsApp.ChangeScreen(GetScreenFromCurrentSelection());
             }
 
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Up) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.W)) 
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Up) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.W))
                 SetSelection((int)currSelection - 1); // Move the selection up by one
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Down) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.S))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Down) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.S))
                 SetSelection((int)currSelection + 1); // Move the selection down by one            
         }
         private void SetSelection(int option)
         {
-            if (option < 0)
-                option = menuOptions.Length-1;
+            if(option < 0)
+                option = menuOptions.Length - 1;
 
             option %= menuOptions.Length;
 
             currSelection = (Options)option;
 
-            for (int index = 0; index < menuOptions.Length; index++)
+            for(int index = 0; index < menuOptions.Length; index++)
             {
-                if (index == (int)option)                
+                if(index == (int)option)
                     menuColors[index] = selectionColor;
                 else
                     menuColors[index] = mainMenuColor;
@@ -93,7 +105,7 @@ namespace ScrapWars3.Screens
         }
         private Screen GetScreenFromCurrentSelection()
         {
-            switch (currSelection)
+            switch(currSelection)
             {
                 case Options.Battle:
                     return new MapSelection(scrapWarsApp, graphics, window);
@@ -108,26 +120,29 @@ namespace ScrapWars3.Screens
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            graphics.Clear(Color.Black);   
-            spriteBatch.Begin( );            
-            DrawBackground( );
-            DrawMenuText( );
-            spriteBatch.End( );
+            graphics.Clear(Color.Black);
+            spriteBatch.Begin();
+            DrawBackground();
+            DrawMenuText();
+            spriteBatch.End();
         }
-        private void DrawBackground( )
+        private void DrawBackground()
         {
             spriteBatch.Draw(ScreenTextureRepo.mainMenu, new Vector2(-imageDisplacement, 0), null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(ScreenTextureRepo.mainMenu, new Vector2(-imageDisplacement + ScreenTextureRepo.mainMenu.Width*GameSettings.ArtScale.X, 0), null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);            
+            spriteBatch.Draw(ScreenTextureRepo.mainMenu, new Vector2(-imageDisplacement + ScreenTextureRepo.mainMenu.Width * GameSettings.ArtScale.X, 0), null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
         }
-        private void DrawMenuText( )
+        private void DrawMenuText()
         {
-            Color mainMenuText = Color.White;
-            Color selectionText = Color.Yellow;
+            spriteBatch.Draw(GameTextureRepo.pixel, menuBounds, new Color(100, 100, 100, 180));
 
-            for (int index = 0; index < menuOptions.Length; index++)
+            for(int index = 0; index < menuOptions.Length; index++)
             {
                 string option = menuOptions[index];
-                spriteBatch.DrawString(FontRepo.mainMenuFont, option, new Vector2(menuMiddle - FontRepo.mainMenuFont.MeasureString(option).X / 2, menuTop + lineHeight * index), menuColors[index]);
+                spriteBatch.DrawString(FontRepo.mainMenuFont,
+                                       option,
+                                       new Vector2(menuBounds.Center.X - FontRepo.mainMenuFont.MeasureString(option).X / 2,
+                                                   menuBounds.Top + lineHeight * index),
+                                       menuColors[index]);
             }
         }
     }

@@ -79,7 +79,12 @@ namespace ScrapWars3.Screens
         {
             MapGenerator mapGen = new MapGenerator();
             Map map = mapGen.GenerateMap(new Vector2(100, 100));
-            scrapWarsApp.ChangeScreen(new Battle(scrapWarsApp, graphics, window, map));
+            scrapWarsApp.ChangeScreen(new Battle(scrapWarsApp,
+                                      graphics,
+                                      window,
+                                      map,
+                                      TeamDatabase.teams[0],
+                                      TeamDatabase.teams[1]));
         }
         private void SetSelection(int option)
         {
@@ -108,6 +113,7 @@ namespace ScrapWars3.Screens
         }
         private void DrawBackground()
         {
+            spriteBatch.Draw(ScreenTextureRepo.mapGen, Vector2.Zero, Color.White);
         }
         private void DrawMenuText()
         {

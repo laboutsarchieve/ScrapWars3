@@ -20,7 +20,7 @@ namespace ScrapWars3.Data
         {            
             Name = name;
             LogoIndex = logoIndex;
-            LogoColor = logoColor;
+            TeamColor = logoColor;
 
             mechs = new List<Mech>();
         }
@@ -48,7 +48,7 @@ namespace ScrapWars3.Data
             get { return logoIndex; }
             set { logoIndex = value; }
         }
-        public Color LogoColor
+        public Color TeamColor
         {
             get { return logoColor; }
             set { logoColor = value; }
