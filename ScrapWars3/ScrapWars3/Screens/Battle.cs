@@ -27,6 +27,7 @@ namespace ScrapWars3.Screens
         private bool battlePaused;
         private bool mapChanged;
         private double roundStart = 0;
+        private int timePerRound = 5000; // 15 seconds
 
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
@@ -113,6 +114,10 @@ namespace ScrapWars3.Screens
         {
             get { return roundStart; }
             set { roundStart = value; }
+        }
+        public int TimePerRound
+        {
+            get { return timePerRound; }
         }
     }
 }

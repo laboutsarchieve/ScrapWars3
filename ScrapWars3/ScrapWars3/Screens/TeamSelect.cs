@@ -86,10 +86,10 @@ namespace ScrapWars3.Screens
                              SpriteEffects.None,
                              0);
 
-            Vector2 nameLocation = new Vector2(center.X - FontRepo.SelectScreenFont.MeasureString(team.Name).X / 2,
+            Vector2 nameLocation = new Vector2(center.X - FontRepo.selectScreenFont.MeasureString(team.Name).X / 2,
                                                center.Y - team.Logo.Height / 2);
 
-            spriteBatch.DrawString(FontRepo.SelectScreenFont, team.Name, nameLocation, nameColor);
+            spriteBatch.DrawString(FontRepo.selectScreenFont, team.Name, nameLocation, nameColor);
         }
     }
 }

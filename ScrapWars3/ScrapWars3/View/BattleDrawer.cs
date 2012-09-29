@@ -30,18 +30,29 @@ namespace ScrapWars3.View
 
             mapTexture = new RenderTarget2D(graphics, GameSettings.TileSize * battle.Map.Width, GameSettings.TileSize * battle.Map.Height);
         }
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             graphics.Clear(Color.White);
             spriteBatch.Begin();
             DrawBattleField();
             DrawMechs();
-            DrawHud();
+            DrawHud(gameTime);
             spriteBatch.End();
         }
-        public void DrawHud()
+        public void DrawHud(GameTime gameTime)
         {
             spriteBatch.Draw(ScreenTextureRepo.battleGUIFrame, GameSettings.ScreenRectangle, Color.White);
+
+            if (!battle.BattlePaused)
+            {
+                int secondsLeft = (int)(battle.TimePerRound - (gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart)) / 1000 + 1;
+
+                string secondsString = "" + secondsLeft + " Seconds Left";
+                float stringTop = GameSettings.Resolution.Y - FontRepo.generalFont.MeasureString(secondsString).Y;
+                float stringLeft = GameSettings.Resolution.X - FontRepo.generalFont.MeasureString(secondsString).X;
+
+                spriteBatch.DrawString(FontRepo.generalFont, secondsString, new Vector2(stringLeft, stringTop), Color.Black);
+            }
         }
         public void DrawBattleField()
         {

@@ -65,7 +65,9 @@ namespace ScrapWars3
             GameTextureRepo.pixel.SetData<Color>(whitePixel);
 
             FontRepo.generalFont = Content.Load<SpriteFont>(@"font\main_menu_font");
-            FontRepo.SelectScreenFont = FontRepo.generalFont; // These are the same for the moment
+            FontRepo.selectScreenFont = FontRepo.generalFont; // These are the same for the moment
+            FontRepo.titleFont = Content.Load<SpriteFont>(@"font\title_font");
+                
 
             LoadDebugContent();
             LoadProtoGameData();

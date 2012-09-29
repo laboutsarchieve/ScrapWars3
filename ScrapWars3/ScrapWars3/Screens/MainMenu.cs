@@ -118,13 +118,24 @@ namespace ScrapWars3.Screens
             graphics.Clear(Color.Black);
             spriteBatch.Begin();
             DrawBackground();
-            DrawMenuText();
+            DrawTitle();
+            DrawMenuText();            
             spriteBatch.End();
         }
         private void DrawBackground()
         {
             spriteBatch.Draw(ScreenTextureRepo.mainMenu, new Vector2(-imageDisplacement, 0), null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
             spriteBatch.Draw(ScreenTextureRepo.mainMenu, new Vector2(-imageDisplacement + ScreenTextureRepo.mainMenu.Width * GameSettings.ArtScale.X, 0), null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
+        }
+        private void DrawTitle()
+        {
+            string title = "Scrapwars 3";
+
+            //TODO: put this logic in font repo
+            float stringLeft = GameSettings.Resolution.X / 2 - FontRepo.titleFont.MeasureString(title).X / 2;
+            float stringTop = 0;
+
+            spriteBatch.DrawString(FontRepo.titleFont, title, new Vector2(stringLeft, stringTop), Color.DarkRed);
         }
         private void DrawMenuText()
         {
@@ -139,6 +150,6 @@ namespace ScrapWars3.Screens
                                                    menuBounds.Top + lineHeight * index),
                                        menuColors[index]);
             }
-        }
+        }        
     }
 }

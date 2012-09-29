@@ -9,6 +9,7 @@ namespace ScrapWars3.Resources
     static class FontRepo
     {
         public static SpriteFont generalFont;
-        public static SpriteFont SelectScreenFont;
+        public static SpriteFont selectScreenFont;
+        public static SpriteFont titleFont;
     }
 }
