@@ -11,13 +11,23 @@ namespace ScrapWars3.Logic.Behaviors
     class DebugBehavior : BehaviorState
     {
         private Mech currentTarget;
+        private int stepsSincePathfinder;
         public void Update(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
         {
             if(currentTarget == null)
-                ChooseTarget(stateMachine, battle);
+            { 
+                ChooseTarget(stateMachine, battle);                
+                stateMachine.Path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Location); 
+                stepsSincePathfinder = 0;
+            }
 
-            stateMachine.CurrentTargetLocation = currentTarget.Location;
-            stateMachine.DesiredDistance = stateMachine.Rng.Next(1, 8) * 40;
+            if(stepsSincePathfinder > 100 && stateMachine.Rng.NextDouble( ) > 0.5) // This randomization helps make the mechs pathfind on diffrent cycles
+            { 
+                stateMachine.Path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Location);                
+                stepsSincePathfinder = 0;
+            }
+
+            stepsSincePathfinder++;
         }
 
         private void ChooseTarget(MechAiStateMachine stateMachine, Battle battle)

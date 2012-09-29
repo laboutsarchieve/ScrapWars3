@@ -16,7 +16,10 @@ namespace ScrapWars3.Logic
         private Mech owner;
         private BehaviorState globalBehavior;
         private Vector2 currentTargetLocation;
-        private float desiredDistance;
+        private float desiredDistance;        
+        private int nodeOnPath;
+        private bool followingPath = false;        
+        private List<Vector2> path = new List<Vector2>();
 
         private static Random rng = new Random();
 
@@ -40,6 +43,22 @@ namespace ScrapWars3.Logic
         {
             globalBehavior.Update(this, gameTime, battle);
             behavior.Update(this, gameTime, battle);
+
+            if(followingPath)
+            {
+                float closeEnough = Math.Max(owner.Size.X,owner.Size.Y) * 1.5f;
+                if((currentTargetLocation - owner.Location).LengthSquared() < closeEnough * closeEnough)
+                { 
+                    nodeOnPath++;
+                    if(nodeOnPath >= path.Count)
+                    { 
+                        followingPath = false;
+                        return;
+                    }
+
+                    currentTargetLocation = GameSettings.TileSize*path[nodeOnPath];                    
+                }
+            }
         }
         public void ChangeBehavior(BehaviorState newBehavior)
         {
@@ -56,6 +75,22 @@ namespace ScrapWars3.Logic
             get { return desiredDistance; }
             set { desiredDistance = value; }
         }
+        public List<Vector2> Path
+        {
+            get { return path; }
+            set 
+            { 
+                path = value;
+                nodeOnPath = 0;
+
+                if(path.Count > 0)
+                {
+                    followingPath = true;                 
+                    desiredDistance = Math.Max(owner.Size.X,owner.Size.Y) * 1.5f;
+                    currentTargetLocation = GameSettings.TileSize*path[nodeOnPath];
+                }
+            }
+        }
         internal BehaviorState Behavior
         {
             get { return behavior; }
@@ -67,6 +102,11 @@ namespace ScrapWars3.Logic
         internal Mech Owner
         {
             get { return owner; }
+        }
+        public bool FollowingPath
+        {
+            get { return followingPath; }
+            set { followingPath = value; }
         }
         public Random Rng
         {

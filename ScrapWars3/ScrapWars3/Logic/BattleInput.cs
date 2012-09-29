@@ -45,7 +45,7 @@ namespace ScrapWars3.Logic
         private void MoveView(int x, int y)
         {
             battle.UpperLeftOfView += new Vector2(x, y);
-            Vector2 maxUpperLeft = new Vector2(battle.Map.Width, battle.Map.Height) - GameSettings.Resolution / battle.TileSize;
+            Vector2 maxUpperLeft = new Vector2(battle.Map.Width, battle.Map.Height) - GameSettings.Resolution / GameSettings.TileSize;
             battle.UpperLeftOfView = Vector2.Clamp(battle.UpperLeftOfView, Vector2.Zero, maxUpperLeft);
         }
     }

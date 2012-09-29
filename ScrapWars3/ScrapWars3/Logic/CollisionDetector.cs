@@ -9,13 +9,13 @@ namespace ScrapWars3.Logic
 {
     class CollisionDetector
     {
-        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType, int tileSize)
+        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType)
         {
-            Rectangle mechBox = mech.BoundingBox;
-            Rectangle scaledBox = new Rectangle(mechBox.X / tileSize,
-                                                mechBox.Y / tileSize,
-                                                mechBox.Width / tileSize,
-                                                mechBox.Height / tileSize);
+            Rectangle mechBox = mech.BoundingRect;
+            Rectangle scaledBox = new Rectangle(mechBox.X / GameSettings.TileSize,
+                                                mechBox.Y / GameSettings.TileSize,
+                                                mechBox.Width / GameSettings.TileSize,
+                                                mechBox.Height / GameSettings.TileSize);
             if(map.ContainsTileType(scaledBox, tileType))
             {
                 return true;

@@ -58,7 +58,8 @@ namespace ScrapWars3.Data
         }
         public void Update(GameTime gameTime, Battle battle)
         {
-            Move(gameTime, battle);
+            if(brain.FollowingPath)
+                Move(gameTime, battle);
         }
         private void Move(GameTime gameTime, Battle battle)
         {
@@ -68,24 +69,15 @@ namespace ScrapWars3.Data
             float speed = 80; // 40 pixels per second
 
             Vector2 toTarget = brain.CurrentTargetLocation - location;
+            float distance = toTarget.Length();            
 
-            float tooClose = brain.DesiredDistance - Math.Max(size.X, size.Y) * 2;
-            float distance = toTarget.Length();
+            bool towards = distance > brain.DesiredDistance;
 
-            bool towards;
-
-            if(distance > brain.DesiredDistance)
-                towards = true;
-            else if(distance - tooClose < 0)
-                towards = false;
-            else
+            if(toTarget == Vector2.Zero)
                 return;
 
-            if(toTarget != Vector2.Zero)
-                toTarget.Normalize();
-
+            toTarget.Normalize();
             facing = toTarget;
-
             toTarget *= speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if(towards)
@@ -131,7 +123,7 @@ namespace ScrapWars3.Data
         {
             get { return size; }
         }
-        public Rectangle BoundingBox
+        public Rectangle BoundingRect
         {
             get { return new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y); }
         }

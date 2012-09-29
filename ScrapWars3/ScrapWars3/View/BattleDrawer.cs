@@ -28,7 +28,7 @@ namespace ScrapWars3.View
 
             startOfBatlefield = new Vector2(0, GameSettings.Resolution.Y / 8);
 
-            mapTexture = new RenderTarget2D(graphics, battle.TileSize * battle.Map.Width, battle.TileSize * battle.Map.Height);
+            mapTexture = new RenderTarget2D(graphics, GameSettings.TileSize * battle.Map.Width, GameSettings.TileSize * battle.Map.Height);
         }
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
@@ -48,7 +48,7 @@ namespace ScrapWars3.View
             if(battle.MapChanged)
                 RefreshMap();
 
-            spriteBatch.Draw((Texture2D)mapTexture, startOfBatlefield - battle.TileSize * battle.UpperLeftOfView, Color.White);
+            spriteBatch.Draw((Texture2D)mapTexture, startOfBatlefield - GameSettings.TileSize * battle.UpperLeftOfView, Color.White);
 
             DrawMechs();
         }
@@ -56,7 +56,7 @@ namespace ScrapWars3.View
         {
             foreach(Mech mech in battle.AllMechs)
             {
-                Vector2 screenLocation = startOfBatlefield + mech.Location - battle.TileSize * battle.UpperLeftOfView;
+                Vector2 screenLocation = startOfBatlefield + mech.Location - GameSettings.TileSize * battle.UpperLeftOfView;
                 spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
                                  screenLocation,
                                  null,
@@ -70,7 +70,7 @@ namespace ScrapWars3.View
         }
         private void RefreshMap()
         {
-            mapTexture = new RenderTarget2D(graphics, battle.TileSize * battle.Map.Width, battle.TileSize * battle.Map.Height);
+            mapTexture = new RenderTarget2D(graphics, GameSettings.TileSize * battle.Map.Width, GameSettings.TileSize * battle.Map.Height);
             spriteBatch.End();
             graphics.SetRenderTarget(mapTexture);
             graphics.Clear(Color.Black);
@@ -95,7 +95,7 @@ namespace ScrapWars3.View
                 for(int y = 0; y < battle.Map.Height; y++)
                 {
                     Tile tile = battle.Map[startTile.X + x, startTile.Y + y];
-                    DrawTile(tile, new Vector2(x * battle.TileSize, y * battle.TileSize));
+                    DrawTile(tile, new Vector2(x * GameSettings.TileSize, y * GameSettings.TileSize));
                 }
             }
         }

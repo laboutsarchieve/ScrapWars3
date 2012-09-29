@@ -26,7 +26,6 @@ namespace ScrapWars3.Screens
 
         private bool battlePaused;
         private bool mapChanged;
-        private int tileSize;
         private double roundStart = 0;
 
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
@@ -49,7 +48,7 @@ namespace ScrapWars3.Screens
             mapChanged = true;
             battlePaused = true;
             upperLeftOfView = Vector2.Zero;
-            tileSize = GameTextureRepo.tileDirt.Width;
+            GameSettings.TileSize = GameTextureRepo.tileDirt.Width;
 
             battleDrawer = new BattleDrawer(this, graphics, spriteBatch);
             battleInput = new BattleInput(this);
@@ -78,10 +77,6 @@ namespace ScrapWars3.Screens
         public override void Draw(GameTime gameTime)
         {
             battleDrawer.Draw(gameTime);
-        }
-        public int TileSize
-        {
-            get { return tileSize; }
         }
         internal Map Map
         {

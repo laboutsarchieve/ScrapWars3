@@ -39,5 +39,7 @@ namespace ScrapWars3
             set { GameSettings.resolution = value; artScale = value / maxResolution; }
         }
         public static Vector2 ArtScale { get { return artScale; } }
+
+        public static int TileSize { get; set; }
     }
 }
