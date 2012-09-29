@@ -16,8 +16,8 @@ namespace ScrapWars3.Screens
         enum Options
         {
             MapSize,
-            OptionOne,
-            OptionTwo,
+            TeamOne,
+            TeamTwo,
             Battle,
             Return
         };
@@ -25,15 +25,15 @@ namespace ScrapWars3.Screens
         private Point mapSize;
 
         private string[] menuOptions = {"Map Size:",
-                                        "Option 1:",
-                                        "Option 2:",
+                                        "Team 1:",
+                                        "Team 2:",
                                         "Start",
                                         "Return to Main Menu"};
 
         private Options currSelection;
         private Color[] menuColors = new Color[5];
 
-        private Color mainMenuColor = Color.White;
+        private Color mainMenuColor = Color.Black;
         private Color selectionColor = Color.Yellow;
 
         private float lineHeight;
@@ -44,7 +44,7 @@ namespace ScrapWars3.Screens
             : base(scrapWarsApp, graphics, window)
         {
             SetSelection(0);
-            mapSize = new Point(150,150);
+            mapSize = new Point(100, 100);
         }
         public override void Refresh(GraphicsDevice graphics, GameWindow window)
         {
@@ -68,8 +68,8 @@ namespace ScrapWars3.Screens
             {
                 if(currSelection == Options.Battle)
                     StartBattle();
-                else if( currSelection == Options.Return)
-                    scrapWarsApp.RevertScreen( );
+                else if(currSelection == Options.Return)
+                    scrapWarsApp.ChangeScreen(new MainMenu(scrapWarsApp, graphics, window));
             }
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Up) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.W))
@@ -92,7 +92,7 @@ namespace ScrapWars3.Screens
         private void SetSelection(int option)
         {
             if(option < 0)
-                option = menuOptions.Length-1;
+                option = menuOptions.Length - 1;
 
             option %= menuOptions.Length;
 
@@ -131,20 +131,27 @@ namespace ScrapWars3.Screens
         }
         private void DrawOptionValue(Options option, Vector2 location)
         {
+            string valueString;
+            Color color = Color.Black;
             switch(option)
             {
                 case Options.MapSize:
-                    string mapSizeString = " " + mapSize.X + " X " + mapSize.Y;
-                    spriteBatch.DrawString(FontRepo.generalFont, mapSizeString, location, menuColors[(int)option]);
+                    valueString = " " + mapSize.X + " X " + mapSize.Y;
                     break;
-                case Options.OptionOne:
+                case Options.TeamOne:
+                    valueString = TeamDatabase.teams[0].Name;
+                    color = TeamDatabase.teams[0].TeamColor;
                     break;
-                case Options.OptionTwo:
+                case Options.TeamTwo:
+                    valueString = TeamDatabase.teams[1].Name;
+                    color = TeamDatabase.teams[1].TeamColor;
                     break;
                 default:
-                    //Do nothing
+                    valueString = "";
                     break;
             }
+
+            spriteBatch.DrawString(FontRepo.generalFont, valueString, location, color);
         }
     }
 }

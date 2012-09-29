@@ -15,15 +15,15 @@ namespace ScrapWars3.Data
             switch(type)
             {
                 case MechType.DebugMechA:
-                    return new Mech("DebugMechA", GetNextId(), type);                    
+                    return new Mech("DebugMechA", GetNextId(), type);
                 case MechType.DebugMechB:
-                    return new Mech("DebugMechB", GetNextId(), type);                    
+                    return new Mech("DebugMechB", GetNextId(), type);
                 case MechType.DebugMechC:
-                    return new Mech("DebugMechC", GetNextId(), type);                    
+                    return new Mech("DebugMechC", GetNextId(), type);
                 default:
                     return new Mech("Error", -1, MechType.Error);
             }
-        }        
+        }
         private static int GetNextId()
         {
             id++;

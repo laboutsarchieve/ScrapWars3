@@ -18,7 +18,7 @@ namespace ScrapWars3.Screens
         private Vector2 upperLeftOfView;
         private Team teamOne;
         private Team teamTwo;
-        private List<Mech> allMechs;       
+        private List<Mech> allMechs;
 
         private BattleDrawer battleDrawer;
         private BattleInput battleInput;
@@ -27,6 +27,7 @@ namespace ScrapWars3.Screens
         private bool battlePaused;
         private bool mapChanged;
         private int tileSize;
+        private double roundStart = 0;
 
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
@@ -35,7 +36,7 @@ namespace ScrapWars3.Screens
             this.teamOne = teamOne;
             this.teamTwo = teamTwo;
 
-            allMechs = new List<Mech>( );
+            allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
             {
                 allMechs.Add(mech);
@@ -46,6 +47,7 @@ namespace ScrapWars3.Screens
             }
 
             mapChanged = true;
+            battlePaused = true;
             upperLeftOfView = Vector2.Zero;
             tileSize = GameTextureRepo.tileDirt.Width;
 
@@ -54,10 +56,19 @@ namespace ScrapWars3.Screens
             battleLogic = new BattleLogic(this);
 
             battleLogic.PlaceTeams(teamOne, teamTwo);
-        }        
+        }
         internal void EndBattle()
         {
-            scrapWarsApp.RevertScreen( ); // TODO: Make this show a battle report screen
+            scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
+        }
+        internal Team GetOtherTeam(Team team)
+        {
+            return (team == teamOne) ? teamTwo : teamOne;
+        }
+        public override void Refresh(GraphicsDevice graphics, GameWindow window)
+        {
+            mapChanged = true;
+            base.Refresh(graphics, window);
         }
         public override void Update(GameTime gameTime)
         {
@@ -91,7 +102,7 @@ namespace ScrapWars3.Screens
         }
         internal List<Mech> AllMechs
         {
-            get { return allMechs; }            
+            get { return allMechs; }
         }
         public bool BattlePaused
         {
@@ -102,6 +113,11 @@ namespace ScrapWars3.Screens
         {
             get { return mapChanged; }
             set { mapChanged = value; }
+        }
+        public double RoundStart
+        {
+            get { return roundStart; }
+            set { roundStart = value; }
         }
     }
 }

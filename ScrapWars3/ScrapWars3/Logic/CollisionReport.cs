@@ -16,7 +16,7 @@ namespace ScrapWars3.Logic
             collisionOccured = false;
             collisionLocation = -Vector2.One;
         }
-        public void RecordCollision( Vector2 location )
+        public void RecordCollision(Vector2 location)
         {
             collisionOccured = true;
             this.collisionLocation = location;

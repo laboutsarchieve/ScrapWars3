@@ -41,10 +41,10 @@ namespace ScrapWars3.Logic
             {
                 Tile tile = GetTileFromNoise(noise[index]);
 
-                int x = index/map.Width;
+                int x = index / map.Width;
                 int y = index % map.Width;
 
-                map[x,y] = tile;
+                map[x, y] = tile;
             }
 
             return map;

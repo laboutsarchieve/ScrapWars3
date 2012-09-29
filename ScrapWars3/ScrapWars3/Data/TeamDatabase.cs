@@ -7,6 +7,6 @@ namespace ScrapWars3.Data
 {
     static class TeamDatabase
     {
-        public static List<Team> teams = new List<Team>( );
+        public static List<Team> teams = new List<Team>();
     }
 }

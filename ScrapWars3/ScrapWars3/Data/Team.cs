@@ -27,6 +27,7 @@ namespace ScrapWars3.Data
         public void AddMech(Mech newMech)
         {
             mechs.Add(newMech);
+            newMech.Team = this;
         }
         internal void AddMechs(List<Mech> mechs)
         {

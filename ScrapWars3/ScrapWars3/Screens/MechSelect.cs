@@ -26,30 +26,30 @@ namespace ScrapWars3.Screens
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
                 scrapWarsApp.ChangeScreen(new TeamSelect(scrapWarsApp, graphics, window));
 
             // This will be more complicated when team card customization is added
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter))
                 SelectCurrentMech();
 
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Left) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.A))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Left) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.A))
                 SelectMechLeft();
 
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Right) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.D))
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Right) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.D))
                 SelectMechRight();
         }
 
         private void SelectMechRight()
         {
-            if (currentMech == mechs.Length - 1)
+            if(currentMech == mechs.Length - 1)
                 currentMech = 0;
 
             else currentMech++;
         }
         private void SelectMechLeft()
         {
-            if (currentMech == 0)
+            if(currentMech == 0)
                 currentMech = mechs.Length - 1;
 
             else currentMech--;
@@ -63,11 +63,11 @@ namespace ScrapWars3.Screens
         {
             spriteBatch.Begin();
             spriteBatch.Draw(ScreenTextureRepo.mechSelect, Vector2.Zero, null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
-            DrawTeamInfo( );
-            DrawMechs( );
+            DrawTeamInfo();
+            DrawMechs();
             spriteBatch.End();
         }
-        public void DrawTeamInfo( )
+        public void DrawTeamInfo()
         {
             spriteBatch.Draw(team.Logo,
                              Vector2.Zero,
@@ -79,25 +79,25 @@ namespace ScrapWars3.Screens
                              SpriteEffects.None,
                              0);
 
-            Vector2 nameLocation = new Vector2(team.Logo.Width * GameSettings.ArtScale.X /2 - FontRepo.SelectScreenFont.MeasureString(team.Name).X/2,
+            Vector2 nameLocation = new Vector2(team.Logo.Width * GameSettings.ArtScale.X / 2 - FontRepo.SelectScreenFont.MeasureString(team.Name).X / 2,
                                                team.Logo.Height * GameSettings.ArtScale.Y);
 
             spriteBatch.DrawString(FontRepo.SelectScreenFont, team.Name, nameLocation, Color.Black);
 
         }
-        
+
         public void DrawMechs()
         {
             Mech mech = mechs[currentMech];
             DrawSingleMech(mech, GameSettings.CenterOfScreen);
 
-            if (currentMech != 0)
+            if(currentMech != 0)
             {
                 mech = mechs[currentMech - 1];
                 DrawSingleMech(mech, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y));
             }
 
-            if (currentMech != mechs.Length - 1)
+            if(currentMech != mechs.Length - 1)
             {
                 mech = mechs[currentMech + 1];
                 DrawSingleMech(mech, new Vector2(3 * GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y));

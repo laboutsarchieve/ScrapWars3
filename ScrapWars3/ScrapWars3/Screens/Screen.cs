@@ -14,7 +14,7 @@ namespace ScrapWars3.Screens
         protected GameWindow window;
         protected ScrapWarsApp scrapWarsApp;
 
-        public Screen(ScrapWarsApp scrapWarsApp,GraphicsDevice graphics, GameWindow window)
+        public Screen(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
         {
             this.scrapWarsApp = scrapWarsApp;
             Refresh(graphics, window);

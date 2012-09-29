@@ -10,7 +10,7 @@ namespace ScrapWars3
         /// </summary>
         static void Main(string[] args)
         {
-            using (ScrapWarsApp game = new ScrapWarsApp())
+            using(ScrapWarsApp game = new ScrapWarsApp())
             {
                 game.Run();
             }

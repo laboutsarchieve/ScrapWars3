@@ -28,12 +28,12 @@ namespace ScrapWars3.Resources
         public static Texture2D GetMechTexture(MechType mechType)
         {
             // Big Fat
-            switch (mechType)
+            switch(mechType)
             {
                 case MechType.DebugMechA:
-                    return debugMechA;                    
+                    return debugMechA;
                 case MechType.DebugMechB:
-                    return debugMechB;                    
+                    return debugMechB;
                 case MechType.DebugMechC:
                     return debugMechC;
                 default:

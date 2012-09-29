@@ -32,18 +32,18 @@ namespace ScrapWars3
             Vector2 currentResolution = GameSettings.Resolution;
 
             graphics.PreferredBackBufferWidth = (int)currentResolution.X;
-            graphics.PreferredBackBufferHeight = (int)currentResolution.Y;            
+            graphics.PreferredBackBufferHeight = (int)currentResolution.Y;
             graphics.ApplyChanges();
 
-            ScrapWarsEventManager.SetManager(new BasicEventManager());            
-            
+            ScrapWarsEventManager.SetManager(new BasicEventManager());
+
             base.Initialize();
         }
         protected override void LoadContent()
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
             ScreenTextureRepo.mapGen = Content.Load<Texture2D>(@"art\progart_map_gen_screen");
-            ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");            
+            ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
             ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
             ScreenTextureRepo.mechSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
             ScreenTextureRepo.customizeMech = Content.Load<Texture2D>(@"art\progart_unit_customize");
@@ -59,16 +59,16 @@ namespace ScrapWars3
             GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
 
             GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
-                        
-            GameTextureRepo.pixel = new Texture2D(GraphicsDevice,1,1);
-            Color[] whitePixel = {Color.White};
+
+            GameTextureRepo.pixel = new Texture2D(GraphicsDevice, 1, 1);
+            Color[] whitePixel = { Color.White };
             GameTextureRepo.pixel.SetData<Color>(whitePixel);
 
             FontRepo.generalFont = Content.Load<SpriteFont>(@"font\main_menu_font");
             FontRepo.SelectScreenFont = FontRepo.generalFont; // These are the same for the moment
 
             LoadDebugContent();
-            LoadProtoGameData( );
+            LoadProtoGameData();
 
             currentScreen = new MainMenu(this, GraphicsDevice, Window);
             previousScreen = currentScreen;
@@ -80,11 +80,11 @@ namespace ScrapWars3
             GameTextureRepo.debugMechC = Content.Load<Texture2D>(@"art\progart_MechC");
 
         }
-        private void LoadProtoGameData( )
+        private void LoadProtoGameData()
         {
             // This is faked at the moment
             Team frag = new Team("Frags", 0, Color.Blue);
-            List<Mech> mechs = new List<Mech>( );
+            List<Mech> mechs = new List<Mech>();
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
@@ -94,7 +94,7 @@ namespace ScrapWars3
                 mech.MechColor = frag.TeamColor;
             frag.AddMechs(mechs);
 
-            mechs.Clear( );
+            mechs.Clear();
 
             Team scrapyard = new Team("Scrapyard", 1, Color.Red);
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
@@ -106,7 +106,7 @@ namespace ScrapWars3
                 mech.MechColor = scrapyard.TeamColor;
             scrapyard.AddMechs(mechs);
 
-            mechs.Clear( );
+            mechs.Clear();
 
             Team boomer = new Team("Boomers", 2, Color.Yellow);
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
@@ -115,10 +115,10 @@ namespace ScrapWars3
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
 
-            foreach(Mech mech in mechs)             
+            foreach(Mech mech in mechs)
                 mech.MechColor = boomer.TeamColor;
             boomer.AddMechs(mechs);
-            
+
 
             TeamDatabase.teams.Add(frag);
             TeamDatabase.teams.Add(scrapyard);

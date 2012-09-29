@@ -26,18 +26,18 @@ namespace ScrapWars3.Screens
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter))
                 SelectCurrentTeam();
-            
+
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Left) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.A))
-                SelectTeamLeft( );
+                SelectTeamLeft();
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Right) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.D))
-                SelectTeamRight( );            
+                SelectTeamRight();
         }
 
         private void SelectTeamRight()
         {
             //TODO: Add cool Transition Effect
-            if(currentTeam == TeamDatabase.teams.Count-1)
+            if(currentTeam == TeamDatabase.teams.Count - 1)
                 currentTeam = 0;
 
             else currentTeam++;
@@ -46,7 +46,7 @@ namespace ScrapWars3.Screens
         private void SelectTeamLeft()
         {
             if(currentTeam == 0)
-                currentTeam = TeamDatabase.teams.Count-1;
+                currentTeam = TeamDatabase.teams.Count - 1;
 
             else currentTeam--;
         }
@@ -86,8 +86,8 @@ namespace ScrapWars3.Screens
                              SpriteEffects.None,
                              0);
 
-            Vector2 nameLocation = new Vector2(center.X - FontRepo.SelectScreenFont.MeasureString(team.Name).X/2,
-                                               center.Y - team.Logo.Height /2);
+            Vector2 nameLocation = new Vector2(center.X - FontRepo.SelectScreenFont.MeasureString(team.Name).X / 2,
+                                               center.Y - team.Logo.Height / 2);
 
             spriteBatch.DrawString(FontRepo.SelectScreenFont, team.Name, nameLocation, nameColor);
         }

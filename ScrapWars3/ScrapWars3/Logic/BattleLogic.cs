@@ -10,8 +10,7 @@ namespace ScrapWars3.Logic
 {
     class BattleLogic
     {
-        private int roundStart = 0;
-        private int ROUND_TIME = 15000; // 15 seconds
+        private int ROUND_TIME = 5000; // 15 seconds
 
         private Battle battle;
 
@@ -83,9 +82,17 @@ namespace ScrapWars3.Logic
         private void StepBattle(GameTime gameTime)
         {
             // Battle Logic
-
-            if(gameTime.ElapsedGameTime.Milliseconds - roundStart > ROUND_TIME)
+            UpdateMech(gameTime);
+            if(gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart > ROUND_TIME)
                 battle.BattlePaused = true;
+        }
+        private void UpdateMech(GameTime gameTime)
+        {
+            foreach(Mech mech in battle.AllMechs)
+            {
+                mech.Think(gameTime, battle);
+                mech.Update(gameTime, battle);
+            }
         }
     }
 }

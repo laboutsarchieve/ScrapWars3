@@ -24,21 +24,21 @@ namespace ScrapWars3.Logic
             this.upperLeft = upperLeft;
             this.facing = facing;
 
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X,upperLeft.Y,0)) * Matrix.CreateRotationZ(facing);
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
 
             colorArray = new Color[texture.Width, texture.Height];
         }
         public Vector2 GetTransformedScreenLocation(int x, int y)
         {
-            Vector2 location = new Vector2(x,y);
+            Vector2 location = new Vector2(x, y);
             Vector2.Transform(location, textureTransformation);
 
             return location;
         }
         public Color GetColorAtScreenLocation(int x, int y)
         {
-            Vector2 location = new Vector2(x,y);
+            Vector2 location = new Vector2(x, y);
             Vector2.Transform(location, textureTransformationInverse);
 
             if(location.X > colorArray.GetLength(0) || location.Y > colorArray.GetLength(1))
@@ -48,11 +48,11 @@ namespace ScrapWars3.Logic
         }
         public Color[,] ColorArray
         {
-            get { return colorArray; }            
+            get { return colorArray; }
         }
         public CollisionObject FromMech(Mech mech)
         {
-            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size/2, mech.FacingAngle);
+            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size / 2, mech.FacingAngle);
         }
     }
 }

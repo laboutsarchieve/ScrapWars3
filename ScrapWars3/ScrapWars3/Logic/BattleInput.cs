@@ -18,8 +18,13 @@ namespace ScrapWars3.Logic
         }
         public void Update(GameTime gameTime)
         {
+            DebugControls(gameTime);
+            // Get Player Input          
+        }
+        private void DebugControls(GameTime gameTime)
+        {
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
-                battle.EndBattle( );
+                battle.EndBattle();
 
             // TODO modify extended keyboard to facilitate "time between" logic
             if(ExtendedKeyboard.IsKeyDown(Keys.Up) || ExtendedKeyboard.IsKeyDown(Keys.W))
@@ -31,8 +36,12 @@ namespace ScrapWars3.Logic
             if(ExtendedKeyboard.IsKeyDown(Keys.Right) || ExtendedKeyboard.IsKeyDown(Keys.D))
                 MoveView(1, 0);
 
-            // Get Player Input          
-        }        
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
+            {
+                battle.BattlePaused = false;
+                battle.RoundStart = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+        }
         private void MoveView(int x, int y)
         {
             battle.UpperLeftOfView += new Vector2(x, y);

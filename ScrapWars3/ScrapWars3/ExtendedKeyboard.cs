@@ -43,6 +43,6 @@ namespace ScrapWars3
         public static KeyboardState PreviousKeyboardState
         {
             get { return previousKeyboardState; }
-        }       
+        }
     }
 }

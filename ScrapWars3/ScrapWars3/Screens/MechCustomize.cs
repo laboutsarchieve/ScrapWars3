@@ -23,8 +23,8 @@ namespace ScrapWars3.Screens
         }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
-                scrapWarsApp.RevertScreen( );
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
+                scrapWarsApp.RevertScreen();
 
             // TODO: Process controls
         }
