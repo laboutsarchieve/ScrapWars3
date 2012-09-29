@@ -13,9 +13,9 @@ namespace ScrapWars3.Screens
     // TODO: Make team and mech select inherate from a base selection screen class
     class MechSelect : Screen
     {
-        Team team;
-        Mech[] mechs;
-        int currentMech;
+        private Team team;
+        private Mech[] mechs;
+        private int currentMech;
 
         public MechSelect(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Team team)
             : base(scrapWarsApp, graphics, window)
@@ -89,28 +89,28 @@ namespace ScrapWars3.Screens
         public void DrawMechs()
         {
             Mech mech = mechs[currentMech];
-            DrawSingleMech(mech, GameSettings.CenterOfScreen, team.TeamColor);
+            DrawSingleMech(mech, GameSettings.CenterOfScreen);
 
             if (currentMech != 0)
             {
                 mech = mechs[currentMech - 1];
-                DrawSingleMech(mech, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), team.TeamColor);
+                DrawSingleMech(mech, new Vector2(GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y));
             }
 
             if (currentMech != mechs.Length - 1)
             {
                 mech = mechs[currentMech + 1];
-                DrawSingleMech(mech, new Vector2(3 * GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y), team.TeamColor);
+                DrawSingleMech(mech, new Vector2(3 * GameSettings.Resolution.X / 4, GameSettings.CenterOfScreen.Y));
             }
         }
-        public void DrawSingleMech(Mech mech, Vector2 center, Color mechColor)
+        public void DrawSingleMech(Mech mech, Vector2 center)
         {
             Texture2D mechTexture = GameTextureRepo.GetMechTexture(mech.MechType);
 
             spriteBatch.Draw(mechTexture,
                              center,
                              null,
-                             mechColor,
+                             mech.MechColor,
                              0.0f,
                              new Vector2(mechTexture.Width / 2, mechTexture.Height / 2),
                              GameSettings.ArtScale,

@@ -12,11 +12,11 @@ namespace ScrapWars3.View
 {
     class BattleDrawer
     {
-        Battle battle;
-        GraphicsDevice graphics;
-        SpriteBatch spriteBatch;
+        private Battle battle;
+        private GraphicsDevice graphics;
+        private SpriteBatch spriteBatch;
 
-        RenderTarget2D mapTexture;
+        private RenderTarget2D mapTexture;
 
         private Vector2 startOfBatlefield;
 
@@ -54,15 +54,18 @@ namespace ScrapWars3.View
         }
         private void DrawMechs()
         {
-            foreach(Mech mech in battle.TeamOne.Mechs)
+            foreach(Mech mech in battle.AllMechs)
             {
                 Vector2 screenLocation = startOfBatlefield + mech.Location - battle.TileSize * battle.UpperLeftOfView;
-                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType), screenLocation, null, battle.TeamOne.TeamColor, mech.FacingAngle, mech.Size / 2, Vector2.One, SpriteEffects.None, 0.5f);
-            }
-            foreach(Mech mech in battle.TeamTwo.Mechs)
-            {
-                Vector2 screenLocation = startOfBatlefield + mech.Location - battle.TileSize * battle.UpperLeftOfView;
-                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType), screenLocation, null, battle.TeamTwo.TeamColor, mech.FacingAngle, mech.Size / 2, Vector2.One, SpriteEffects.None, 0.5f);
+                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
+                                 screenLocation,
+                                 null,
+                                 mech.MechColor,
+                                 mech.FacingAngle + mech.ImageFacingOffset,
+                                 mech.Size / 2,
+                                 Vector2.One,
+                                 SpriteEffects.None,
+                                 0.5f);
             }
         }
         private void RefreshMap()

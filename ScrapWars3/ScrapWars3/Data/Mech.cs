@@ -8,15 +8,17 @@ namespace ScrapWars3.Data
 {
     class Mech
     {
-        string name;
-        MechType mechType;
-        int mechId;
+        private string name;
+        private MechType mechType;
+        private int mechId;
 
-        Vector2 facing;        
-        Vector2 location;
-        Vector2 size;
-        
-        float IMAGE_FACING_OFFSET = 3*(float)Math.PI/2;
+        private Vector2 facing;
+        private Vector2 location;
+        private Vector2 size;
+
+        private Color mechColor;
+
+        private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
         public Mech(string name, int mechId, MechType mechType)
         {
@@ -28,14 +30,29 @@ namespace ScrapWars3.Data
             facing = Vector2.UnitX;
 
             size = GameSettings.GetMechSize(mechType);
+
+            mechColor = Color.White;
         }
-        public void FacePoint( Vector2 target )
+        public Mech(string name, int mechId, MechType mechType, Color color)
         {
-            if( target == location ) // A mech can't face it's own center
+            this.name = name;
+            this.mechType = mechType;
+            this.mechId = mechId;
+
+            Location = Vector2.Zero;
+            facing = Vector2.UnitX;
+
+            size = GameSettings.GetMechSize(mechType);
+
+            mechColor = color;
+        }
+        public void FacePoint(Vector2 target)
+        {
+            if(target == location) // A mech can't face its own center
                 return;
 
             Vector2 toTarget = target - location;
-            toTarget.Normalize( );
+            toTarget.Normalize();
             facing = toTarget;
         }
         public string Name
@@ -52,11 +69,11 @@ namespace ScrapWars3.Data
         }
         public float FacingAngle
         {
-            get { return (float)Math.Atan2(facing.Y, facing.X) + IMAGE_FACING_OFFSET; }
+            get { return (float)Math.Atan2(facing.Y, facing.X); }
         }
         public Vector2 FacingVector
         {
-            get { return facing; }         
+            get { return facing; }
         }
         public Vector2 Location
         {
@@ -65,14 +82,20 @@ namespace ScrapWars3.Data
         }
         public Vector2 Size
         {
-            get { return size; }            
+            get { return size; }
         }
-        public Rectangle BoundingBox         
-        { 
-            get
-            {
-                return new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y);
-            }
+        public Rectangle BoundingBox
+        {
+            get { return new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y); }
+        }
+        public float ImageFacingOffset
+        {
+            get { return IMAGE_FACING_OFFSET; }
+        }
+        public Color MechColor
+        {
+            get { return mechColor; }
+            set { mechColor = value; }
         }
     }
 }

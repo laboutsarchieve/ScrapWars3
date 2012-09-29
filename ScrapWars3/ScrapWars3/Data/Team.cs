@@ -14,25 +14,30 @@ namespace ScrapWars3.Data
         private int logoIndex;
         private Color logoColor;
 
-        private List<Mech> mechs;        
+        private List<Mech> mechs;
 
-        public Team( string name, int logoIndex, Color logoColor)
-        {            
+        public Team(string name, int logoIndex, Color logoColor)
+        {
             Name = name;
             LogoIndex = logoIndex;
             TeamColor = logoColor;
 
             mechs = new List<Mech>();
         }
-        public void AddMech( Mech newMech )
+        public void AddMech(Mech newMech)
         {
             mechs.Add(newMech);
         }
-        public void removeMechs( int mechID )
+        internal void AddMechs(List<Mech> mechs)
         {
-            for (int index = 0; index < mechs.Count; index++)
+            foreach(Mech mech in mechs)
+                AddMech(mech);
+        }
+        public void removeMechs(int mechID)
+        {
+            for(int index = 0; index < mechs.Count; index++)
             {
-                if (mechs[index].MechId == mechID)
+                if(mechs[index].MechId == mechID)
                 {
                     mechs.RemoveAt(index);
                     break;
@@ -41,7 +46,7 @@ namespace ScrapWars3.Data
         }
         public Texture2D Logo
         {
-            get{ return GameTextureRepo.teamLogos[logoIndex]; }
+            get { return GameTextureRepo.teamLogos[logoIndex]; }
         }
         public int LogoIndex
         {
@@ -55,12 +60,12 @@ namespace ScrapWars3.Data
         }
         public string Name
         {
-            get { return name; }            
+            get { return name; }
             set { name = value; }
         }
         internal Mech[] Mechs //This is returned as an array to prevent modification of the list
         {
-            get { return mechs.ToArray( ); }
+            get { return mechs.ToArray(); }
         }
     }
 }

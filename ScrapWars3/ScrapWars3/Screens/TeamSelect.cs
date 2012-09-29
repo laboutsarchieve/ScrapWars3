@@ -12,7 +12,7 @@ namespace ScrapWars3.Screens
 {
     class TeamSelect : Screen
     {
-        int currentTeam;
+        private int currentTeam;
 
         public TeamSelect(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)

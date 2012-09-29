@@ -8,8 +8,8 @@ namespace ScrapWars3.Logic
 {
     class CollisionReport
     {
-        bool collisionOccured;
-        Vector2 collisionLocation;
+        private bool collisionOccured;
+        private Vector2 collisionLocation;
 
         public CollisionReport(CollisionObject objectOne, CollisionObject objectTwo)
         {
@@ -29,6 +29,5 @@ namespace ScrapWars3.Logic
         {
             get { return collisionLocation; }
         }
-
     }
 }

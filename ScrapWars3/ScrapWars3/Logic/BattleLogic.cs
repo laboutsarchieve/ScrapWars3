@@ -10,20 +10,25 @@ namespace ScrapWars3.Logic
 {
     class BattleLogic
     {
-        private int roundStart;
-        private int ROUND_TIME = 15000;
+        private int roundStart = 0;
+        private int ROUND_TIME = 15000; // 15 seconds
 
-        Battle battle;
+        private Battle battle;
+
         public BattleLogic(Battle battle)
         {
             this.battle = battle;
         }
-       public void PlaceTeams(Team teamOne, Team teamTwo)
+        public void PlaceTeams(Team teamOne, Team teamTwo)
         {
             Vector2 offsetFromSide = battle.TileSize * new Vector2(4, 0);
 
-            PlaceTeam(teamOne, battle.TileSize * new Vector2(0, battle.Map.Height / 2) + offsetFromSide, battle.TileSize * 4 * Vector2.UnitY, Vector2.UnitX);
-            PlaceTeam(teamTwo, battle.TileSize * new Vector2(battle.Map.Width, battle.Map.Height / 2) - offsetFromSide, battle.TileSize * 4 * Vector2.UnitY, -Vector2.UnitX);
+            Vector2 middleLeft = battle.TileSize * new Vector2(0, battle.Map.Height / 2) + offsetFromSide;
+            Vector2 middleRight = battle.TileSize * new Vector2(battle.Map.Width, battle.Map.Height / 2) - offsetFromSide;
+            Vector2 mechSpacing = battle.TileSize * 4 * Vector2.UnitY;
+
+            PlaceTeam(teamOne, middleLeft, mechSpacing, Vector2.UnitX);
+            PlaceTeam(teamTwo, middleRight, mechSpacing, -Vector2.UnitX);
         }
         private void PlaceTeam(Team team, Vector2 preferedStart, Vector2 spacing, Vector2 facing)
         {
@@ -32,11 +37,11 @@ namespace ScrapWars3.Logic
             Vector2 waterAvoidXMove;
             Vector2 waterAvoidYMove;
 
+            // Decide what direction to move the mechs if they are spawning on water
             if(battle.Map.Width / 2 - preferedStart.X / battle.TileSize > 0)
                 waterAvoidXMove = battle.TileSize * Vector2.UnitX;
             else
                 waterAvoidXMove = battle.TileSize * -Vector2.UnitX;
-
             if(battle.Map.Height / 2 - preferedStart.Y / battle.TileSize > 0)
                 waterAvoidYMove = battle.TileSize * Vector2.UnitY;
             else
@@ -44,7 +49,7 @@ namespace ScrapWars3.Logic
 
             Vector2 waterAvoidance = Vector2.Zero;
             bool mechInWater;
-            do
+            do // Until all mech spawn outside of water
             {
                 mechInWater = false;
                 for(int mechNum = 0; mechNum < team.Mechs.Length; mechNum++)
@@ -52,8 +57,10 @@ namespace ScrapWars3.Logic
                     team.Mechs[mechNum].Location = waterAvoidance + preferedStart + spacing * mechNum;
                     team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing); // Face Right
 
+                    // Test the mech's spawn area for water
                     if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water, battle.TileSize))
                     {
+                        // If water is found, move the spawn area and try again
                         waterAvoidance += waterAvoidYMove;
                         if((waterAvoidance + preferedStart + spacing * team.Mechs.Length).Y < 0 ||
                            (waterAvoidance + preferedStart + spacing * team.Mechs.Length).Y > battle.Map.Height)
@@ -70,7 +77,7 @@ namespace ScrapWars3.Logic
         }
         public void Update(GameTime gameTime)
         {
-            if( !battle.BattlePaused )
+            if(!battle.BattlePaused)
                 StepBattle(gameTime);
         }
         private void StepBattle(GameTime gameTime)

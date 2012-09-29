@@ -10,7 +10,8 @@ namespace ScrapWars3.Logic
 {
     class BattleInput
     {
-        Battle battle;
+        private Battle battle;
+
         public BattleInput(Battle battle)
         {
             this.battle = battle;
@@ -18,7 +19,7 @@ namespace ScrapWars3.Logic
         public void Update(GameTime gameTime)
         {
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
-                battle.ExitBattle( );
+                battle.EndBattle( );
 
             // TODO modify extended keyboard to facilitate "time between" logic
             if(ExtendedKeyboard.IsKeyDown(Keys.Up) || ExtendedKeyboard.IsKeyDown(Keys.W))

@@ -9,7 +9,8 @@ namespace ScrapWars3.Resources
 {
     static class GameTextureRepo
     {
-        private static int numLogos = 10;
+        private static int numLogos = 3;
+
         public static Texture2D[] teamLogos = new Texture2D[numLogos];
 
         public static Texture2D errorTexture;

@@ -19,24 +19,19 @@ namespace ScrapWars3.Screens
             Exit
         };
 
-        string[] menuOptions = {"Start a Battle",
-                                "Customize Squad",
-                                "Options",
-                                "Exit" };
+        private string[] menuOptions = {"Start a Battle",
+                                        "Customize Squad",
+                                        "Options",
+                                        "Exit" };
 
-        Options currSelection;
-        Color[] menuColors = new Color[4];
+        private Options currSelection;
+        private Color[] menuColors = new Color[4];
+        private Color mainMenuColor = Color.Black;
+        private Color selectionColor = Color.Yellow;
 
-        Color mainMenuColor = Color.Black;
-        Color selectionColor = Color.Yellow;
-
-        float lineHeight;
-
-        Rectangle menuBounds;
-
-
-        float imageDisplacement;
-
+        private float lineHeight;
+        private Rectangle menuBounds;
+        private float imageDisplacement;
 
         public MainMenu(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)
@@ -51,18 +46,18 @@ namespace ScrapWars3.Screens
 
         private void UpdateMenuVaribles()
         {
-            lineHeight = FontRepo.mainMenuFont.LineSpacing;
+            lineHeight = FontRepo.generalFont.LineSpacing;
 
             int longestStringLength = 0;
 
             foreach(string option in menuOptions)
             {
-                if(FontRepo.mainMenuFont.MeasureString(option).X > longestStringLength)
-                    longestStringLength = (int)FontRepo.mainMenuFont.MeasureString(option).X;
+                if(FontRepo.generalFont.MeasureString(option).X > longestStringLength)
+                    longestStringLength = (int)FontRepo.generalFont.MeasureString(option).X;
             }
 
             int menuTop = (int)(GameSettings.CenterOfScreen.Y - (menuOptions.Length * 0.5f * lineHeight));
-            int menuLeft = (int)(GameSettings.CenterOfScreen.X - longestStringLength/2);
+            int menuLeft = (int)(GameSettings.CenterOfScreen.X - longestStringLength / 2);
 
             menuBounds = new Rectangle(menuLeft, menuTop, longestStringLength, (int)lineHeight * menuOptions.Length);
         }
@@ -138,9 +133,9 @@ namespace ScrapWars3.Screens
             for(int index = 0; index < menuOptions.Length; index++)
             {
                 string option = menuOptions[index];
-                spriteBatch.DrawString(FontRepo.mainMenuFont,
+                spriteBatch.DrawString(FontRepo.generalFont,
                                        option,
-                                       new Vector2(menuBounds.Center.X - FontRepo.mainMenuFont.MeasureString(option).X / 2,
+                                       new Vector2(menuBounds.Center.X - FontRepo.generalFont.MeasureString(option).X / 2,
                                                    menuBounds.Top + lineHeight * index),
                                        menuColors[index]);
             }

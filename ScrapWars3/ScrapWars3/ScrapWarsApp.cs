@@ -17,16 +17,15 @@ namespace ScrapWars3
 {
     class ScrapWarsApp : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        Screen currentScreen;
-        Screen previousScreen;
+        private GraphicsDeviceManager graphics;
+        private Screen currentScreen;
+        private Screen previousScreen;
 
         public ScrapWarsApp()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
-
         protected override void Initialize()
         {
             GameSettings.Resolution = new Vector2(1000, 750);
@@ -40,7 +39,6 @@ namespace ScrapWars3
             
             base.Initialize();
         }
-
         protected override void LoadContent()
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
@@ -66,8 +64,8 @@ namespace ScrapWars3
             Color[] whitePixel = {Color.White};
             GameTextureRepo.pixel.SetData<Color>(whitePixel);
 
-            FontRepo.mainMenuFont = Content.Load<SpriteFont>(@"font\main_menu_font");
-            FontRepo.SelectScreenFont = FontRepo.mainMenuFont;
+            FontRepo.generalFont = Content.Load<SpriteFont>(@"font\main_menu_font");
+            FontRepo.SelectScreenFont = FontRepo.generalFont; // These are the same for the moment
 
             LoadDebugContent();
             LoadProtoGameData( );
@@ -85,39 +83,59 @@ namespace ScrapWars3
         private void LoadProtoGameData( )
         {
             // This is faked at the moment
-            Team Frag = new Team("Frags", 0, Color.Blue);
-            Frag.AddMech(new Mech("DebugMechA",0, MechType.DebugMechA));
-            Frag.AddMech(new Mech("DebugMechA", 1, MechType.DebugMechA));
-            Frag.AddMech(new Mech("DebugMechB", 2, MechType.DebugMechB));
+            Team frag = new Team("Frags", 0, Color.Blue);
+            List<Mech> mechs = new List<Mech>( );
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
 
-            Team Scrapyard = new Team("Scrapyard", 1, Color.Red);
-            Scrapyard.AddMech(new Mech("DebugMechA", 3, MechType.DebugMechA));
-            Scrapyard.AddMech(new Mech("DebugMechC", 4, MechType.DebugMechC));
-            Scrapyard.AddMech(new Mech("DebugMechC", 5, MechType.DebugMechC));
-            Scrapyard.AddMech(new Mech("DebugMechB", 6, MechType.DebugMechB));
+            foreach(Mech mech in mechs)
+                mech.MechColor = frag.TeamColor;
+            frag.AddMechs(mechs);
 
-            Team Boomer = new Team("Boomers", 2, Color.Yellow);
-            Boomer.AddMech(new Mech("DebugMechC", 7, MechType.DebugMechC));
-            Boomer.AddMech(new Mech("DebugMechC", 8, MechType.DebugMechC));
-            Boomer.AddMech(new Mech("DebugMechC", 9, MechType.DebugMechC));
-            Boomer.AddMech(new Mech("DebugMechB", 10, MechType.DebugMechB));
-            Boomer.AddMech(new Mech("DebugMechB", 11, MechType.DebugMechB));
+            mechs.Clear( );
 
-            TeamDatabase.teams.Add(Frag);
-            TeamDatabase.teams.Add(Scrapyard);
-            TeamDatabase.teams.Add(Boomer);
+            Team scrapyard = new Team("Scrapyard", 1, Color.Red);
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+
+            foreach(Mech mech in mechs)
+                mech.MechColor = scrapyard.TeamColor;
+            scrapyard.AddMechs(mechs);
+
+            mechs.Clear( );
+
+            Team boomer = new Team("Boomers", 2, Color.Yellow);
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+
+            foreach(Mech mech in mechs)             
+                mech.MechColor = boomer.TeamColor;
+            boomer.AddMechs(mechs);
+            
+
+            TeamDatabase.teams.Add(frag);
+            TeamDatabase.teams.Add(scrapyard);
+            TeamDatabase.teams.Add(boomer);
         }
-
         protected override void UnloadContent()
         {
         }
-
         public void ChangeScreen(Screen newScreen)
         {
             previousScreen = currentScreen;
             currentScreen = newScreen;
         }
-
+        internal void RevertScreen()
+        {
+            ChangeScreen(previousScreen);
+        }
         protected override void Update(GameTime gameTime)
         {
             ExtendedKeyboard.Update();
@@ -126,7 +144,6 @@ namespace ScrapWars3
 
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             currentScreen.Draw(gameTime);

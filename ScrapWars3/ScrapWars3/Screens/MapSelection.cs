@@ -22,23 +22,23 @@ namespace ScrapWars3.Screens
             Return
         };
 
-        Point mapSize;
+        private Point mapSize;
 
-        string[] menuOptions = {"Map Size:",
-                                "Option 1:",
-                                "Option 2:",
-                                "Start",
-                                "Return to Main Menu"};
+        private string[] menuOptions = {"Map Size:",
+                                        "Option 1:",
+                                        "Option 2:",
+                                        "Start",
+                                        "Return to Main Menu"};
 
-        Options currSelection;
-        Color[] menuColors = new Color[5];
+        private Options currSelection;
+        private Color[] menuColors = new Color[5];
 
-        Color mainMenuColor = Color.White;
-        Color selectionColor = Color.Yellow;
+        private Color mainMenuColor = Color.White;
+        private Color selectionColor = Color.Yellow;
 
-        float lineHeight;
-        float menuMiddle;
-        float menuTop;
+        private float lineHeight;
+        private float menuMiddle;
+        private float menuTop;
 
         public MapSelection(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window)
             : base(scrapWarsApp, graphics, window)
@@ -53,7 +53,7 @@ namespace ScrapWars3.Screens
         }
         private void UpdateMenuVaribles()
         {
-            lineHeight = FontRepo.mainMenuFont.LineSpacing;
+            lineHeight = FontRepo.generalFont.LineSpacing;
 
             menuTop = GameSettings.CenterOfScreen.Y - (menuOptions.Length * 0.5f * lineHeight);
             menuMiddle = GameSettings.CenterOfScreen.X;
@@ -69,7 +69,7 @@ namespace ScrapWars3.Screens
                 if(currSelection == Options.Battle)
                     StartBattle();
                 else if( currSelection == Options.Return)
-                    scrapWarsApp.ChangeScreen(new MainMenu(scrapWarsApp, graphics, window));
+                    scrapWarsApp.RevertScreen( );
             }
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Up) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.W))
@@ -123,10 +123,10 @@ namespace ScrapWars3.Screens
             for(int index = 0; index < menuOptions.Length; index++)
             {
                 string option = menuOptions[index];
-                Vector2 location = new Vector2(menuMiddle - FontRepo.mainMenuFont.MeasureString(option).X / 2, menuTop + lineHeight * index);
+                Vector2 location = new Vector2(menuMiddle - FontRepo.generalFont.MeasureString(option).X / 2, menuTop + lineHeight * index);
 
-                spriteBatch.DrawString(FontRepo.mainMenuFont, option, location, menuColors[index]);
-                DrawOptionValue((Options)index, location + FontRepo.mainMenuFont.MeasureString(option).X * Vector2.UnitX);
+                spriteBatch.DrawString(FontRepo.generalFont, option, location, menuColors[index]);
+                DrawOptionValue((Options)index, location + FontRepo.generalFont.MeasureString(option).X * Vector2.UnitX);
             }
         }
         private void DrawOptionValue(Options option, Vector2 location)
@@ -135,7 +135,7 @@ namespace ScrapWars3.Screens
             {
                 case Options.MapSize:
                     string mapSizeString = " " + mapSize.X + " X " + mapSize.Y;
-                    spriteBatch.DrawString(FontRepo.mainMenuFont, mapSizeString, location, menuColors[(int)option]);
+                    spriteBatch.DrawString(FontRepo.generalFont, mapSizeString, location, menuColors[(int)option]);
                     break;
                 case Options.OptionOne:
                     break;

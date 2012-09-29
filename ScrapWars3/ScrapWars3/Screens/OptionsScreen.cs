@@ -21,12 +21,20 @@ namespace ScrapWars3.Screens
                 scrapWarsApp.ChangeScreen(new MainMenu(scrapWarsApp, graphics, window));
             // Process input
         }
-
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(ScreenTextureRepo.optionScreen, Vector2.Zero, null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);
+            DrawBackground( );
+            DrawOptions( );
             spriteBatch.End();
+        }        
+        private void DrawBackground( )
+        {            
+            spriteBatch.Draw(ScreenTextureRepo.optionScreen, Vector2.Zero, null, Color.White, 0.0f, Vector2.Zero, GameSettings.ArtScale, SpriteEffects.None, 0.0f);            
+        }
+        private void DrawOptions()
+        {
+            // TODO
         }
     }
 }

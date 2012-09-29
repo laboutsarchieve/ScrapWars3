@@ -4,19 +4,21 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using ScrapWars3.Data;
+using ScrapWars3.Resources;
 
 namespace ScrapWars3.Logic
 {
     class CollisionObject
     {
-        Texture2D texture;
-        Vector2 upperLeft;
-        float facing;
-        Color[,] colorArray;
-        Matrix textureTransformation;
-        Matrix textureTransformationInverse;
+        private Texture2D texture;
+        private Vector2 upperLeft;
+        private float facing;
+        private Color[,] colorArray;
+        private Matrix textureTransformation;
+        private Matrix textureTransformationInverse;
 
-        CollisionObject(Texture2D texture, Vector2 upperLeft, float facing)
+        public CollisionObject(Texture2D texture, Vector2 upperLeft, float facing)
         {
             this.texture = texture;
             this.upperLeft = upperLeft;
@@ -47,6 +49,10 @@ namespace ScrapWars3.Logic
         public Color[,] ColorArray
         {
             get { return colorArray; }            
+        }
+        public CollisionObject FromMech(Mech mech)
+        {
+            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size/2, mech.FacingAngle);
         }
     }
 }

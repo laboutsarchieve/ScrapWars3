@@ -12,8 +12,8 @@ namespace ScrapWars3.Screens
 {
     class MechCustomize : Screen
     {
-        Team team;
-        Mech mech;
+        private Team team;
+        private Mech mech;
 
         public MechCustomize(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Team team, Mech mech)
             : base(scrapWarsApp, graphics, window)
@@ -24,7 +24,7 @@ namespace ScrapWars3.Screens
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
-                scrapWarsApp.ChangeScreen(new MechSelect(scrapWarsApp, graphics, window, team));
+                scrapWarsApp.RevertScreen( );
 
             // TODO: Process controls
         }
@@ -44,7 +44,7 @@ namespace ScrapWars3.Screens
             spriteBatch.Draw(mechTexture,
                              spriteCenter,
                              null,
-                             team.TeamColor,
+                             mech.MechColor,
                              0.0f,
                              Vector2.Zero,
                              GameSettings.ArtScale,

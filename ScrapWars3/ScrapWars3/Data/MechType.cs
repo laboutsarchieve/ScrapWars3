@@ -9,6 +9,7 @@ namespace ScrapWars3.Data
     {
         DebugMechA,
         DebugMechB,
-        DebugMechC
+        DebugMechC,
+        Error
     }
 }

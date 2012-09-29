@@ -10,7 +10,7 @@ namespace ScrapWars3.Logic
 {
     class MapGenerator
     {
-        PerlinNoiseSettings2D noiseSettings;
+        private PerlinNoiseSettings2D noiseSettings;
         // TODO add generator settings
 
         public MapGenerator()

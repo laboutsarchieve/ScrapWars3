@@ -18,6 +18,7 @@ namespace ScrapWars3.Screens
         private Vector2 upperLeftOfView;
         private Team teamOne;
         private Team teamTwo;
+        private List<Mech> allMechs;       
 
         private BattleDrawer battleDrawer;
         private BattleInput battleInput;
@@ -34,6 +35,16 @@ namespace ScrapWars3.Screens
             this.teamOne = teamOne;
             this.teamTwo = teamTwo;
 
+            allMechs = new List<Mech>( );
+            foreach(Mech mech in teamOne.Mechs)
+            {
+                allMechs.Add(mech);
+            }
+            foreach(Mech mech in teamTwo.Mechs)
+            {
+                allMechs.Add(mech);
+            }
+
             mapChanged = true;
             upperLeftOfView = Vector2.Zero;
             tileSize = GameTextureRepo.tileDirt.Width;
@@ -44,9 +55,9 @@ namespace ScrapWars3.Screens
 
             battleLogic.PlaceTeams(teamOne, teamTwo);
         }        
-        internal void ExitBattle()
+        internal void EndBattle()
         {
-            scrapWarsApp.ChangeScreen(new MapSelection(scrapWarsApp, graphics, window));
+            scrapWarsApp.RevertScreen( ); // TODO: Make this show a battle report screen
         }
         public override void Update(GameTime gameTime)
         {
@@ -77,6 +88,10 @@ namespace ScrapWars3.Screens
         internal Team TeamTwo
         {
             get { return teamTwo; }
+        }
+        internal List<Mech> AllMechs
+        {
+            get { return allMechs; }            
         }
         public bool BattlePaused
         {

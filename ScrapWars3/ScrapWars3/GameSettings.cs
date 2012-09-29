@@ -27,10 +27,7 @@ namespace ScrapWars3
         }
         public static Vector2 CenterOfScreen
         {
-            get
-            {
-                return new Vector2(resolution.X / 2, resolution.Y / 2);
-            }
+            get { return new Vector2(resolution.X / 2, resolution.Y / 2); }
         }
         public static Rectangle ScreenRectangle
         {
@@ -41,12 +38,6 @@ namespace ScrapWars3
             get { return GameSettings.resolution; }
             set { GameSettings.resolution = value; artScale = value / maxResolution; }
         }
-        public static Vector2 ArtScale
-        {
-            get
-            {
-                return artScale;
-            }
-        }
+        public static Vector2 ArtScale { get { return artScale; } }
     }
 }

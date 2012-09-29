@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScrapWars3.Logic
 {
-    class MechAI
+    class MechBrain
     {
     }
 }
