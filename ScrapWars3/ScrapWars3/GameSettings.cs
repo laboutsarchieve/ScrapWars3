@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using ScrapWars3.Data;
+using ScrapWars3.Resources;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ScrapWars3
 {
@@ -17,6 +20,11 @@ namespace ScrapWars3
         private static Vector2 artScale;
         private static Vector2 resolution;
 
+        public static Vector2 GetMechSize( MechType mechType )
+        {
+            Texture2D mechImage = GameTextureRepo.GetMechTexture(mechType);
+            return new Vector2(mechImage.Width, mechImage.Height) * ArtScale;
+        }
         public static Vector2 CenterOfScreen
         {
             get

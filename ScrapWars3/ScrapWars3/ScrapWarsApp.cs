@@ -36,9 +36,7 @@ namespace ScrapWars3
             graphics.PreferredBackBufferHeight = (int)currentResolution.Y;            
             graphics.ApplyChanges();
 
-            ScrapWarsEventManager.SetManager(new BasicEventManager());
-
-            LoadProtoGameData( );
+            ScrapWarsEventManager.SetManager(new BasicEventManager());            
             
             base.Initialize();
         }
@@ -72,6 +70,7 @@ namespace ScrapWars3
             FontRepo.SelectScreenFont = FontRepo.mainMenuFont;
 
             LoadDebugContent();
+            LoadProtoGameData( );
 
             currentScreen = new MainMenu(this, GraphicsDevice, Window);
             previousScreen = currentScreen;

@@ -118,6 +118,9 @@
     <Compile Include="Data\Mech.cs" />
     <Compile Include="Data\Tile.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Logic\CollisionDetector.cs" />
+    <Compile Include="Logic\CollisionObject.cs" />
+    <Compile Include="Logic\CollisionReport.cs" />
     <Compile Include="Logic\MapGenerator.cs" />
     <Compile Include="Logic\MechAI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

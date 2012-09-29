@@ -14,13 +14,17 @@ namespace ScrapWars3.Screens
     {
         private Map map;
         private Vector2 startOfBatlefield;
-        private Vector2 endOfBatlefield;
         private Vector2 upperLeftOfView;
         private Team teamOne;
         private Team teamTwo;
 
         private bool DrawDebug;
         private int TILE_SIZE;
+
+        private bool battlePaused;
+        private int roundStart;
+        private int ROUND_TIME = 15000;
+
 
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
@@ -38,20 +42,63 @@ namespace ScrapWars3.Screens
         }
         private void PlaceTeams(Team teamOne, Team teamTwo)
         {
-            Vector2 OffsetFromSize = new Vector2(4, map.Height / 2);
-            for(int mechNum = 0; mechNum < teamOne.Mechs.Length; mechNum++)
-            {
-                teamOne.Mechs[mechNum].Location = TILE_SIZE * (OffsetFromSize + new Vector2(0, 5 * mechNum));
-            }
-            for(int mechNum = 0; mechNum < teamTwo.Mechs.Length; mechNum++)
-            {
-                teamTwo.Mechs[mechNum].Location = TILE_SIZE * (new Vector2(map.Width, map.Height + 5 * mechNum) - OffsetFromSize);
-            }
+            Vector2 offsetFromSide = TILE_SIZE * new Vector2(4, 0);
+
+            PlaceTeam(teamOne, TILE_SIZE * new Vector2(0, map.Height / 2) + offsetFromSide, TILE_SIZE * 4 * Vector2.UnitY, Vector2.UnitX);
+            PlaceTeam(teamTwo, TILE_SIZE * new Vector2(map.Width, map.Height / 2) - offsetFromSide, TILE_SIZE * 4 * Vector2.UnitY, -Vector2.UnitX);
         }
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        private void PlaceTeam(Team team, Vector2 preferedStart, Vector2 spacing, Vector2 facing )
+        {
+            // TODO: Clean this method up
+
+            Vector2 waterAvoidXMove;
+            Vector2 waterAvoidYMove;
+
+            if( map.Width/2 - preferedStart.X/TILE_SIZE > 0 )
+                waterAvoidXMove = TILE_SIZE *Vector2.UnitX;
+            else
+                waterAvoidXMove = TILE_SIZE *-Vector2.UnitX;
+
+            if( map.Height/2 - preferedStart.Y/TILE_SIZE > 0 )
+                waterAvoidYMove = TILE_SIZE *Vector2.UnitY;
+            else
+                waterAvoidYMove = TILE_SIZE *-Vector2.UnitY;
+
+            facing.Normalize();
+            Vector2 waterAvoidance = Vector2.Zero;
+            bool mechInWater;
+            do
+            {
+                mechInWater = false;
+                for(int mechNum = 0; mechNum < team.Mechs.Length; mechNum++)
+                {
+                    team.Mechs[mechNum].Location = waterAvoidance + preferedStart + spacing * mechNum;
+                    team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing); // Face Right
+
+                    Rectangle mechBox = team.Mechs[mechNum].BoundingBox;
+                    Rectangle scaledBox = new Rectangle(mechBox.X / TILE_SIZE, mechBox.Y / TILE_SIZE, mechBox.Width / TILE_SIZE, mechBox.Height / TILE_SIZE);
+                    if(map.ContainsWater(scaledBox))
+                    {
+                        waterAvoidance += waterAvoidYMove;
+                        if((waterAvoidance + preferedStart + spacing * team.Mechs.Length).Y < 0 ||
+                           (waterAvoidance + preferedStart + spacing * team.Mechs.Length).Y > map.Height )
+                        {
+                            waterAvoidance.Y = 0;
+                            waterAvoidance += waterAvoidXMove;
+                        }
+                        mechInWater = true;
+                        break;
+                    }
+                }
+            }
+            while(mechInWater);
+        }
+        public override void Update(GameTime gameTime)
         {
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
                 scrapWarsApp.ChangeScreen(new MapSelection(scrapWarsApp, graphics, window));
+
+            PlaceTeams(teamOne, teamTwo);
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.OemTilde))
                 DrawDebug = !DrawDebug;
@@ -67,9 +114,19 @@ namespace ScrapWars3.Screens
                 MoveView(1, 0);
 
             // Get Player Input
-            // Battle Logic
-        }
+            PlaceTeams(teamOne, teamTwo);
 
+            if(!battlePaused)
+                StepBattle(gameTime);
+
+        }
+        public void StepBattle(GameTime gameTime)
+        {
+            // Battle Logic
+
+            if(gameTime.ElapsedGameTime.Milliseconds - roundStart > ROUND_TIME)
+                battlePaused = true;
+        }
         private void MoveView(int x, int y)
         {
             upperLeftOfView += new Vector2(x, y);
@@ -112,16 +169,12 @@ namespace ScrapWars3.Screens
             foreach(Mech mech in teamOne.Mechs)
             {
                 Vector2 screenLocation = startOfBatlefield + mech.Location - TILE_SIZE * upperLeftOfView;
-                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
-                                 screenLocation,
-                                 teamOne.TeamColor);
+                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType), screenLocation, null, teamOne.TeamColor, mech.FacingAngle, mech.Size / 2, Vector2.One, SpriteEffects.None, 0.5f);
             }
             foreach(Mech mech in teamTwo.Mechs)
             {
                 Vector2 screenLocation = startOfBatlefield + mech.Location - TILE_SIZE * upperLeftOfView;
-                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
-                                 screenLocation,
-                                 teamTwo.TeamColor);
+                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType), screenLocation, null, teamTwo.TeamColor, mech.FacingAngle, mech.Size / 2, Vector2.One, SpriteEffects.None, 0.5f);
             }
         }
         private void DrawTiles()
@@ -132,12 +185,12 @@ namespace ScrapWars3.Screens
 
             for(int x = 0; x < numTiles.X; x++)
             {
-                if(startTile.X + x > map.Width - 1)
+                if(!map.IsOnMap(x, 0))
                     break;
 
                 for(int y = 0; y < numTiles.Y; y++)
                 {
-                    if(startTile.Y + y > map.Height - 1)
+                    if(!map.IsOnMap(x, y))
                         break;
 
                     Tile tile = map[startTile.X + x, startTile.Y + y];
