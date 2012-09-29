@@ -3,11 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using ScrapWars3.Data;
 
 namespace ScrapWars3.Logic
 {
     class CollisionDetector
     {
+        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType, int tileSize)
+        {
+            Rectangle mechBox = mech.BoundingBox;
+            Rectangle scaledBox = new Rectangle(mechBox.X / tileSize, mechBox.Y / tileSize, mechBox.Width / tileSize, mechBox.Height / tileSize);
+            if(map.ContainsTileType(scaledBox, tileType))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public static CollisionReport DetectCollision(CollisionObject objectOne, CollisionObject objectTwo)
         {
             CollisionObject mainObject;

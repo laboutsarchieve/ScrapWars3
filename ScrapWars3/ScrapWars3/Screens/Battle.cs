@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using ScrapWars3.Resources;
 using Microsoft.Xna.Framework.Input;
 using ScrapWars3.Data;
+using ScrapWars3.Logic;
 
 namespace ScrapWars3.Screens
 {
@@ -49,7 +50,7 @@ namespace ScrapWars3.Screens
         }
         private void PlaceTeam(Team team, Vector2 preferedStart, Vector2 spacing, Vector2 facing )
         {
-            // TODO: Clean this method up
+            facing.Normalize();
 
             Vector2 waterAvoidXMove;
             Vector2 waterAvoidYMove;
@@ -63,8 +64,7 @@ namespace ScrapWars3.Screens
                 waterAvoidYMove = TILE_SIZE *Vector2.UnitY;
             else
                 waterAvoidYMove = TILE_SIZE *-Vector2.UnitY;
-
-            facing.Normalize();
+            
             Vector2 waterAvoidance = Vector2.Zero;
             bool mechInWater;
             do
@@ -75,9 +75,7 @@ namespace ScrapWars3.Screens
                     team.Mechs[mechNum].Location = waterAvoidance + preferedStart + spacing * mechNum;
                     team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing); // Face Right
 
-                    Rectangle mechBox = team.Mechs[mechNum].BoundingBox;
-                    Rectangle scaledBox = new Rectangle(mechBox.X / TILE_SIZE, mechBox.Y / TILE_SIZE, mechBox.Width / TILE_SIZE, mechBox.Height / TILE_SIZE);
-                    if(map.ContainsWater(scaledBox))
+                    if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], map, Tile.Water, TILE_SIZE))
                     {
                         waterAvoidance += waterAvoidYMove;
                         if((waterAvoidance + preferedStart + spacing * team.Mechs.Length).Y < 0 ||

@@ -25,7 +25,7 @@ namespace ScrapWars3.Data
                 }
             }
         }
-        public bool ContainsWater( Rectangle area )
+        public bool ContainsTileType( Rectangle area, Tile tileType )
         {
             for(int x = area.X; x < area.X+area.Width; x++)
             {
@@ -37,7 +37,7 @@ namespace ScrapWars3.Data
                     if(!IsOnMap(x,y))
                         break;
                     Tile tile = tiles[x,y];
-                    if(tiles[x,y] == Tile.Water)
+                    if(tiles[x,y] == tileType)
                         return true;
                 }
             }
