@@ -12,7 +12,10 @@ namespace ScrapWars3.Logic
         public static bool IsMechOnTile(Mech mech, Map map, Tile tileType, int tileSize)
         {
             Rectangle mechBox = mech.BoundingBox;
-            Rectangle scaledBox = new Rectangle(mechBox.X / tileSize, mechBox.Y / tileSize, mechBox.Width / tileSize, mechBox.Height / tileSize);
+            Rectangle scaledBox = new Rectangle(mechBox.X / tileSize,
+                                                mechBox.Y / tileSize,
+                                                mechBox.Width / tileSize,
+                                                mechBox.Height / tileSize);
             if(map.ContainsTileType(scaledBox, tileType))
             {
                 return true;

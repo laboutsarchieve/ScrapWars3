@@ -16,11 +16,11 @@ namespace ScrapWars3
             Resolution = maxResolution;
         }
 
-        private static Vector2 maxResolution = new Vector2(1600,1200);
+        private static Vector2 maxResolution = new Vector2(1600, 1200);
         private static Vector2 artScale;
         private static Vector2 resolution;
 
-        public static Vector2 GetMechSize( MechType mechType )
+        public static Vector2 GetMechSize(MechType mechType)
         {
             Texture2D mechImage = GameTextureRepo.GetMechTexture(mechType);
             return new Vector2(mechImage.Width, mechImage.Height) * ArtScale;
@@ -29,8 +29,12 @@ namespace ScrapWars3
         {
             get
             {
-                return new Vector2(resolution.X/2, resolution.Y/2);
+                return new Vector2(resolution.X / 2, resolution.Y / 2);
             }
+        }
+        public static Rectangle ScreenRectangle
+        {
+            get { return new Rectangle(0, 0, (int)resolution.X, (int)resolution.Y); }
         }
         public static Vector2 Resolution
         {

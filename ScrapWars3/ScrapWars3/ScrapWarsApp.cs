@@ -29,7 +29,7 @@ namespace ScrapWars3
 
         protected override void Initialize()
         {
-            GameSettings.Resolution = new Vector2(800, 600);
+            GameSettings.Resolution = new Vector2(1000, 750);
             Vector2 currentResolution = GameSettings.Resolution;
 
             graphics.PreferredBackBufferWidth = (int)currentResolution.X;
@@ -45,7 +45,7 @@ namespace ScrapWars3
         {
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
             ScreenTextureRepo.mapGen = Content.Load<Texture2D>(@"art\progart_map_gen_screen");
-            ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
+            ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");            
             ScreenTextureRepo.teamSelect = Content.Load<Texture2D>(@"art\progart_team_select");
             ScreenTextureRepo.mechSelect = Content.Load<Texture2D>(@"art\progart_unit_select");
             ScreenTextureRepo.customizeMech = Content.Load<Texture2D>(@"art\progart_unit_customize");

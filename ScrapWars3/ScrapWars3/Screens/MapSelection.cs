@@ -22,6 +22,8 @@ namespace ScrapWars3.Screens
             Return
         };
 
+        Point mapSize;
+
         string[] menuOptions = {"Map Size:",
                                 "Option 1:",
                                 "Option 2:",
@@ -42,6 +44,7 @@ namespace ScrapWars3.Screens
             : base(scrapWarsApp, graphics, window)
         {
             SetSelection(0);
+            mapSize = new Point(150,150);
         }
         public override void Refresh(GraphicsDevice graphics, GameWindow window)
         {
@@ -78,7 +81,7 @@ namespace ScrapWars3.Screens
         private void StartBattle()
         {
             MapGenerator mapGen = new MapGenerator();
-            Map map = mapGen.GenerateMap(new Vector2(100, 100));
+            Map map = mapGen.GenerateMap(new Vector2(mapSize.X, mapSize.Y));
             scrapWarsApp.ChangeScreen(new Battle(scrapWarsApp,
                                       graphics,
                                       window,
@@ -120,7 +123,27 @@ namespace ScrapWars3.Screens
             for(int index = 0; index < menuOptions.Length; index++)
             {
                 string option = menuOptions[index];
-                spriteBatch.DrawString(FontRepo.mainMenuFont, option, new Vector2(menuMiddle - FontRepo.mainMenuFont.MeasureString(option).X / 2, menuTop + lineHeight * index), menuColors[index]);
+                Vector2 location = new Vector2(menuMiddle - FontRepo.mainMenuFont.MeasureString(option).X / 2, menuTop + lineHeight * index);
+
+                spriteBatch.DrawString(FontRepo.mainMenuFont, option, location, menuColors[index]);
+                DrawOptionValue((Options)index, location + FontRepo.mainMenuFont.MeasureString(option).X * Vector2.UnitX);
+            }
+        }
+        private void DrawOptionValue(Options option, Vector2 location)
+        {
+            switch(option)
+            {
+                case Options.MapSize:
+                    string mapSizeString = " " + mapSize.X + " X " + mapSize.Y;
+                    spriteBatch.DrawString(FontRepo.mainMenuFont, mapSizeString, location, menuColors[(int)option]);
+                    break;
+                case Options.OptionOne:
+                    break;
+                case Options.OptionTwo:
+                    break;
+                default:
+                    //Do nothing
+                    break;
             }
         }
     }

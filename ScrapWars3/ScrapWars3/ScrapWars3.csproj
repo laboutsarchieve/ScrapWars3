@@ -118,6 +118,8 @@
     <Compile Include="Data\Mech.cs" />
     <Compile Include="Data\Tile.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Logic\BattleInput.cs" />
+    <Compile Include="Logic\BattleLogic.cs" />
     <Compile Include="Logic\CollisionDetector.cs" />
     <Compile Include="Logic\CollisionObject.cs" />
     <Compile Include="Logic\CollisionReport.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Screens\MainMenu.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\TeamSelect.cs" />
+    <Compile Include="View\BattleDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
