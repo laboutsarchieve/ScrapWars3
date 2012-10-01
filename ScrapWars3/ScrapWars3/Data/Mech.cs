@@ -9,6 +9,7 @@ using ScrapWars3.Logic.Behaviors;
 
 namespace ScrapWars3.Data
 {
+    // TODO: Add stats, guns and missles
     class Mech
     {
         private MechType mechType;
@@ -20,26 +21,20 @@ namespace ScrapWars3.Data
         private Vector2 facing;
         private Vector2 location;
         private Vector2 size;
+        private Gun mainGun;        
 
         private Color mechColor;
         private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
         public Mech(string name, int mechId, MechType mechType)
         {
-            this.name = name;
-            this.mechType = mechType;
-            this.mechId = mechId;
-
-            Location = Vector2.Zero;
-            facing = Vector2.UnitX;
-
-            size = GameSettings.GetMechSize(mechType);
-
-            mechColor = Color.White;
-
-            this.brain = new MechAiStateMachine(this, new DebugBehavior());
+            Init(name, mechId, mechType, Color.White);
         }
         public Mech(string name, int mechId, MechType mechType, Color color)
+        {
+            Init(name, mechId, mechType, color);
+        }
+        private void Init(string name, int mechId, MechType mechType, Color color)
         {
             this.name = name;
             this.mechType = mechType;
@@ -49,6 +44,8 @@ namespace ScrapWars3.Data
             facing = Vector2.UnitX;
 
             size = GameSettings.GetMechSize(mechType);
+
+            this.brain = new MechAiStateMachine(this, new DebugBehavior());
 
             mechColor = color;
         }
@@ -140,6 +137,11 @@ namespace ScrapWars3.Data
         {
             get { return mechColor; }
             set { mechColor = value; }
+        }
+        internal Gun MainGun
+        {
+            get { return mainGun; }
+            set { mainGun = value; }
         }
     }
 }

@@ -110,6 +110,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Bullet.cs" />
+    <Compile Include="Data\BulletType.cs" />
+    <Compile Include="Data\Gun.cs" />
     <Compile Include="Logic\Behaviors\DebugBehavior.cs" />
     <Compile Include="Data\Map.cs" />
     <Compile Include="Data\MechFactory.cs" />

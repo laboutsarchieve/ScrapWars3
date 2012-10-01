@@ -29,8 +29,6 @@ namespace ScrapWars3.Logic
         }
         private void PlaceTeam(Team team, Vector2 preferedStart, Vector2 spacing, Vector2 facing)
         {
-            facing.Normalize();
-
             Vector2 waterAvoidXMove;
             Vector2 waterAvoidYMove;
 
@@ -52,7 +50,7 @@ namespace ScrapWars3.Logic
                 for(int mechNum = 0; mechNum < team.Mechs.Length; mechNum++)
                 {
                     team.Mechs[mechNum].Location = waterAvoidance + preferedStart + spacing * mechNum;
-                    team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing); // Face Right
+                    team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing);
 
                     // Test the mech's spawn area for water
                     if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water))

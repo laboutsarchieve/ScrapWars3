@@ -9,6 +9,7 @@ using ScrapWars3.Data;
 
 namespace ScrapWars3.Logic
 {
+    // TODO: Have seperate moving and shooting AI
     class MechAiStateMachine
     {
         private BehaviorState previousBehavior;
