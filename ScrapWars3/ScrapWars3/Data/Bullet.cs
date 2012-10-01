@@ -8,13 +8,15 @@ namespace ScrapWars3.Data
 {
     class Bullet
     {
+        private object shooter;        
         private int damage;
         private BulletType bulletType;
         private Vector2 location;
         private Vector2 velocity;
 
-        public Bullet( int damage, BulletType bulletType, Vector2 startLocation, Vector2 velocity )
+        public Bullet( Object shooter, int damage, BulletType bulletType, Vector2 startLocation, Vector2 velocity )
         {
+            this.shooter = shooter;
             this.damage = damage;
             this.bulletType = bulletType;
             this.location = startLocation;
@@ -23,6 +25,10 @@ namespace ScrapWars3.Data
         public void Update(GameTime gameTime)
         {
             location += velocity * gameTime.ElapsedGameTime.Milliseconds/1000.0f;
+        }
+        public object Shooter
+        {
+            get { return shooter; }            
         }
         public Vector2 Location
         {

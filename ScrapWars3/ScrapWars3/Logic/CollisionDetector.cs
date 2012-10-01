@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Data;
+using ScrapWars3.Resources;
 
 namespace ScrapWars3.Logic
 {
+    // TODO: Unit Testing for Collision Detector
     class CollisionDetector
     {
         public static bool IsMechOnTile(Mech mech, Map map, Tile tileType)
@@ -23,6 +25,13 @@ namespace ScrapWars3.Logic
 
             return false;
         }
+        internal static CollisionReport DetectCollision(Bullet bullet, Mech mech)
+        {
+            CollisionObject bulletObject = new CollisionObject(GameTextureRepo.GetBulletTexture(bullet.BulletType), bullet.Location, 0.0f);
+            CollisionObject mechObject = new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size/2.0f, mech.FacingAngle + mech.ImageFacingOffset);
+
+            return DetectCollision(bulletObject, mechObject);
+        }
         public static CollisionReport DetectCollision(CollisionObject objectOne, CollisionObject objectTwo)
         {
             CollisionObject mainObject;
@@ -37,8 +46,8 @@ namespace ScrapWars3.Logic
             }
             else
             {
-                mainObject = objectOne;
-                secondObject = objectTwo;
+                mainObject = objectTwo;
+                secondObject = objectOne;
             }
 
             for(int x = 0; x < mainObject.ColorArray.GetLength(0); x++)
@@ -61,6 +70,6 @@ namespace ScrapWars3.Logic
             }
 
             return report;
-        }
+        }        
     }
 }

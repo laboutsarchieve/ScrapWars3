@@ -46,10 +46,12 @@ namespace ScrapWars3.Screens
             allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
             {
+                mech.Restore( );
                 allMechs.Add(mech);
             }
             foreach(Mech mech in teamTwo.Mechs)
             {
+                mech.Restore( );
                 allMechs.Add(mech);
             }
 
@@ -63,10 +65,10 @@ namespace ScrapWars3.Screens
             battleLogic = new BattleLogic(this);
 
             battleLogic.PlaceTeams(teamOne, teamTwo);            
-        }
+        }        
         private void SubscribeToEvents()
         {
-            ScrapWarsEventManager.GetManager().Subscribe(AddBullet, "BulletFired");
+            ScrapWarsEventManager.GetManager().Subscribe(this, AddBullet, "BulletFired");
         }
         public bool AddBullet(BaseGameEvent theEvent)
         {
@@ -86,6 +88,7 @@ namespace ScrapWars3.Screens
         }
         internal void EndBattle()
         {
+            ScrapWarsEventManager.GetManager( ).UpsubscribeFromAll(this);
             scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
         }
         public override void Update(GameTime gameTime)

@@ -64,6 +64,9 @@ namespace ScrapWars3.Screens
         }
         private void ProcessInput()
         {
+            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Escape))
+                scrapWarsApp.ChangeScreen(new MainMenu(scrapWarsApp, graphics, window));
+
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Enter) || ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
             {
                 if(currSelection == Options.Battle)

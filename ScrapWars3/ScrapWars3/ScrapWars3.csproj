@@ -127,6 +127,7 @@
     <Compile Include="Logic\BattleLogic.cs" />
     <Compile Include="Logic\Behaviors\BehaviorState.cs" />
     <Compile Include="Logic\Behaviors\DummyBehavior.cs" />
+    <Compile Include="Data\Event\BulletHitEvent.cs" />
     <Compile Include="Logic\CollisionDetector.cs" />
     <Compile Include="Logic\CollisionObject.cs" />
     <Compile Include="Logic\CollisionReport.cs" />

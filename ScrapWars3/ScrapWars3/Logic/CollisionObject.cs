@@ -9,7 +9,7 @@ using ScrapWars3.Resources;
 
 namespace ScrapWars3.Logic
 {
-    class CollisionObject
+    struct CollisionObject
     {
         private Texture2D texture;
         private Vector2 upperLeft;
@@ -24,11 +24,21 @@ namespace ScrapWars3.Logic
             this.upperLeft = upperLeft;
             this.facing = facing;
 
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
 
             colorArray = new Color[texture.Width, texture.Height];
-        }
+            Color[] flatArray = new Color[texture.Width*texture.Height];
+            texture.GetData<Color>(flatArray);
+
+            for(int x = 0; x < texture.Width; x++)
+            {
+                for(int y = 0; y < texture.Height; y++)
+                {
+                    colorArray[x,y] = flatArray[x*texture.Width+y];
+                }
+            }
+        }        
         public Vector2 GetTransformedScreenLocation(int x, int y)
         {
             Vector2 location = new Vector2(x, y);

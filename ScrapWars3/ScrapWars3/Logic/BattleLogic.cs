@@ -5,6 +5,7 @@ using System.Text;
 using ScrapWars3.Screens;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Data;
+using ScrapWars3.Data.Event;
 
 namespace ScrapWars3.Logic
 {
@@ -102,11 +103,43 @@ namespace ScrapWars3.Logic
         }
         private void HandleCollisions(GameTime gameTime)
         {
-            // Mech Bullet collisions
-            // Mech Mech collisions
-
-            // Bullet map edge collisions
+            HandleBulletCollisions( );
+            // Mech Mech collisions   
+            // Remove Dead Mechs
             // Mech map edge collisions
+        }
+        private void HandleBulletCollisions( )
+        {            
+            for(int index = 0; index < battle.Bullets.Count; index++)
+            {
+                Bullet bullet = battle.Bullets[index];
+                Vector2 locationInTiles = bullet.Location/GameSettings.TileSize;
+
+                if(!battle.Map.IsOnMap((int)locationInTiles.X, (int)locationInTiles.Y)) // If the bullet is off the map
+                {
+                    battle.Bullets.RemoveAt(index);
+                    index--;
+                    continue;
+                }
+
+                foreach(Mech mech in battle.AllMechs)
+                {
+                    if( mech == bullet.Shooter )
+                        continue;
+
+                    if((mech.Location - bullet.Location).LengthSquared() < GameSettings.TileSize * Math.Max(mech.Size.X, mech.Size.Y))
+                    {
+                        CollisionReport report = CollisionDetector.DetectCollision(bullet, mech);
+                        if(report.CollisionOccured == true)
+                        { 
+                            ScrapWarsEventManager.GetManager( ).SendEvent(new BulletHitEvent(report));
+                            battle.Bullets.RemoveAt(index);
+                            index--;
+                            break;
+                        }
+                    }
+                }
+            }    
         }
     }
 }

@@ -28,6 +28,12 @@ namespace ScrapWars3.Logic.Behaviors
             }
 
             stepsSincePathfinder++;
+
+            if(stateMachine.Rng.NextDouble() > 0.99)
+            {
+                stateMachine.Owner.FacePoint(currentTarget.Location);
+                stateMachine.Owner.Shoot( );
+            }
         }
 
         private void ChooseTarget(MechAiStateMachine stateMachine, Battle battle)

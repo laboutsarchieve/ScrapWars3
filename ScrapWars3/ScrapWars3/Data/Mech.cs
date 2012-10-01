@@ -16,29 +16,40 @@ namespace ScrapWars3.Data
         private MechAiStateMachine brain;
         private string name;
         private int mechId;
-        private Team team;
+        private int maxSpeed;
+        private int currHp;
+        private int maxHp;
 
+        private Team team;
         private Vector2 facing;
         private Vector2 location;
         private Vector2 size;
-        private Gun mainGun;        
+        private Gun mainGun;
 
         private Color mechColor;
         private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
+        // The speed and hp settings here are temporary defaults
         public Mech(string name, int mechId, MechType mechType)
         {
-            Init(name, mechId, mechType, Color.White);
+            Init(name, mechId, mechType, 20, 80, Color.White);
         }
         public Mech(string name, int mechId, MechType mechType, Color color)
         {
-            Init(name, mechId, mechType, color);
+            Init(name, mechId, mechType, 20, 80, color);
         }
-        private void Init(string name, int mechId, MechType mechType, Color color)
+        public void Restore()
+        {
+            Init(name, mechId, mechType, 20, 80, mechColor);
+        }
+        private void Init(string name, int mechId, MechType mechType, int maxHp, int maxSpeed, Color color)
         {
             this.name = name;
             this.mechType = mechType;
             this.mechId = mechId;
+            this.maxHp = maxHp;
+            this.currHp = maxHp;
+            this.maxSpeed = maxSpeed;
 
             Location = Vector2.Zero;
             facing = Vector2.UnitX;
@@ -49,7 +60,7 @@ namespace ScrapWars3.Data
 
             mechColor = color;
 
-            mainGun = Gun.DefaultGun( );
+            mainGun = Gun.DefaultGun();
         }
         public void Think(GameTime gameTime, Battle battle)
         {
@@ -59,18 +70,17 @@ namespace ScrapWars3.Data
         {
             if(brain.FollowingPath)
                 Move(gameTime, battle);
-
-            if( brain.Rng.NextDouble( ) > 0.995 )
-                mainGun.Fire(location, facing);
+        }
+        public void Shoot( )
+        {
+            mainGun.Fire(this, location + facing * size.X, facing);
         }
         private void Move(GameTime gameTime, Battle battle)
-        {            
-            // TODO make speed an actual attribute
-
-            float speed = 80; // 40 pixels per second
+        {
+            // TODO: add velocity attribute and move by changing acceleration
 
             Vector2 toTarget = brain.CurrentTargetLocation - location;
-            float distance = toTarget.Length();            
+            float distance = toTarget.Length();
 
             bool towards = distance > brain.DesiredDistance;
 
@@ -79,7 +89,7 @@ namespace ScrapWars3.Data
 
             toTarget.Normalize();
             facing = toTarget;
-            toTarget *= speed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if(towards)
                 Location += toTarget;
@@ -123,6 +133,14 @@ namespace ScrapWars3.Data
         public Vector2 Size
         {
             get { return size; }
+        }
+        public int MaxSpeed
+        {
+            get { return maxSpeed; }
+        }
+        public int CurrHp
+        {
+            get { return currHp; }
         }
         public Rectangle BoundingRect
         {
