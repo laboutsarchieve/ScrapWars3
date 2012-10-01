@@ -79,17 +79,6 @@ namespace ScrapWars3.View
                                  SpriteEffects.None,
                                  0.5f);
             }
-
-            foreach(Vector2 node in battle.AllMechs[0].Brain.Path)
-                    spriteBatch.Draw(GameTextureRepo.GetBulletTexture(BulletType.Basic),
-                                     node * GameSettings.TileSize + startOfBatlefield - GameSettings.TileSize*battle.UpperLeftOfView,
-                                     null,
-                                     Color.Yellow,
-                                     0.0f,
-                                    Vector2.Zero,
-                                    GameSettings.ArtScale,
-                                    SpriteEffects.None,
-                                    0.5f);
         }
         private void DrawBullets( )
         {
