@@ -14,7 +14,7 @@ namespace ScrapWars3.Data
     class Mech
     {
         private MechType mechType;
-        private MechAiStateMachine brain;
+        private MechAiStateMachine brain;        
         private string name;
         private int mechId;
         private int maxSpeed;
@@ -124,6 +124,10 @@ namespace ScrapWars3.Data
         internal MechType MechType
         {
             get { return mechType; }
+        }
+        internal MechAiStateMachine Brain
+        {
+            get { return brain; }            
         }
         public int MechId
         {

@@ -137,7 +137,7 @@ namespace ScrapWars3.Logic
                    !explored.Contains(stepToConcider))
                 {
                     explored.Add(stepToConcider);
-                    PathNode newNode = new PathNode(node, stepToConcider, move.Length( ));
+                    PathNode newNode = new PathNode(node, stepToConcider, 1);
                     toExplore.Add(GetCost(newNode), newNode);
                 }
             }

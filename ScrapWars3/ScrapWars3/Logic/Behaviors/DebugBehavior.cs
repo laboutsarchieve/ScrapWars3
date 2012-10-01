@@ -46,22 +46,22 @@ namespace ScrapWars3.Logic.Behaviors
 
         private void TrimPath(List<Vector2> path)
         {
+            List<int> toRemove = new List<int>();
             path.RemoveAt(0); // The first node is just where the mech is standing
             for(int index = 0; index < path.Count - 2; index++)
             {
                 Vector2 moveOne = path[index+1] - path[index];
                 Vector2 moveTwo = path[index+2] - path[index+1];
 
-                while(moveOne == moveTwo ) // While the next two steps are moving in the same direction
-                {                                        
-                    path.RemoveAt(index+1);
+                if(moveOne == moveTwo ) // While the next two steps are moving in the same direction
+                {                       
+                    toRemove.Add(index+1);                    
+                }                    
+            }
 
-                    if(path.Count < index + 3)
-                        break;
-
-                    moveOne = path[index+1] - path[index];
-                    moveTwo = path[index+2] - path[index+1];
-                }
+            for(int index = 0; index < toRemove.Count; index++)
+            {
+                path.RemoveAt(toRemove[index]-index);
             }
         }
 
