@@ -22,7 +22,8 @@ namespace ScrapWars3.Data
         private int maxHp;
 
         private Team team;
-        private Vector2 facing;
+        private Vector2 facing;        
+        private VectorSmoother smoothFacing;
         private Vector2 location;
         private Vector2 size;
         private Gun mainGun;
@@ -54,6 +55,8 @@ namespace ScrapWars3.Data
 
             Location = Vector2.Zero;
             facing = Vector2.UnitX;
+            smoothFacing = new VectorSmoother(20);
+            smoothFacing.SetSmoothVector(facing);
 
             size = GameSettings.GetMechSize(mechType);
 
@@ -89,7 +92,7 @@ namespace ScrapWars3.Data
                 return;
 
             toTarget.Normalize();
-            facing = toTarget;
+            ChangeFacing(facing = toTarget);
             toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if(towards)
@@ -97,14 +100,22 @@ namespace ScrapWars3.Data
             else
                 Location -= toTarget;
         }
+
+        private void ChangeFacing(Vector2 target)
+        {            
+            facing = target;
+            smoothFacing.AddVector(facing);
+        }
         public void FacePoint(Vector2 target)
         {
+            // TODO: This need to be non-instantanious
+
             if(target == location) // A mech can't face its own center
                 return;
 
             Vector2 toTarget = target - location;
             toTarget.Normalize();
-            facing = toTarget;
+            facing = toTarget;            
         }
         public string Name
         {

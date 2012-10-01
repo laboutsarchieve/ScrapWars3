@@ -88,7 +88,7 @@ namespace ScrapWars3.Logic
             map = theMap;
             goal = theGoal;
 
-            mechBox = new Rectangle(0,0,(int)theMech.Size.X/GameSettings.TileSize, (int)theMech.Size.Y/GameSettings.TileSize);
+            mechBox = new Rectangle(0,0,(int)theMech.Size.X/GameSettings.TileSize + 1, (int)theMech.Size.Y/GameSettings.TileSize + 1);
 
             Vector2 startTile = new Vector2((int)mech.Location.X/GameSettings.TileSize, (int)mech.Location.Y/GameSettings.TileSize);
 
@@ -130,13 +130,10 @@ namespace ScrapWars3.Logic
         {
             foreach(Vector2 move in PossibleMoves)
             {
-                Vector2 stepToConcider = node.Step + move;
-
-                mechBox.X = (int)stepToConcider.X;
-                mechBox.Y = (int)stepToConcider.Y;
+                Vector2 stepToConcider = node.Step + move;                
 
                 if(map.IsOnMap((int)stepToConcider.X, (int)stepToConcider.Y) &&
-                   !map.ContainsTileType(mechBox, Tile.Water) &&
+                   CanStandOnTile(stepToConcider) &&
                    !explored.Contains(stepToConcider))
                 {
                     explored.Add(stepToConcider);
@@ -151,11 +148,10 @@ namespace ScrapWars3.Logic
         }
         private static bool CanStandOnTile(Vector2 location)
         {
-            Rectangle boundingRect = mech.BoundingRect;
-            boundingRect.X = (int)location.X;
-            boundingRect.Y = (int)location.Y;
+            mechBox.X = (int)location.X - (int)mech.Size.X/GameSettings.TileSize/2 - 1;
+            mechBox.Y = (int)location.Y - (int)mech.Size.Y/GameSettings.TileSize/2 - 1;
 
-            return !map.ContainsTileType(boundingRect, Tile.Water);
+            return !map.ContainsTileType(mechBox, Tile.Water);
         }
     }
 }
