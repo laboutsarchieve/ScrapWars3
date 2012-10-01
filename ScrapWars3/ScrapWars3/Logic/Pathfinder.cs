@@ -60,6 +60,7 @@ namespace ScrapWars3.Logic
         }
         
         private static Mech mech;
+        private static Rectangle mechBox;
         private static Map map;
         private static Vector2 goal;
         private static HashSet<Vector2> explored;
@@ -86,6 +87,8 @@ namespace ScrapWars3.Logic
             mech = theMech;
             map = theMap;
             goal = theGoal;
+
+            mechBox = new Rectangle(0,0,(int)theMech.Size.X/GameSettings.TileSize, (int)theMech.Size.Y/GameSettings.TileSize);
 
             Vector2 startTile = new Vector2((int)mech.Location.X/GameSettings.TileSize, (int)mech.Location.Y/GameSettings.TileSize);
 
@@ -129,8 +132,11 @@ namespace ScrapWars3.Logic
             {
                 Vector2 stepToConcider = node.Step + move;
 
+                mechBox.X = (int)stepToConcider.X;
+                mechBox.Y = (int)stepToConcider.Y;
+
                 if(map.IsOnMap((int)stepToConcider.X, (int)stepToConcider.Y) &&
-                   map[(int)stepToConcider.X, (int)stepToConcider.Y] != Tile.Water &&
+                   !map.ContainsTileType(mechBox, Tile.Water) &&
                    !explored.Contains(stepToConcider))
                 {
                     explored.Add(stepToConcider);

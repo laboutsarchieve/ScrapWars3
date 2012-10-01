@@ -17,8 +17,8 @@ namespace ScrapWars3.Logic
         private Mech owner;
         private BehaviorState globalBehavior;
         private Vector2 currentTargetLocation;
-        private float desiredDistance;        
-        private int nodeOnPath;
+        private float desiredDistance;
+        private int nodeOnPath;        
         private bool followingPath = false;        
         private List<Vector2> path = new List<Vector2>();
 
@@ -108,6 +108,11 @@ namespace ScrapWars3.Logic
         {
             get { return followingPath; }
             set { followingPath = value; }
+        }
+        public int NodeOnPath
+        {
+            get { return nodeOnPath; }
+            set { nodeOnPath = value; }
         }
         public Random Rng
         {

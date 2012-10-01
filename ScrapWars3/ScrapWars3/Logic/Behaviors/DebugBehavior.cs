@@ -17,14 +17,12 @@ namespace ScrapWars3.Logic.Behaviors
             if(currentTarget == null)
             { 
                 ChooseTarget(stateMachine, battle);                
-                stateMachine.Path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Location); 
-                stepsSincePathfinder = 0;
+                Pathfind(stateMachine, battle);
             }
 
             if(stepsSincePathfinder > 100 && stateMachine.Rng.NextDouble( ) > 0.5) // This randomization helps make the mechs pathfind on diffrent cycles
             { 
-                stateMachine.Path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Location);                
-                stepsSincePathfinder = 0;
+                Pathfind(stateMachine, battle);
             }
 
             stepsSincePathfinder++;
@@ -33,6 +31,37 @@ namespace ScrapWars3.Logic.Behaviors
             {
                 stateMachine.Owner.FacePoint(currentTarget.Location);
                 stateMachine.Owner.Shoot( );
+            }
+        }
+
+        private void Pathfind(MechAiStateMachine stateMachine, Battle battle)
+        {
+            List<Vector2> path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Location);      
+            if( path.Count > 0 )
+                TrimPath(path);
+            stateMachine.Path = path;
+            stateMachine.NodeOnPath = 0;
+            stepsSincePathfinder = 0;
+        }
+
+        private void TrimPath(List<Vector2> path)
+        {
+            path.RemoveAt(0); // The first node is just where the mech is standing
+            for(int index = 0; index < path.Count - 2; index++)
+            {
+                Vector2 moveOne = path[index+1] - path[index];
+                Vector2 moveTwo = path[index+2] - path[index+1];
+
+                while(moveOne == moveTwo ) // While the next two steps are moving in the same direction
+                {                                        
+                    path.RemoveAt(index+1);
+
+                    if(path.Count < index + 3)
+                        break;
+
+                    moveOne = path[index+1] - path[index];
+                    moveTwo = path[index+2] - path[index+1];
+                }
             }
         }
 

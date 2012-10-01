@@ -10,6 +10,7 @@ using ScrapWars3.Logic.Behaviors;
 namespace ScrapWars3.Data
 {
     // TODO: Add stats, guns and missles
+    // TODO: Collect stats in a structure
     class Mech
     {
         private MechType mechType;
@@ -29,7 +30,7 @@ namespace ScrapWars3.Data
         private Color mechColor;
         private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
-        // The speed and hp settings here are temporary defaults
+        // The hp and speed settings here are temporary defaults
         public Mech(string name, int mechId, MechType mechType)
         {
             Init(name, mechId, mechType, 20, 80, Color.White);
