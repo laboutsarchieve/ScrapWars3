@@ -1,0 +1,3 @@
+﻿
+Event Names
+- Events classes are named XEvent where X describes the event. Event type strings are "X" without the Event suffix

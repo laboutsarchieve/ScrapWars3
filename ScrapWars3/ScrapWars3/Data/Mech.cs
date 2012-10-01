@@ -48,6 +48,8 @@ namespace ScrapWars3.Data
             this.brain = new MechAiStateMachine(this, new DebugBehavior());
 
             mechColor = color;
+
+            mainGun = Gun.DefaultGun( );
         }
         public void Think(GameTime gameTime, Battle battle)
         {
@@ -57,6 +59,9 @@ namespace ScrapWars3.Data
         {
             if(brain.FollowingPath)
                 Move(gameTime, battle);
+
+            if( brain.Rng.NextDouble( ) > 0.995 )
+                mainGun.Fire(location, facing);
         }
         private void Move(GameTime gameTime, Battle battle)
         {

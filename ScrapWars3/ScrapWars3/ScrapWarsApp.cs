@@ -58,6 +58,8 @@ namespace ScrapWars3
             GameTextureRepo.tileSand = Content.Load<Texture2D>(@"art\progart_sand");
             GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
 
+            GameTextureRepo.basicBullet = Content.Load<Texture2D>(@"art\progart_basic_bullet");
+
             GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
 
             GameTextureRepo.pixel = new Texture2D(GraphicsDevice, 1, 1);

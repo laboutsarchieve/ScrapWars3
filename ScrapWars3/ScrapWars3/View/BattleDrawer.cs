@@ -62,6 +62,7 @@ namespace ScrapWars3.View
             spriteBatch.Draw((Texture2D)mapTexture, startOfBatlefield - GameSettings.TileSize * battle.UpperLeftOfView, Color.White);
 
             DrawMechs();
+            DrawBullets( );
         }
         private void DrawMechs()
         {
@@ -74,7 +75,24 @@ namespace ScrapWars3.View
                                  mech.MechColor,
                                  mech.FacingAngle + mech.ImageFacingOffset,
                                  mech.Size / 2,
-                                 Vector2.One,
+                                 GameSettings.ArtScale,
+                                 SpriteEffects.None,
+                                 0.5f);
+            }
+        }
+        private void DrawBullets( )
+        {
+            foreach(Bullet bullet in battle.Bullets)
+            {
+                Vector2 screenLocation = startOfBatlefield + bullet.Location - GameSettings.TileSize * battle.UpperLeftOfView;
+
+                spriteBatch.Draw(GameTextureRepo.GetBulletTexture(bullet.BulletType),
+                                 screenLocation,
+                                 null,
+                                 Color.Black,
+                                 0.0f,
+                                 Vector2.Zero,
+                                 GameSettings.ArtScale,
                                  SpriteEffects.None,
                                  0.5f);
             }

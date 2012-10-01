@@ -24,6 +24,10 @@ namespace ScrapWars3.Data
         {
             location += velocity * gameTime.ElapsedGameTime.Milliseconds/1000.0f;
         }
+        public Vector2 Location
+        {
+            get { return location; }            
+        }
         internal BulletType BulletType
         {
             get { return bulletType; }            

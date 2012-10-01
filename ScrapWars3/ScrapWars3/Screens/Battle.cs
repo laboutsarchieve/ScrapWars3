@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using ScrapWars3.Data;
 using ScrapWars3.Logic;
 using ScrapWars3.View;
+using GameTools.Events;
+using ScrapWars3.Data.Event;
 
 namespace ScrapWars3.Screens
 {
@@ -19,6 +21,7 @@ namespace ScrapWars3.Screens
         private Team teamOne;
         private Team teamTwo;
         private List<Mech> allMechs;
+        private List<Bullet> bullets;
 
         private BattleDrawer battleDrawer;
         private BattleInput battleInput;
@@ -32,9 +35,13 @@ namespace ScrapWars3.Screens
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
         {
+            SubscribeToEvents( );
+
             this.map = map;
             this.teamOne = teamOne;
             this.teamTwo = teamTwo;
+
+            bullets = new List<Bullet>( );
 
             allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
@@ -55,11 +62,18 @@ namespace ScrapWars3.Screens
             battleInput = new BattleInput(this);
             battleLogic = new BattleLogic(this);
 
-            battleLogic.PlaceTeams(teamOne, teamTwo);
+            battleLogic.PlaceTeams(teamOne, teamTwo);            
         }
-        internal void EndBattle()
+        private void SubscribeToEvents()
         {
-            scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
+            ScrapWarsEventManager.GetManager().Subscribe(AddBullet, "BulletFired");
+        }
+        public bool AddBullet(BaseGameEvent theEvent)
+        {
+            BulletFiredEvent bulletFired = (BulletFiredEvent)theEvent;
+            bullets.Add(bulletFired.Bullet);
+
+            return true;
         }
         internal Team GetOtherTeam(Team team)
         {
@@ -69,6 +83,10 @@ namespace ScrapWars3.Screens
         {
             mapChanged = true;
             base.Refresh(graphics, window);
+        }
+        internal void EndBattle()
+        {
+            scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
         }
         public override void Update(GameTime gameTime)
         {
@@ -99,6 +117,10 @@ namespace ScrapWars3.Screens
         internal List<Mech> AllMechs
         {
             get { return allMechs; }
+        }
+        internal List<Bullet> Bullets
+        {
+            get { return bullets; }
         }
         public bool BattlePaused
         {

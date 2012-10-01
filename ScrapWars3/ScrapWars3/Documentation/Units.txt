@@ -1,0 +1,4 @@
+﻿
+Physical Units:
+- Distances are all in pixels
+- Speeds are pixels per seconds

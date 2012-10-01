@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="Data\Bullet.cs" />
     <Compile Include="Data\BulletType.cs" />
+    <Compile Include="Data\Event\BulletFiredEvent.cs" />
     <Compile Include="Data\Gun.cs" />
     <Compile Include="Logic\Behaviors\DebugBehavior.cs" />
     <Compile Include="Data\Map.cs" />
@@ -151,6 +152,8 @@
     <Compile Include="View\BattleDrawer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentation\Naming.txt" />
+    <Content Include="Documentation\Units.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>

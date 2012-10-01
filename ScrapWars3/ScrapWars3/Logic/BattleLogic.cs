@@ -79,9 +79,12 @@ namespace ScrapWars3.Logic
         {
             // Battle Logic
             UpdateMech(gameTime);
+            UpdateBullets(gameTime);
+            HandleCollisions(gameTime);
+
             if(gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart > battle.TimePerRound)
                 battle.BattlePaused = true;
-        }
+        }                
         private void UpdateMech(GameTime gameTime)
         {
             foreach(Mech mech in battle.AllMechs)
@@ -89,6 +92,21 @@ namespace ScrapWars3.Logic
                 mech.Think(gameTime, battle);
                 mech.Update(gameTime, battle);
             }
+        }
+        private void UpdateBullets(GameTime gameTime)
+        {
+            foreach(Bullet bullet in battle.Bullets)
+            {
+                bullet.Update(gameTime);
+            }            
+        }
+        private void HandleCollisions(GameTime gameTime)
+        {
+            // Mech Bullet collisions
+            // Mech Mech collisions
+
+            // Bullet map edge collisions
+            // Mech map edge collisions
         }
     }
 }

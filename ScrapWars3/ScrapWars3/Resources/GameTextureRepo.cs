@@ -23,6 +23,8 @@ namespace ScrapWars3.Resources
         public static Texture2D tileGrass;
         public static Texture2D tileSand;
         public static Texture2D tileWater;
+
+        public static Texture2D basicBullet;
         public static Texture2D pixel;
 
         public static Texture2D GetMechTexture(MechType mechType)
@@ -38,6 +40,17 @@ namespace ScrapWars3.Resources
                     return debugMechC;
                 default:
                     return errorTexture;
+            }
+        }
+
+        internal static Texture2D GetBulletTexture(BulletType bulletType)
+        {
+            switch(bulletType)
+            {
+                case BulletType.Basic:
+                    return basicBullet;
+                default:
+                    return basicBullet;
             }
         }
     }
