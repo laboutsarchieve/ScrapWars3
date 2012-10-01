@@ -64,9 +64,8 @@ namespace ScrapWars3.Data
                 mainGun.Fire(location, facing);
         }
         private void Move(GameTime gameTime, Battle battle)
-        {
-            // TODO pathfinding
-            // TODO make speed and actual attribute
+        {            
+            // TODO make speed an actual attribute
 
             float speed = 80; // 40 pixels per second
 
