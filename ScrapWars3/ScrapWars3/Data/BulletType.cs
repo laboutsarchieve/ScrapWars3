@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScrapWars3.Data
 {
-enum BulletType
+    enum BulletType
     {
         Basic
     }

@@ -14,8 +14,15 @@ using ScrapWars3.Data.Event;
 
 namespace ScrapWars3.Screens
 {
-    class Battle : Screen
+    enum BattleState
     {
+        Unfinished,
+        TeamOneWins,
+        TeamTwoWins,
+        Draw
+    }
+    class Battle : Screen
+    {                
         private Map map;
         private Vector2 upperLeftOfView;
         private Team teamOne;
@@ -27,6 +34,7 @@ namespace ScrapWars3.Screens
         private BattleInput battleInput;
         private BattleLogic battleLogic;
 
+        private BattleState currentBattleState;
         private bool battlePaused;
         private bool mapChanged;
         private double roundStart = 0;
@@ -35,23 +43,24 @@ namespace ScrapWars3.Screens
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
         {
-            SubscribeToEvents( );
+            currentBattleState = BattleState.Unfinished;
+            SubscribeToEvents();
 
             this.map = map;
             this.teamOne = teamOne;
             this.teamTwo = teamTwo;
 
-            bullets = new List<Bullet>( );
+            bullets = new List<Bullet>();
 
             allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
             {
-                mech.Restore( );
+                mech.Restore();
                 allMechs.Add(mech);
             }
             foreach(Mech mech in teamTwo.Mechs)
             {
-                mech.Restore( );
+                mech.Restore();
                 allMechs.Add(mech);
             }
 
@@ -64,8 +73,8 @@ namespace ScrapWars3.Screens
             battleInput = new BattleInput(this);
             battleLogic = new BattleLogic(this);
 
-            battleLogic.PlaceTeams(teamOne, teamTwo);            
-        }        
+            battleLogic.PlaceTeams(teamOne, teamTwo);
+        }
         private void SubscribeToEvents()
         {
             ScrapWarsEventManager.GetManager().Subscribe(this, AddBullet, "BulletFired");
@@ -88,12 +97,14 @@ namespace ScrapWars3.Screens
         }
         internal void EndBattle()
         {
-            ScrapWarsEventManager.GetManager( ).UpsubscribeFromAll(this);
+            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
             scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
         }
         public override void Update(GameTime gameTime)
         {
-            battleInput.Update(gameTime);
+            if(scrapWarsApp.IsActive)
+                battleInput.Update(gameTime);
+
             battleLogic.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
@@ -143,6 +154,11 @@ namespace ScrapWars3.Screens
         public int TimePerRound
         {
             get { return timePerRound; }
+        }
+        internal BattleState CurrentBattleState
+        {
+            get { return currentBattleState; }
+            set { currentBattleState = value; }
         }
     }
 }

@@ -16,10 +16,10 @@ namespace ScrapWars3.Logic
         private BehaviorState behavior;
         private Mech owner;
         private BehaviorState globalBehavior;
-        private Vector2 currentTargetLocation;
+        private Vector2 currentTargetPosition;
         private float desiredDistance;
-        private int nodeOnPath;        
-        private bool followingPath = false;        
+        private int nodeOnPath;
+        private bool followingPath = false;
         private List<Vector2> path = new List<Vector2>();
 
         private static Random rng = new Random();
@@ -47,17 +47,17 @@ namespace ScrapWars3.Logic
 
             if(followingPath)
             {
-                float closeEnough = Math.Max(owner.Size.X,owner.Size.Y) * 1.5f;
-                if((currentTargetLocation - owner.Location).LengthSquared() < closeEnough * closeEnough)
-                { 
+                float closeEnough = Math.Max(owner.Size.X, owner.Size.Y) * 1.5f;
+                if((currentTargetPosition - owner.Position).LengthSquared() < closeEnough * closeEnough)
+                {
                     nodeOnPath++;
                     if(nodeOnPath >= path.Count)
-                    { 
+                    {
                         followingPath = false;
                         return;
                     }
 
-                    currentTargetLocation = GameSettings.TileSize*path[nodeOnPath];                    
+                    currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
                 }
             }
         }
@@ -66,10 +66,10 @@ namespace ScrapWars3.Logic
             previousBehavior = newBehavior;
             behavior = newBehavior;
         }
-        public Vector2 CurrentTargetLocation
+        public Vector2 CurrentTargetPosition
         {
-            get { return currentTargetLocation; }
-            set { currentTargetLocation = value; }
+            get { return currentTargetPosition; }
+            set { currentTargetPosition = value; }
         }
         public float DesiredDistance
         {
@@ -79,16 +79,16 @@ namespace ScrapWars3.Logic
         public List<Vector2> Path
         {
             get { return path; }
-            set 
-            { 
+            set
+            {
                 path = value;
                 nodeOnPath = 0;
 
                 if(path.Count > 0)
                 {
-                    followingPath = true;                 
-                    desiredDistance = Math.Max(owner.Size.X,owner.Size.Y) * 1.5f;
-                    currentTargetLocation = GameSettings.TileSize*path[nodeOnPath];
+                    followingPath = true;
+                    desiredDistance = Math.Max(owner.Size.X, owner.Size.Y) * 1.5f;
+                    currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
                 }
             }
         }

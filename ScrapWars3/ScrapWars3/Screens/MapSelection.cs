@@ -126,13 +126,13 @@ namespace ScrapWars3.Screens
             for(int index = 0; index < menuOptions.Length; index++)
             {
                 string option = menuOptions[index];
-                Vector2 location = new Vector2(menuMiddle - FontRepo.generalFont.MeasureString(option).X / 2, menuTop + lineHeight * index);
+                Vector2 position = new Vector2(menuMiddle - FontRepo.generalFont.MeasureString(option).X / 2, menuTop + lineHeight * index);
 
-                spriteBatch.DrawString(FontRepo.generalFont, option, location, menuColors[index]);
-                DrawOptionValue((Options)index, location + FontRepo.generalFont.MeasureString(option).X * Vector2.UnitX);
+                spriteBatch.DrawString(FontRepo.generalFont, option, position, menuColors[index]);
+                DrawOptionValue((Options)index, position + FontRepo.generalFont.MeasureString(option).X * Vector2.UnitX);
             }
         }
-        private void DrawOptionValue(Options option, Vector2 location)
+        private void DrawOptionValue(Options option, Vector2 position)
         {
             string valueString;
             Color color = Color.Black;
@@ -154,7 +154,7 @@ namespace ScrapWars3.Screens
                     break;
             }
 
-            spriteBatch.DrawString(FontRepo.generalFont, valueString, location, color);
+            spriteBatch.DrawString(FontRepo.generalFont, valueString, position, color);
         }
     }
 }

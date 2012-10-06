@@ -43,7 +43,7 @@ namespace ScrapWars3.View
         {
             spriteBatch.Draw(ScreenTextureRepo.battleGUIFrame, GameSettings.ScreenRectangle, Color.White);
 
-            if (!battle.BattlePaused)
+            if(!battle.BattlePaused)
             {
                 int secondsLeft = (int)(battle.TimePerRound - (gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart)) / 1000 + 1;
 
@@ -62,32 +62,35 @@ namespace ScrapWars3.View
             spriteBatch.Draw((Texture2D)mapTexture, startOfBatlefield - GameSettings.TileSize * battle.UpperLeftOfView, Color.White);
 
             DrawMechs();
-            DrawBullets( );
+            DrawBullets();
         }
         private void DrawMechs()
         {
             foreach(Mech mech in battle.AllMechs)
             {
-                Vector2 screenLocation = startOfBatlefield + mech.Location - GameSettings.TileSize * battle.UpperLeftOfView;
-                spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
-                                 screenLocation,
-                                 null,
-                                 mech.MechColor,
-                                 mech.FacingAngle + mech.ImageFacingOffset,
-                                 mech.Size / 2,
-                                 GameSettings.ArtScale,
-                                 SpriteEffects.None,
-                                 0.5f);
+                if(mech.IsAlive)
+                { 
+                    Vector2 screenPosition = startOfBatlefield + mech.Position - GameSettings.TileSize * battle.UpperLeftOfView;
+                    spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
+                                     screenPosition,
+                                     null,
+                                     mech.MechColor,
+                                     mech.FacingAngle + mech.ImageFacingOffset,
+                                     mech.Size / 2,
+                                     GameSettings.ArtScale,
+                                     SpriteEffects.None,
+                                     0.5f);
+                }
             }
         }
-        private void DrawBullets( )
+        private void DrawBullets()
         {
             foreach(Bullet bullet in battle.Bullets)
             {
-                Vector2 screenLocation = startOfBatlefield + bullet.Location - GameSettings.TileSize * battle.UpperLeftOfView;
+                Vector2 screenPosition = startOfBatlefield + bullet.Position - GameSettings.TileSize * battle.UpperLeftOfView;
 
                 spriteBatch.Draw(GameTextureRepo.GetBulletTexture(bullet.BulletType),
-                                 screenLocation,
+                                 screenPosition,
                                  null,
                                  Color.Black,
                                  0.0f,
@@ -128,7 +131,7 @@ namespace ScrapWars3.View
                 }
             }
         }
-        private void DrawTile(Tile tile, Vector2 location)
+        private void DrawTile(Tile tile, Vector2 position)
         {
             Texture2D tileTexture;
             switch(tile)
@@ -150,7 +153,7 @@ namespace ScrapWars3.View
                     break;
             }
 
-            spriteBatch.Draw(tileTexture, location, Color.White);
+            spriteBatch.Draw(tileTexture, position, Color.White);
         }
     }
 }

@@ -119,7 +119,7 @@ namespace ScrapWars3.Screens
             spriteBatch.Begin();
             DrawBackground();
             DrawTitle();
-            DrawMenuText();            
+            DrawMenuText();
             spriteBatch.End();
         }
         private void DrawBackground()
@@ -150,6 +150,6 @@ namespace ScrapWars3.Screens
                                                    menuBounds.Top + lineHeight * index),
                                        menuColors[index]);
             }
-        }        
+        }
     }
 }

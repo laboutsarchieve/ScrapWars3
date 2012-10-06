@@ -13,56 +13,76 @@ namespace ScrapWars3.Logic
     {
         private Texture2D texture;
         private Vector2 upperLeft;
+        private Vector2 velocity;
         private float facing;
         private Color[,] colorArray;
         private Matrix textureTransformation;
         private Matrix textureTransformationInverse;
 
-        public CollisionObject(Texture2D texture, Vector2 upperLeft, float facing)
+        public CollisionObject(Texture2D texture, Vector2 upperLeft, Vector2 velocity, float facing)
         {
             this.texture = texture;
             this.upperLeft = upperLeft;
+            this.velocity = velocity;
             this.facing = facing;
 
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
-            textureTransformationInverse = Matrix.Invert(textureTransformation);
-
             colorArray = new Color[texture.Width, texture.Height];
-            Color[] flatArray = new Color[texture.Width*texture.Height];
+            Color[] flatArray = new Color[texture.Width * texture.Height];
             texture.GetData<Color>(flatArray);
 
             for(int x = 0; x < texture.Width; x++)
             {
                 for(int y = 0; y < texture.Height; y++)
                 {
-                    colorArray[x,y] = flatArray[x*texture.Width+y];
+                    colorArray[x, y] = flatArray[x * texture.Width + y];
                 }
             }
-        }        
-        public Vector2 GetTransformedScreenLocation(int x, int y)
-        {
-            Vector2 location = new Vector2(x, y);
-            Vector2.Transform(location, textureTransformation);
 
-            return location;
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformationInverse = Matrix.Invert(textureTransformation);
         }
-        public Color GetColorAtScreenLocation(int x, int y)
+        public void Step(float numSeconds)
         {
-            Vector2 location = new Vector2(x, y);
-            Vector2.Transform(location, textureTransformationInverse);
+            upperLeft += velocity * numSeconds;
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformationInverse = Matrix.Invert(textureTransformation);
 
-            if(location.X > colorArray.GetLength(0) || location.Y > colorArray.GetLength(1))
+            UpdateTransformation();
+        }
+        private void UpdateTransformation()
+        {
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformationInverse = Matrix.Invert(textureTransformation);
+        }
+
+        public Vector2 GetTransformedScreenPosition(int x, int y)
+        {
+            Vector2 position = new Vector2(x, y);
+            Vector2.Transform(position, textureTransformation);
+
+            return position;
+        }
+        public Color GetColorAtScreenPosition(int x, int y)
+        {
+            Vector2 position = new Vector2(x, y);
+            Vector2.Transform(position, textureTransformationInverse);
+
+            if(position.X > colorArray.GetLength(0) || position.Y > colorArray.GetLength(1))
                 return Color.Transparent;
 
-            return colorArray[(int)location.X, (int)location.Y];
+            return colorArray[(int)position.X, (int)position.Y];
         }
         public Color[,] ColorArray
         {
             get { return colorArray; }
         }
-        public CollisionObject FromMech(Mech mech)
+        public static CollisionObject FromMech(Mech mech)
         {
-            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size / 2, mech.FacingAngle);
+            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Position - mech.Size / 2, Vector2.Zero, mech.FacingAngle);
+        }
+        public static CollisionObject FromBullet(Bullet bullet)
+        {
+            return new CollisionObject(GameTextureRepo.GetBulletTexture(bullet.BulletType), bullet.Position, bullet.Velocity, 0.0f);
         }
     }
 }

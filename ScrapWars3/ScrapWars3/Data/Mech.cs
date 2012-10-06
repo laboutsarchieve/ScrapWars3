@@ -6,15 +6,18 @@ using Microsoft.Xna.Framework;
 using ScrapWars3.Screens;
 using ScrapWars3.Logic;
 using ScrapWars3.Logic.Behaviors;
+using GameTools.Events;
+using ScrapWars3.Data.Event;
 
 namespace ScrapWars3.Data
 {
+    // TODO: Change to velocity based movement
     // TODO: Add stats, guns and missles
     // TODO: Collect stats in a structure
     class Mech
     {
         private MechType mechType;
-        private MechAiStateMachine brain;        
+        private MechAiStateMachine brain;
         private string name;
         private int mechId;
         private int maxSpeed;
@@ -22,9 +25,9 @@ namespace ScrapWars3.Data
         private int maxHp;
 
         private Team team;
-        private Vector2 facing;        
+        private Vector2 facing;
         private VectorSmoother smoothFacing;
-        private Vector2 location;
+        private Vector2 position;
         private Vector2 size;
         private Gun mainGun;
 
@@ -35,10 +38,33 @@ namespace ScrapWars3.Data
         public Mech(string name, int mechId, MechType mechType)
         {
             Init(name, mechId, mechType, 20, 80, Color.White);
+            Subscribe( );
         }
         public Mech(string name, int mechId, MechType mechType, Color color)
         {
             Init(name, mechId, mechType, 20, 80, color);
+            Subscribe( );
+        }
+        ~Mech()
+        {
+            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
+        }
+        public void Subscribe()
+        {
+            ScrapWarsEventManager.GetManager().Subscribe(this, AnalyzeCollision, "BulletHitMech");
+        }
+        public bool AnalyzeCollision(BaseGameEvent theEvent)
+        {
+            BulletHitMechEvent bulletHit = (BulletHitMechEvent)theEvent;
+
+            if(bulletHit.Mech.mechId == mechId)
+            {
+                currHp -= bulletHit.Bullet.Damage;
+                if(!IsAlive)
+                    ScrapWarsEventManager.GetManager().SendEvent(new MechDiedEvent(this));
+            }
+
+            return false;
         }
         public void Restore()
         {
@@ -53,7 +79,7 @@ namespace ScrapWars3.Data
             this.currHp = maxHp;
             this.maxSpeed = maxSpeed;
 
-            Location = Vector2.Zero;
+            Position = Vector2.Zero;
             facing = Vector2.UnitX;
             smoothFacing = new VectorSmoother(20);
             smoothFacing.SetSmoothVector(facing);
@@ -75,15 +101,15 @@ namespace ScrapWars3.Data
             if(brain.FollowingPath)
                 Move(gameTime, battle);
         }
-        public void Shoot( )
+        public void Shoot()
         {
-            mainGun.Fire(this, location + facing * size.X, facing);
+            mainGun.Fire(this, position + facing * size.X, facing);
         }
         private void Move(GameTime gameTime, Battle battle)
         {
             // TODO: add velocity attribute and move by changing acceleration
 
-            Vector2 toTarget = brain.CurrentTargetLocation - location;
+            Vector2 toTarget = brain.CurrentTargetPosition - position;
             float distance = toTarget.Length();
 
             bool towards = distance > brain.DesiredDistance;
@@ -96,13 +122,13 @@ namespace ScrapWars3.Data
             toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if(towards)
-                Location += toTarget;
+                Position += toTarget;
             else
-                Location -= toTarget;
+                Position -= toTarget;
         }
 
         private void ChangeFacing(Vector2 target)
-        {            
+        {
             facing = target;
             smoothFacing.AddVector(facing);
         }
@@ -110,12 +136,12 @@ namespace ScrapWars3.Data
         {
             // TODO: This need to be non-instantanious
 
-            if(target == location) // A mech can't face its own center
+            if(target == position) // A mech can't face its own center
                 return;
 
-            Vector2 toTarget = target - location;
+            Vector2 toTarget = target - position;
             toTarget.Normalize();
-            facing = toTarget;            
+            facing = toTarget;
         }
         public string Name
         {
@@ -127,7 +153,7 @@ namespace ScrapWars3.Data
         }
         internal MechAiStateMachine Brain
         {
-            get { return brain; }            
+            get { return brain; }
         }
         public int MechId
         {
@@ -141,10 +167,10 @@ namespace ScrapWars3.Data
         {
             get { return facing; }
         }
-        public Vector2 Location
+        public Vector2 Position
         {
-            get { return location; }
-            set { location = value; }
+            get { return position; }
+            set { position = value; }
         }
         public Vector2 Size
         {
@@ -158,9 +184,13 @@ namespace ScrapWars3.Data
         {
             get { return currHp; }
         }
+        public bool IsAlive
+        {
+            get{ return currHp > 0; }
+        }
         public Rectangle BoundingRect
         {
-            get { return new Rectangle((int)location.X, (int)location.Y, (int)size.X, (int)size.Y); }
+            get { return new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y); }
         }
         public float ImageFacingOffset
         {

@@ -50,11 +50,11 @@ namespace ScrapWars3.Logic
                 mechInWater = false;
                 for(int mechNum = 0; mechNum < team.Mechs.Length; mechNum++)
                 {
-                    team.Mechs[mechNum].Location = waterAvoidance + preferedStart + spacing * mechNum;
-                    team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Location + facing);
+                    team.Mechs[mechNum].Position = waterAvoidance + preferedStart + spacing * mechNum;
+                    team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Position + facing);
 
                     // Test the mech's spawn area for water
-                    if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water))
+                    if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water, 1))
                     {
                         // If water is found, move the spawn area and try again
                         waterAvoidance += waterAvoidYMove;
@@ -75,6 +75,37 @@ namespace ScrapWars3.Logic
         {
             if(!battle.BattlePaused)
                 StepBattle(gameTime);
+
+            CheckForVictory( );
+        }
+        public void CheckForVictory( )
+        {
+            bool TeamTwoWins = true;
+            foreach(Mech mech in battle.TeamOne.Mechs)
+            {
+                if(mech.IsAlive)
+                {
+                    TeamTwoWins = false;
+                    break;
+                }
+            }
+
+            bool TeamOneWins = true;
+            foreach(Mech mech in battle.TeamTwo.Mechs)
+            {
+                if(mech.IsAlive)
+                {
+                    TeamOneWins = false;
+                    break;
+                }
+            }
+
+            if( TeamOneWins && TeamTwoWins )
+                battle.CurrentBattleState = BattleState.Draw;
+            else if(TeamOneWins)
+                battle.CurrentBattleState = BattleState.TeamOneWins;
+            else if(TeamTwoWins)
+                battle.CurrentBattleState = BattleState.TeamTwoWins;
         }
         private void StepBattle(GameTime gameTime)
         {
@@ -85,13 +116,16 @@ namespace ScrapWars3.Logic
 
             if(gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart > battle.TimePerRound)
                 battle.BattlePaused = true;
-        }                
+        }
         private void UpdateMech(GameTime gameTime)
         {
             foreach(Mech mech in battle.AllMechs)
             {
-                mech.Think(gameTime, battle);
-                mech.Update(gameTime, battle);
+                if(mech.IsAlive)
+                {
+                    mech.Think(gameTime, battle);
+                    mech.Update(gameTime, battle);
+                }
             }
         }
         private void UpdateBullets(GameTime gameTime)
@@ -99,23 +133,23 @@ namespace ScrapWars3.Logic
             foreach(Bullet bullet in battle.Bullets)
             {
                 bullet.Update(gameTime);
-            }            
+            }
         }
         private void HandleCollisions(GameTime gameTime)
         {
-            HandleBulletCollisions( );
+            HandleBulletCollisions(gameTime);
             // Mech Mech collisions   
             // Remove Dead Mechs
             // Mech map edge collisions
         }
-        private void HandleBulletCollisions( )
-        {            
+        private void HandleBulletCollisions(GameTime gameTime)
+        {
             for(int index = 0; index < battle.Bullets.Count; index++)
             {
                 Bullet bullet = battle.Bullets[index];
-                Vector2 locationInTiles = bullet.Location/GameSettings.TileSize;
+                Vector2 positionInTiles = bullet.Position / GameSettings.TileSize;
 
-                if(!battle.Map.IsOnMap((int)locationInTiles.X, (int)locationInTiles.Y)) // If the bullet is off the map
+                if(!battle.Map.IsOnMap((int)positionInTiles.X, (int)positionInTiles.Y)) // If the bullet is off the map
                 {
                     battle.Bullets.RemoveAt(index);
                     index--;
@@ -124,22 +158,22 @@ namespace ScrapWars3.Logic
 
                 foreach(Mech mech in battle.AllMechs)
                 {
-                    if( mech == bullet.Shooter )
+                    if(mech == bullet.Shooter)
                         continue;
 
-                    if((mech.Location - bullet.Location).LengthSquared() < GameSettings.TileSize * Math.Max(mech.Size.X, mech.Size.Y))
+                    if((mech.Position - bullet.Position).LengthSquared() < GameSettings.TileSize * Math.Max(mech.Size.X, mech.Size.Y))
                     {
-                        CollisionReport report = CollisionDetector.DetectCollision(bullet, mech);
+                        CollisionReport report = CollisionDetector.DetectCollision(bullet, mech, gameTime);
                         if(report.CollisionOccured == true)
-                        { 
-                            ScrapWarsEventManager.GetManager( ).SendEvent(new BulletHitEvent(report));
+                        {
+                            ScrapWarsEventManager.GetManager().SendEvent(new BulletHitMechEvent(mech, bullet));
                             battle.Bullets.RemoveAt(index);
                             index--;
                             break;
                         }
                     }
                 }
-            }    
+            }
         }
     }
 }

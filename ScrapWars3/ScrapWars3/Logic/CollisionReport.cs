@@ -9,25 +9,25 @@ namespace ScrapWars3.Logic
     class CollisionReport
     {
         private bool collisionOccured;
-        private Vector2 collisionLocation;
+        private Vector2 collisionPosition;
 
         public CollisionReport(CollisionObject objectOne, CollisionObject objectTwo)
         {
             collisionOccured = false;
-            collisionLocation = -Vector2.One;
+            collisionPosition = -Vector2.One;
         }
-        public void RecordCollision(Vector2 location)
+        public void RecordCollision(Vector2 position)
         {
             collisionOccured = true;
-            this.collisionLocation = location;
+            this.collisionPosition = position;
         }
         public bool CollisionOccured
         {
             get { return collisionOccured; }
         }
-        public Vector2 CollisionLocation
+        public Vector2 CollisionPosition
         {
-            get { return collisionLocation; }
+            get { return collisionPosition; }
         }
     }
 }

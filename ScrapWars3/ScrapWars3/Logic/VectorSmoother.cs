@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 namespace ScrapWars3.Logic
 {
     class VectorSmoother
-    {        
+    {
         private int currentIndex;
         private Vector2[] previousVectors;
 
@@ -16,27 +16,27 @@ namespace ScrapWars3.Logic
             previousVectors = new Vector2[numToRemeber];
             currentIndex = 0;
         }
-        public void AddVector( Vector2 newVector )
+        public void AddVector(Vector2 newVector)
         {
             previousVectors[currentIndex] = newVector;
             currentIndex++;
 
-            if(currentIndex > previousVectors.Length-1)
+            if(currentIndex > previousVectors.Length - 1)
                 currentIndex = 0;
         }
-        public void SetSmoothVector( Vector2 vector )
+        public void SetSmoothVector(Vector2 vector)
         {
             for(int index = 0; index < previousVectors.Length; index++)
                 previousVectors[index] = vector;
         }
-        public Vector2 GetSmoothVector( )
+        public Vector2 GetSmoothVector()
         {
             Vector2 meanVector = Vector2.Zero;
 
-            foreach(Vector2 vector in previousVectors)            
+            foreach(Vector2 vector in previousVectors)
                 meanVector += vector;
-            
-            return meanVector/previousVectors.Length;
+
+            return meanVector / previousVectors.Length;
         }
     }
 }

@@ -8,16 +8,16 @@ using ScrapWars3.Resources;
 
 namespace ScrapWars3.Logic
 {
-    // TODO: Unit Testing for Collision Detector
     class CollisionDetector
     {
-        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType)
+        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType, int buffer)
         {
             Rectangle mechBox = mech.BoundingRect;
-            Rectangle scaledBox = new Rectangle(mechBox.X / GameSettings.TileSize,
-                                                mechBox.Y / GameSettings.TileSize,
-                                                mechBox.Width / GameSettings.TileSize,
-                                                mechBox.Height / GameSettings.TileSize);
+            Rectangle scaledBox = new Rectangle(mechBox.X / GameSettings.TileSize - buffer,
+                                                mechBox.Y / GameSettings.TileSize - buffer,
+                                                mechBox.Width / GameSettings.TileSize + buffer,
+                                                mechBox.Height / GameSettings.TileSize + buffer);
+
             if(map.ContainsTileType(scaledBox, tileType))
             {
                 return true;
@@ -25,14 +25,14 @@ namespace ScrapWars3.Logic
 
             return false;
         }
-        internal static CollisionReport DetectCollision(Bullet bullet, Mech mech)
+        internal static CollisionReport DetectCollision(Bullet bullet, Mech mech, GameTime gameTime)
         {
-            CollisionObject bulletObject = new CollisionObject(GameTextureRepo.GetBulletTexture(bullet.BulletType), bullet.Location, 0.0f);
-            CollisionObject mechObject = new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Location - mech.Size/2.0f, mech.FacingAngle + mech.ImageFacingOffset);
+            CollisionObject bulletObject = CollisionObject.FromBullet(bullet);
+            CollisionObject mechObject = CollisionObject.FromMech(mech);
 
-            return DetectCollision(bulletObject, mechObject);
+            return DetectCollision(bulletObject, mechObject, gameTime);
         }
-        public static CollisionReport DetectCollision(CollisionObject objectOne, CollisionObject objectTwo)
+        public static CollisionReport DetectCollision(CollisionObject objectOne, CollisionObject objectTwo, GameTime gameTime)
         {
             CollisionObject mainObject;
             CollisionObject secondObject;
@@ -50,26 +50,30 @@ namespace ScrapWars3.Logic
                 secondObject = objectOne;
             }
 
-            for(int x = 0; x < mainObject.ColorArray.GetLength(0); x++)
-            {
-                for(int y = 0; y < mainObject.ColorArray.GetLength(0); y++)
-                {
-                    Vector2 colorLocation = mainObject.GetTransformedScreenLocation(x, y);
-                    Color colorOne = mainObject.ColorArray[x, y];
-                    Color colorTwo = secondObject.GetColorAtScreenLocation((int)colorLocation.X, (int)colorLocation.Y);
+            float stepSize = 0.1f;
 
-                    if(colorOne.A > 0 && colorTwo.A > 0)
+            for(int stepNum = 0; stepNum < gameTime.ElapsedGameTime.Milliseconds / 1000.0f / stepSize; stepNum++)
+            {
+                for(int x = 0; x < mainObject.ColorArray.GetLength(0); x++)
+                {
+                    for(int y = 0; y < mainObject.ColorArray.GetLength(0); y++)
                     {
-                        report.RecordCollision(colorLocation);
-                        break;
+                        Vector2 colorPosition = mainObject.GetTransformedScreenPosition(x, y);
+                        Color colorOne = mainObject.ColorArray[x, y];
+                        Color colorTwo = secondObject.GetColorAtScreenPosition((int)colorPosition.X, (int)colorPosition.Y);
+
+                        if(colorOne.A > 0 && colorTwo.A > 0)
+                        {
+                            report.RecordCollision(colorPosition);
+                            return report;
+                        }
                     }
                 }
 
-                if(report.CollisionOccured)
-                    break;
+                secondObject.Step(stepSize);
             }
 
             return report;
-        }        
+        }
     }
 }

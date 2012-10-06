@@ -51,10 +51,10 @@ namespace ScrapWars3.Screens
                              SpriteEffects.None,
                              0);
 
-            Vector2 nameLocation = new Vector2(spriteCenter.X + mechTexture.Width * GameSettings.ArtScale.X / 2 - FontRepo.selectScreenFont.MeasureString(mech.Name).X / 2,
+            Vector2 namePosition = new Vector2(spriteCenter.X + mechTexture.Width * GameSettings.ArtScale.X / 2 - FontRepo.selectScreenFont.MeasureString(mech.Name).X / 2,
                                                spriteCenter.Y + mechTexture.Height * GameSettings.ArtScale.Y);
 
-            spriteBatch.DrawString(FontRepo.selectScreenFont, mech.Name, nameLocation, team.TeamColor);
+            spriteBatch.DrawString(FontRepo.selectScreenFont, mech.Name, namePosition, team.TeamColor);
         }
     }
 }

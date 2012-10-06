@@ -58,7 +58,9 @@ namespace ScrapWars3.Logic
                 get { return stepCost; }
             }
         }
-        
+
+        private static float sqrtOfTwo = (float)Math.Sqrt(2);
+
         private static Mech mech;
         private static Rectangle mechBox;
         private static Map map;
@@ -67,18 +69,18 @@ namespace ScrapWars3.Logic
         private static SortedMultiDictionary<float, PathNode> toExplore;
         private static Vector2[] PossibleMoves;
 
-        static Pathfinder( )
+        static Pathfinder()
         {
             PossibleMoves = new Vector2[8];
 
-            PossibleMoves[0] = new Vector2(0,1);
-            PossibleMoves[1] = new Vector2(1,0);
-            PossibleMoves[2] = new Vector2(0,-1);
-            PossibleMoves[3] = new Vector2(-1,0);
-            PossibleMoves[4] = new Vector2(-1,-1);
-            PossibleMoves[5] = new Vector2(-1,1);
-            PossibleMoves[6] = new Vector2(1,-1);
-            PossibleMoves[7] = new Vector2(1,1);
+            PossibleMoves[0] = new Vector2(0, 1);
+            PossibleMoves[1] = new Vector2(1, 0);
+            PossibleMoves[2] = new Vector2(0, -1);
+            PossibleMoves[3] = new Vector2(-1, 0);
+            PossibleMoves[4] = new Vector2(-1, -1);
+            PossibleMoves[5] = new Vector2(-1, 1);
+            PossibleMoves[6] = new Vector2(1, -1);
+            PossibleMoves[7] = new Vector2(1, 1);
         }
 
         // TODO: find a more elegant way to get around this naming issue
@@ -88,19 +90,19 @@ namespace ScrapWars3.Logic
             map = theMap;
             goal = theGoal;
 
-            mechBox = new Rectangle(0,0,(int)theMech.Size.X/GameSettings.TileSize + 1, (int)theMech.Size.Y/GameSettings.TileSize + 1);
+            mechBox = new Rectangle(0, 0, (int)theMech.Size.X / GameSettings.TileSize + 1, (int)theMech.Size.Y / GameSettings.TileSize + 1);
 
-            Vector2 startTile = new Vector2((int)mech.Location.X/GameSettings.TileSize, (int)mech.Location.Y/GameSettings.TileSize);
+            Vector2 startTile = new Vector2((int)mech.Position.X / GameSettings.TileSize, (int)mech.Position.Y / GameSettings.TileSize);
 
             PathNode start = new PathNode(startTile);
 
             // convert the goal to tiles
-            goal.X = (int)goal.X/GameSettings.TileSize;
-            goal.Y = (int)goal.Y/GameSettings.TileSize;
+            goal.X = (int)goal.X / GameSettings.TileSize;
+            goal.Y = (int)goal.Y / GameSettings.TileSize;
 
-            if(map[(int)goal.X, (int)goal.Y] == Tile.Water)               
-                return start.GetPath( ); // If the goal is water, it can't be reached, return a meaningless path            
-            
+            if(map[(int)goal.X, (int)goal.Y] == Tile.Water)
+                return start.GetPath(); // If the goal is water, it can't be reached, return a meaningless path            
+
             explored = new HashSet<Vector2>();
             toExplore = new SortedMultiDictionary<float, PathNode>();
 
@@ -109,35 +111,37 @@ namespace ScrapWars3.Logic
 
             PathNode currentPath = start;
             bool found = false;
-            while(toExplore.Count > 0 && currentPath.StepCost < map.Width*map.Height)
+            while(toExplore.Count > 0 && currentPath.StepCost < map.Width * map.Height)
             {
-                currentPath = toExplore.Pop( );
+                currentPath = toExplore.Pop();
                 if(currentPath.Step == goal)
-                { 
+                {
                     found = true;
                     break;
-                }                
+                }
                 ExploreNode(currentPath);
             }
 
             if(found)
-                return currentPath.GetPath( );
+                return currentPath.GetPath();
             else
-                return start.GetPath( );
+                return start.GetPath();
         }
 
         private static void ExploreNode(PathNode node)
         {
             foreach(Vector2 move in PossibleMoves)
             {
-                Vector2 stepToConcider = node.Step + move;                
+                Vector2 stepToConcider = node.Step + move;
 
                 if(map.IsOnMap((int)stepToConcider.X, (int)stepToConcider.Y) &&
                    CanStandOnTile(stepToConcider) &&
                    !explored.Contains(stepToConcider))
                 {
+                    float stepCost = (Math.Abs(move.X) == Math.Abs(move.Y)) ? sqrtOfTwo : 1;
+
                     explored.Add(stepToConcider);
-                    PathNode newNode = new PathNode(node, stepToConcider, 1);
+                    PathNode newNode = new PathNode(node, stepToConcider, stepCost);
                     toExplore.Add(GetCost(newNode), newNode);
                 }
             }
@@ -148,8 +152,8 @@ namespace ScrapWars3.Logic
         }
         private static bool CanStandOnTile(Vector2 location)
         {
-            mechBox.X = (int)location.X - (int)mech.Size.X/GameSettings.TileSize/2 - 1;
-            mechBox.Y = (int)location.Y - (int)mech.Size.Y/GameSettings.TileSize/2 - 1;
+            mechBox.X = (int)location.X - (int)mech.Size.X / GameSettings.TileSize / 2 - 1;
+            mechBox.Y = (int)location.Y - (int)mech.Size.Y / GameSettings.TileSize / 2 - 1;
 
             return !map.ContainsTileType(mechBox, Tile.Water);
         }
