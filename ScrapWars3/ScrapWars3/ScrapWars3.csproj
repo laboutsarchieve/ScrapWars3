@@ -115,7 +115,8 @@
     <Compile Include="Data\Event\BulletFiredEvent.cs" />
     <Compile Include="Data\Event\MechDiedEvent.cs" />
     <Compile Include="Data\Gun.cs" />
-    <Compile Include="Logic\Behaviors\DebugBehavior.cs" />
+    <Compile Include="Logic\Behaviors\DebugAttackBehavior.cs" />
+    <Compile Include="Logic\Behaviors\DebugMoveBehavior.cs" />
     <Compile Include="Data\Map.cs" />
     <Compile Include="Data\MechFactory.cs" />
     <Compile Include="Data\MechType.cs" />
@@ -193,7 +194,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Logic\Cards\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

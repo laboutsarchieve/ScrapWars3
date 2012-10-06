@@ -12,9 +12,10 @@ namespace ScrapWars3.Logic
     // TODO: Have seperate moving and shooting AI
     class MechAiStateMachine
     {
-        private BehaviorState previousBehavior;
-        private BehaviorState behavior;
+        private BehaviorState moveBehavior;        
+        private BehaviorState attackBehavior;        
         private Mech owner;
+        private Mech currentTarget;
         private BehaviorState globalBehavior;
         private Vector2 currentTargetPosition;
         private float desiredDistance;
@@ -24,18 +25,18 @@ namespace ScrapWars3.Logic
 
         private static Random rng = new Random();
 
-        public MechAiStateMachine(Mech owner, BehaviorState startBehavior, BehaviorState globalBehavior)
+        public MechAiStateMachine(Mech owner, BehaviorState startMoveBehavior, BehaviorState startAttackBehavior, BehaviorState globalBehavior)
         {
-            this.owner = owner;
-            previousBehavior = startBehavior;
-            this.behavior = startBehavior;
+            this.owner = owner;            
+            this.moveBehavior = startMoveBehavior;
+            this.attackBehavior = startAttackBehavior;
             this.globalBehavior = globalBehavior;
         }
-        public MechAiStateMachine(Mech owner, BehaviorState startBehavior)
+        public MechAiStateMachine(Mech owner,  BehaviorState startMoveBehavior, BehaviorState startAttackBehavior)
         {
-            this.owner = owner;
-            previousBehavior = startBehavior;
-            this.behavior = startBehavior;
+            this.owner = owner;            
+            this.moveBehavior = startMoveBehavior;
+            this.attackBehavior = startAttackBehavior;
             this.globalBehavior = new DummyBehavior();
 
             rng = new Random();
@@ -43,7 +44,8 @@ namespace ScrapWars3.Logic
         internal void Think(GameTime gameTime, Battle battle)
         {
             globalBehavior.Update(this, gameTime, battle);
-            behavior.Update(this, gameTime, battle);
+            attackBehavior.Update(this, gameTime, battle);
+            moveBehavior.Update(this, gameTime, battle);
 
             if(followingPath)
             {
@@ -60,11 +62,6 @@ namespace ScrapWars3.Logic
                     currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
                 }
             }
-        }
-        public void ChangeBehavior(BehaviorState newBehavior)
-        {
-            previousBehavior = newBehavior;
-            behavior = newBehavior;
         }
         public Vector2 CurrentTargetPosition
         {
@@ -92,10 +89,6 @@ namespace ScrapWars3.Logic
                 }
             }
         }
-        internal BehaviorState Behavior
-        {
-            get { return behavior; }
-        }
         internal BehaviorState GlobalBehavior
         {
             get { return globalBehavior; }
@@ -103,6 +96,11 @@ namespace ScrapWars3.Logic
         internal Mech Owner
         {
             get { return owner; }
+        }
+        internal Mech CurrentTarget
+        {
+            get { return currentTarget; }
+            set { currentTarget = value; }
         }
         public bool FollowingPath
         {
@@ -118,6 +116,16 @@ namespace ScrapWars3.Logic
         {
             get { return rng; }
             set { rng = value; }
+        }
+        internal BehaviorState MoveBehavior
+        {
+            get { return moveBehavior; }
+            set { moveBehavior = value; }
+        }
+        internal BehaviorState AttackBehavior
+        {
+            get { return attackBehavior; }
+            set { attackBehavior = value; }
         }
     }
 }

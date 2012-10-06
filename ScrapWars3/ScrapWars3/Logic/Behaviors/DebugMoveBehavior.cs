@@ -8,29 +8,17 @@ using ScrapWars3.Screens;
 
 namespace ScrapWars3.Logic.Behaviors
 {
-    class DebugBehavior : BehaviorState
+    class DebugMoveBehavior : BehaviorState
     {
-        private Mech currentTarget;
         private int stepsSincePathfinder;
 
         public void Update(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
         {
-            if(battle.CurrentBattleState == BattleState.Unfinished)                
-            {
-                if(currentTarget == null || !currentTarget.IsAlive)
-                { 
-                    ChooseTarget(stateMachine, battle);
-
-                    if(currentTarget != null)
-                        Pathfind( stateMachine, battle);
-                }
-
-                PlanAttack( stateMachine, gameTime, battle);
-            }
+            PlanMovementAttack( stateMachine, gameTime, battle);
         }
-        private void PlanAttack(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
+        private void PlanMovementAttack(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
         {
-            if(currentTarget != null)
+            if(stateMachine.CurrentTarget != null)
             { 
                 if(stepsSincePathfinder > 100 && stateMachine.Rng.NextDouble() > 0.5) // This randomization helps make the mechs pathfind on diffrent cycles
                 {
@@ -41,21 +29,20 @@ namespace ScrapWars3.Logic.Behaviors
 
                 if(stateMachine.Rng.NextDouble() > 0.99)
                 {
-                    stateMachine.Owner.FacePoint(currentTarget.Position);
+                    stateMachine.Owner.FacePoint(stateMachine.CurrentTarget.Position);
                     stateMachine.Owner.Shoot();
                 }
             }
         }
         private void Pathfind(MechAiStateMachine stateMachine, Battle battle)
         {
-            List<Vector2> path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, currentTarget.Position);
+            List<Vector2> path = Pathfinder.FindPath(stateMachine.Owner, battle.Map, stateMachine.CurrentTarget.Position);
             if(path.Count > 0)
                 TrimPath(path);
             stateMachine.Path = path;
             stateMachine.NodeOnPath = 0;
             stepsSincePathfinder = 0;
         }
-
         private void TrimPath(List<Vector2> path)
         {
             List<int> toRemove = new List<int>();
@@ -74,31 +61,6 @@ namespace ScrapWars3.Logic.Behaviors
             for(int index = 0; index < toRemove.Count; index++)
             {
                 path.RemoveAt(toRemove[index] - index);
-            }
-        }
-
-        private void ChooseTarget(MechAiStateMachine stateMachine, Battle battle)
-        {            
-            Team enemyTeam = battle.GetOtherTeam(stateMachine.Owner.Team);
-
-            List<Mech> possibleTargets = new List<Mech>( );
-            foreach(Mech mech in enemyTeam.Mechs)
-            {
-                if(mech.IsAlive)
-                {
-                    possibleTargets.Add(mech);                    
-                }
-            }
-
-            if(possibleTargets.Count == 0)
-            {
-                currentTarget = null;
-                stateMachine.Path = new List<Vector2>( );
-            }
-            else
-            { 
-                int enemyNumber = stateMachine.Rng.Next(0, possibleTargets.Count);
-                currentTarget = possibleTargets[enemyNumber];            
             }
         }
     }

@@ -9,14 +9,17 @@ namespace ScrapWars3.Data
 {
     class Gun
     {
-        private int damage;
+        private int damage;        
         private float bulletSpeed;
-        private BulletType bulletType;
+        private float range;
 
-        public Gun(int damage, float bulletSpeed, BulletType bulletType)
+        private BulletType bulletType;
+        
+        public Gun(int damage, float bulletSpeed, float range, BulletType bulletType)
         {
             this.damage = damage;
             this.bulletSpeed = bulletSpeed;
+            this.range = range;
             this.bulletType = bulletType;
         }
         public void Fire(Object shooter, Vector2 position, Vector2 direction)
@@ -24,7 +27,7 @@ namespace ScrapWars3.Data
             if(direction.LengthSquared() != 1)
                 direction.Normalize();
 
-            Bullet bullet = new Bullet(shooter, damage, bulletType, position, bulletSpeed * direction);
+            Bullet bullet = new Bullet(shooter, damage, range, bulletType, position, bulletSpeed, direction);
             ScrapWarsEventManager.GetManager().SendEvent(new BulletFiredEvent(bullet));
         }
         internal BulletType BulletType
@@ -35,9 +38,13 @@ namespace ScrapWars3.Data
         {
             get { return damage; }
         }
+        public float Range
+        {
+            get { return range; }            
+        }
         internal static Gun DefaultGun()
         {
-            return new Gun(5, 1000, BulletType.Basic);
+            return new Gun(5, 1000, 500,  BulletType.Basic);
         }
     }
 }

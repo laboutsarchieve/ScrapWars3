@@ -86,7 +86,7 @@ namespace ScrapWars3.Data
 
             size = GameSettings.GetMechSize(mechType);
 
-            this.brain = new MechAiStateMachine(this, new DebugBehavior());
+            this.brain = new MechAiStateMachine(this, new DebugMoveBehavior(), new DebugAttackBehavior( ));
 
             mechColor = color;
 
@@ -107,7 +107,7 @@ namespace ScrapWars3.Data
         }
         private void Move(GameTime gameTime, Battle battle)
         {
-            // TODO: add velocity attribute and move by changing acceleration
+            // TODO: add velocity attribute
 
             Vector2 toTarget = brain.CurrentTargetPosition - position;
             float distance = toTarget.Length();

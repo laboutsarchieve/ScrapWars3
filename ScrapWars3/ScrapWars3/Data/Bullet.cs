@@ -10,21 +10,34 @@ namespace ScrapWars3.Data
     {
         private object shooter;
         private int damage;
-        private BulletType bulletType;
+        private float range;
+        private float distTraveled;        
+        private float speed;
         private Vector2 position;
-        private Vector2 velocity;
+        private Vector2 direction;
+        private BulletType bulletType;
+        
 
-        public Bullet(Object shooter, int damage, BulletType bulletType, Vector2 startPosition, Vector2 velocity)
+        public Bullet(Object shooter, int damage, float range, BulletType bulletType, Vector2 startPosition, float speed, Vector2 direction)
         {
+            distTraveled = 0;
+
             this.shooter = shooter;
             this.damage = damage;
+            this.range = range;
+            this.speed = speed;
             this.bulletType = bulletType;
             this.position = startPosition;
-            this.velocity = velocity;
-        }
+            this.direction = direction;
+        }        
         public void Update(GameTime gameTime)
         {
-            position += velocity * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            if(!RangeExceeded)
+            { 
+                Vector2 movement = speed*direction* gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                distTraveled +=  speed*gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+                position += movement;           
+            }
         }
         public object Shooter
         {
@@ -36,7 +49,7 @@ namespace ScrapWars3.Data
         }
         public Vector2 Velocity
         {
-            get { return velocity; }
+            get { return speed*direction; }
         }
         internal BulletType BulletType
         {
@@ -45,6 +58,10 @@ namespace ScrapWars3.Data
         public int Damage
         {
             get { return damage; }
+        }
+        public bool RangeExceeded
+        {
+            get{ return distTraveled > range; }
         }
     }
 }

@@ -130,9 +130,17 @@ namespace ScrapWars3.Logic
         }
         private void UpdateBullets(GameTime gameTime)
         {
-            foreach(Bullet bullet in battle.Bullets)
+            for(int index = 0; index < battle.Bullets.Count; index++)
             {
+                Bullet bullet = battle.Bullets[index];
                 bullet.Update(gameTime);
+
+                if(bullet.RangeExceeded)
+                {
+                    battle.Bullets.RemoveAt(index);
+                    index--;
+                }
+
             }
         }
         private void HandleCollisions(GameTime gameTime)
