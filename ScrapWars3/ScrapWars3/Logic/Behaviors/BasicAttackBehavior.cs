@@ -24,17 +24,17 @@ namespace ScrapWars3.Logic.Behaviors
         {
             if(battle.CurrentBattleState == BattleState.Unfinished)
             {
-                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble() > 0.999)
+                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble() > 0.99999)
                 {
                     ChooseTarget(stateMachine, battle);
                 }
 
                 float gunRangeSq = stateMachine.Owner.MainGun.Range * stateMachine.Owner.MainGun.Range;
 
-                if(stateMachine.DistanceToMainEnemySq() < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
+                if (stateMachine.DistanceToMainEnemySq() < gunRangeSq)
                 {
                     stateMachine.Owner.FacePoint(stateMachine.CurrentMainEnemy.Position);
-                    stateMachine.Owner.Shoot();
+                    stateMachine.Owner.Shoot((int)gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace ScrapWars3.Logic.Behaviors
                 int enemyNumber = stateMachine.Rng.Next(0, possibleTargets.Count);
                 stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];
 
-                stateMachine.DesiredDistance = stateMachine.Owner.MainGun.Range;
+                stateMachine.DesiredDistance = stateMachine.Owner.MainGun.Range*0.75f;
             }
         }
     }

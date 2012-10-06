@@ -154,16 +154,16 @@ namespace ScrapWars3.Logic
             switch(tileType)
             {
                 case Tile.Grass:
-                    multiplier = 1f;
+                    multiplier = 1.0f;
                     break;
                 case Tile.Dirt:
-                    multiplier = 1.5f;
+                    multiplier = 2.0f;
                     break;
                 case Tile.Sand:
-                    multiplier = 2f;
+                    multiplier = 3.0f;
                     break;
                 default:                    
-                    multiplier = 100;
+                    multiplier = 100.0f;
                     break;
             }
 

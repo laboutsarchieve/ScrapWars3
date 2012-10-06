@@ -31,10 +31,10 @@ namespace ScrapWars3.Logic.Behaviors
 
                 float gunRangeSq = stateMachine.Owner.MainGun.Range * stateMachine.Owner.MainGun.Range;
 
-                if(stateMachine.DistanceToMainEnemySq() < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
+                if(stateMachine.DistanceToMainEnemySq() < gunRangeSq )
                 {
                     stateMachine.Owner.FacePoint(stateMachine.CurrentMainEnemy.Position);
-                    stateMachine.Owner.Shoot();
+                    stateMachine.Owner.Shoot((int)gameTime.TotalGameTime.TotalMilliseconds);
                 }
             }
 

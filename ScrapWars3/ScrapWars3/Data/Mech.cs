@@ -135,14 +135,34 @@ namespace ScrapWars3.Data
         {
             Move(gameTime, battle);
         }
-        public void Shoot()
+        public void Shoot(int time)
         {
-            mainGun.Fire(this, position + facing * size.X, facing);
+            mainGun.Fire(this, position + facing * size.X, facing, time);
         }
         private void Move(GameTime gameTime, Battle battle)
         {
             // TODO: add velocity attribute     
             // TODO: flocking
+
+            float effectiveSpeed = maxSpeed;
+
+            Tile mainTile = battle.Map[(int)position.X / GameSettings.TileSize, (int)position.Y / GameSettings.TileSize];
+
+            switch(mainTile)
+            {
+                case Tile.Grass:
+                    effectiveSpeed *= 1;
+                    break;
+                case Tile.Dirt:
+                    effectiveSpeed *= 0.75f;
+                    break;
+                case Tile.Sand:
+                    effectiveSpeed *= 0.5f;
+                    break;
+                default:
+                    effectiveSpeed *= 0.2f;
+                    break;
+            }
 
             Vector2 toTarget = brain.CurrentTargetPosition - position;
             float distance = toTarget.Length();
@@ -154,7 +174,7 @@ namespace ScrapWars3.Data
 
             toTarget.Normalize();
             ChangeFacing(toTarget);
-            toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            toTarget *= effectiveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             Position += toTarget;
 
