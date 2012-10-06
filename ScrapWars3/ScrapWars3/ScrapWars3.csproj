@@ -115,8 +115,8 @@
     <Compile Include="Data\Event\BulletFiredEvent.cs" />
     <Compile Include="Data\Event\MechDiedEvent.cs" />
     <Compile Include="Data\Gun.cs" />
-    <Compile Include="Logic\Behaviors\DebugAttackBehavior.cs" />
-    <Compile Include="Logic\Behaviors\DebugMoveBehavior.cs" />
+    <Compile Include="Logic\Behaviors\BasicAttackBehavior.cs" />
+    <Compile Include="Logic\Behaviors\BasicMoveBehavior.cs" />
     <Compile Include="Data\Map.cs" />
     <Compile Include="Data\MechFactory.cs" />
     <Compile Include="Data\MechType.cs" />

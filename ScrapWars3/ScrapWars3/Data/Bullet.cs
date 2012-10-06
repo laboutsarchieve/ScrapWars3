@@ -8,7 +8,7 @@ namespace ScrapWars3.Data
 {
     class Bullet
     {
-        private object shooter;
+        private Team shooterTeam;
         private int damage;
         private float range;
         private float distTraveled;        
@@ -16,16 +16,17 @@ namespace ScrapWars3.Data
         private Vector2 position;
         private Vector2 direction;
         private BulletType bulletType;
-        
+        private float bulletScale;
 
-        public Bullet(Object shooter, int damage, float range, BulletType bulletType, Vector2 startPosition, float speed, Vector2 direction)
+        public Bullet(Team shooterTeam, int damage, float range, float bulletScale, BulletType bulletType, Vector2 startPosition, float speed, Vector2 direction)
         {
             distTraveled = 0;
 
-            this.shooter = shooter;
+            this.shooterTeam = shooterTeam;
             this.damage = damage;
             this.range = range;
-            this.speed = speed;
+            this.speed = speed;                        
+            this.bulletScale = bulletScale;
             this.bulletType = bulletType;
             this.position = startPosition;
             this.direction = direction;
@@ -39,9 +40,9 @@ namespace ScrapWars3.Data
                 position += movement;           
             }
         }
-        public object Shooter
+        public Team ShooterTeam
         {
-            get { return shooter; }
+            get { return shooterTeam; }
         }
         public Vector2 Position
         {
@@ -58,6 +59,10 @@ namespace ScrapWars3.Data
         public int Damage
         {
             get { return damage; }
+        }
+        public float BulletScale
+        {
+            get { return bulletScale; }            
         }
         public bool RangeExceeded
         {

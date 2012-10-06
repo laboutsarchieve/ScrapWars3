@@ -14,7 +14,7 @@ namespace ScrapWars3.Data
         private int logoIndex;
         private Color logoColor;
 
-        private List<Mech> mechs;
+        private List<Mech> mechs;        
 
         public Team(string name, int logoIndex, Color logoColor)
         {

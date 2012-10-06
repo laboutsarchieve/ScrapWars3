@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace ScrapWars3.Data
 {
@@ -12,18 +13,36 @@ namespace ScrapWars3.Data
         public static Mech GetBaseMechFromType(MechType type)
         {
             // TODO: Set the each mech's stats based on its type
+            Mech mech;
             switch(type)
             {
                 case MechType.DebugMechA:
-                    return new Mech("DebugMechA", GetNextId(), type);
+                    {
+                        mech = new Mech("DebugMechA", GetNextId(), 20, 4*GameSettings.TileSize, type);
+                        mech.MainGun = new Gun(5, 6*GameSettings.TileSize, 20*GameSettings.TileSize, 1, BulletType.Basic);
+                        break;
+                    }
                 case MechType.DebugMechB:
-                    return new Mech("DebugMechB", GetNextId(), type);
+                    {
+                        mech = new Mech("DebugMechB", GetNextId(), 40, 3*GameSettings.TileSize, type);
+                        mech.MainGun = new Gun(10, 4*GameSettings.TileSize, 10*GameSettings.TileSize, 2, BulletType.Basic);
+                        break;
+                    }
                 case MechType.DebugMechC:
-                    return new Mech("DebugMechC", GetNextId(), type);
+                    {
+                        mech = new Mech("DebugMechC", GetNextId(), 10, 5*GameSettings.TileSize, type);
+                        mech.MainGun = new Gun(1, 8*GameSettings.TileSize, 30*GameSettings.TileSize, 0.5f, BulletType.Basic);
+                        break;
+                    }
                 default:
-                    return new Mech("Error", -1, MechType.Error);
+                    { 
+                        mech = new Mech("Error", -1, 0, 0, MechType.Error);
+                        break;
+                    }
             }
-        }
+            mech.SaveAsDefaultState( );
+            return mech;
+        }        
         private static int GetNextId()
         {
             id++;

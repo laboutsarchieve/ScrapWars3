@@ -11,5 +11,15 @@ namespace ScrapWars3.Logic.Behaviors
         {
             // Do nothing
         }
+
+        public void EnterState(MechAiStateMachine stateMachine, Screens.Battle battle)
+        {
+            
+        }
+
+        public void ExitState(MechAiStateMachine stateMachine, Screens.Battle battle)
+        {
+            
+        }
     }
 }

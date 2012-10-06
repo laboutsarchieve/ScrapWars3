@@ -34,17 +34,17 @@ namespace ScrapWars3.Logic
             {
                 for(int y = 0; y < texture.Height; y++)
                 {
-                    colorArray[x, y] = flatArray[x * texture.Width + y];
+                    colorArray[y, x] = flatArray[x * texture.Width + y];
                 }
             }
 
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
         }
         public void Step(float numSeconds)
         {
             upperLeft += velocity * numSeconds;
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
 
             UpdateTransformation();
@@ -78,11 +78,12 @@ namespace ScrapWars3.Logic
         }
         public static CollisionObject FromMech(Mech mech)
         {
-            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Position - mech.Size / 2, Vector2.Zero, mech.FacingAngle);
+            return new CollisionObject(GameTextureRepo.GetMechTexture(mech.MechType), mech.Position - mech.Size/2, Vector2.Zero, mech.FacingAngle+mech.ImageFacingOffset);
         }
         public static CollisionObject FromBullet(Bullet bullet)
         {
-            return new CollisionObject(GameTextureRepo.GetBulletTexture(bullet.BulletType), bullet.Position, bullet.Velocity, 0.0f);
+            Texture2D bulletTexture = GameTextureRepo.GetScaledTexture(GameTextureRepo.GetBulletTexture(bullet.BulletType), bullet.BulletScale);
+            return new CollisionObject(bulletTexture, bullet.Position, bullet.Velocity, 0.0f);
         }
     }
 }

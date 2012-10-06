@@ -12,35 +12,43 @@ namespace ScrapWars3.Logic.Behaviors
     {
         private Mech currentTarget;
 
+        public void EnterState(MechAiStateMachine stateMachine, Battle battle)
+        {
+            ChooseTarget(stateMachine, battle);
+        }
+        public void ExitState(MechAiStateMachine stateMachine, Battle battle)
+        {
+            // Nothing to do
+        }
         public void Update(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
         {
-            if(battle.CurrentBattleState == BattleState.Unfinished)                
+            if(battle.CurrentBattleState == BattleState.Unfinished)
             {
-                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble( ) > 0.999)
-                { 
-                    ChooseTarget(stateMachine, battle);                    
+                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble() > 0.999)
+                {
+                    ChooseTarget(stateMachine, battle);
                 }
 
-                float gunRangeSq = stateMachine.Owner.MainGun.Range*stateMachine.Owner.MainGun.Range;
+                float gunRangeSq = stateMachine.Owner.MainGun.Range * stateMachine.Owner.MainGun.Range;
 
-                if(stateMachine.DistanceToMainEnemySq( ) < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
+                if(stateMachine.DistanceToMainEnemySq() < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
                 {
                     stateMachine.Owner.FacePoint(stateMachine.CurrentMainEnemy.Position);
                     stateMachine.Owner.Shoot();
                 }
             }
-            
+
         }
         private void ChooseTarget(MechAiStateMachine stateMachine, Battle battle)
-        {            
+        {
             Team enemyTeam = battle.GetOtherTeam(stateMachine.Owner.Team);
 
-            List<Mech> possibleTargets = new List<Mech>( );
+            List<Mech> possibleTargets = new List<Mech>();
             foreach(Mech mech in enemyTeam.Mechs)
             {
                 if(mech.IsAlive)
                 {
-                    possibleTargets.Add(mech);                    
+                    possibleTargets.Add(mech);
                 }
             }
 
@@ -50,11 +58,11 @@ namespace ScrapWars3.Logic.Behaviors
                 stateMachine.FollowingPath = false;
             }
             else
-            { 
+            {
                 int enemyNumber = stateMachine.Rng.Next(0, possibleTargets.Count);
-                stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];        
-    
-                stateMachine.DesiredDistance = stateMachine.CurrentMainEnemy.MainGun.Range; 
+                stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];
+
+                stateMachine.DesiredDistance = stateMachine.Owner.MainGun.Range;
             }
         }
     }

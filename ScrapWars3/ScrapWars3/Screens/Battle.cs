@@ -55,12 +55,12 @@ namespace ScrapWars3.Screens
             allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
             {
-                mech.Restore();
+                mech.RestoreDefaultState( );
                 allMechs.Add(mech);
             }
             foreach(Mech mech in teamTwo.Mechs)
             {
-                mech.Restore();
+                mech.RestoreDefaultState( );
                 allMechs.Add(mech);
             }
 

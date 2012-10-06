@@ -16,6 +16,8 @@ namespace ScrapWars3.Data
     // TODO: Collect stats in a structure
     class Mech
     {
+        private Mech defaultState;
+        private Mech previousState;
         private MechType mechType;
         private MechAiStateMachine brain;
         private string name;
@@ -29,21 +31,80 @@ namespace ScrapWars3.Data
         private VectorSmoother smoothFacing;
         private Vector2 position;
         private Vector2 size;
-        private Gun mainGun;
+        private Gun mainGun;        
 
         private Color mechColor;
         private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
-        // The hp and speed settings here are temporary defaults
-        public Mech(string name, int mechId, MechType mechType)
+        
+        public Mech(string name, int mechId, int maxHp, int speed, MechType mechType)
         {
-            Init(name, mechId, mechType, 20, 80, Color.White);
+            Init(name, mechId, mechType, maxHp, speed, Color.White);
             Subscribe( );
         }
-        public Mech(string name, int mechId, MechType mechType, Color color)
+        public Mech(string name, int mechId, int maxHp, int speed, MechType mechType, Color color)
         {
-            Init(name, mechId, mechType, 20, 80, color);
+            Init(name, mechId, mechType, maxHp, speed, color);
             Subscribe( );
+        }
+        public Mech( Mech source, int id )
+        {
+            name = source.name;
+            this.mechId = id;
+            mainGun = source.MainGun;
+            maxSpeed = source.MaxSpeed;
+            currHp = source.currHp;
+            maxHp = source.maxHp;
+            mechType = source.mechType;
+            mechColor = source.mechColor;
+            size = source.size;
+            brain = new MechAiStateMachine(source.brain);
+        }
+        private void Init(string name, int mechId, MechType mechType, int maxHp, int maxSpeed, Color color)
+        {
+            this.name = name;
+            this.mechType = mechType;
+            this.mechId = mechId;
+            this.maxHp = maxHp;
+            this.currHp = maxHp;
+            this.maxSpeed = maxSpeed;
+
+            Position = Vector2.Zero;
+            facing = Vector2.UnitX;
+            smoothFacing = new VectorSmoother(20);
+            smoothFacing.SetSmoothVector(facing);
+
+            size = GameSettings.GetMechSize(mechType);
+
+            this.brain = new MechAiStateMachine(this, new BasicMoveBehavior(), new BasicAttackBehavior( ));
+
+            mechColor = color;
+            mainGun = Gun.DefaultGun;
+        }
+        public void SaveAsDefaultState( )
+        {
+            defaultState = new Mech(this, -1);
+        }
+        public void SaveAsCurrentState( )
+        {
+            previousState = new Mech(this, -1);
+        }
+        public void RestoreDefaultState( )
+        {
+            name = defaultState.name;
+            mainGun = defaultState.MainGun;
+            maxSpeed = defaultState.MaxSpeed;
+            currHp = defaultState.currHp;
+            maxHp = defaultState.maxHp;
+            mechType = defaultState.mechType;
+        }
+        public void RestorePreviousState(bool restoreOldHp)
+        {
+            name = previousState.name;
+            mainGun = previousState.MainGun;
+            maxSpeed = previousState.MaxSpeed;
+            maxHp = previousState.maxHp;
+            mechType = previousState.mechType;
         }
         ~Mech()
         {
@@ -66,40 +127,13 @@ namespace ScrapWars3.Data
 
             return false;
         }
-        public void Restore()
-        {
-            Init(name, mechId, mechType, 20, 80, mechColor);
-        }
-        private void Init(string name, int mechId, MechType mechType, int maxHp, int maxSpeed, Color color)
-        {
-            this.name = name;
-            this.mechType = mechType;
-            this.mechId = mechId;
-            this.maxHp = maxHp;
-            this.currHp = maxHp;
-            this.maxSpeed = maxSpeed;
-
-            Position = Vector2.Zero;
-            facing = Vector2.UnitX;
-            smoothFacing = new VectorSmoother(20);
-            smoothFacing.SetSmoothVector(facing);
-
-            size = GameSettings.GetMechSize(mechType);
-
-            this.brain = new MechAiStateMachine(this, new BasicMoveBehavior(), new BasicAttackBehavior( ));
-
-            mechColor = color;
-
-            mainGun = Gun.DefaultGun();
-        }
         public void Think(GameTime gameTime, Battle battle)
         {
             brain.Think(gameTime, battle);
         }
         public void Update(GameTime gameTime, Battle battle)
         {
-            if(brain.FollowingPath)
-                Move(gameTime, battle);
+            Move(gameTime, battle);
         }
         public void Shoot()
         {
@@ -107,7 +141,8 @@ namespace ScrapWars3.Data
         }
         private void Move(GameTime gameTime, Battle battle)
         {
-            // TODO: add velocity attribute            
+            // TODO: add velocity attribute     
+            // TODO: flocking
 
             Vector2 toTarget = brain.CurrentTargetPosition - position;
             float distance = toTarget.Length();
@@ -121,7 +156,10 @@ namespace ScrapWars3.Data
             ChangeFacing(toTarget);
             toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             
-            Position += toTarget;          
+            Position += toTarget;
+
+            if(battle.Map.ContainsTileType(BoundingRect, Tile.Water))
+                position -= toTarget;
         }
 
         private void ChangeFacing(Vector2 target)
@@ -193,7 +231,7 @@ namespace ScrapWars3.Data
         {
             get { return IMAGE_FACING_OFFSET; }
         }
-        internal Team Team
+        public Team Team
         {
             get { return team; }
             set { team = value; }

@@ -148,7 +148,26 @@ namespace ScrapWars3.Logic
         }
         private static float GetCost(PathNode node)
         {
-            return (node.Step - goal).Length() + node.StepCost;
+            Tile tileType = map[(int)node.Step.X, (int)node.Step.Y];
+            float multiplier = 1;
+
+            switch(tileType)
+            {
+                case Tile.Grass:
+                    multiplier = 1f;
+                    break;
+                case Tile.Dirt:
+                    multiplier = 1.5f;
+                    break;
+                case Tile.Sand:
+                    multiplier = 2f;
+                    break;
+                default:                    
+                    multiplier = 100;
+                    break;
+            }
+
+            return (node.Step - goal).Length() + node.StepCost * multiplier;
         }
         private static bool CanStandOnTile(Vector2 location)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using ScrapWars3.Data;
+using Microsoft.Xna.Framework;
 
 namespace ScrapWars3.Resources
 {
@@ -27,6 +28,9 @@ namespace ScrapWars3.Resources
         public static Texture2D basicBullet;
         public static Texture2D pixel;
 
+        public static GraphicsDevice graphics; // TODO: move this and the scale texture function to another class
+        public static Dictionary<float, Texture2D> scaledBulletCache = new Dictionary<float,Texture2D>( );
+
         public static Texture2D GetMechTexture(MechType mechType)
         {
             // Big Fat
@@ -41,6 +45,24 @@ namespace ScrapWars3.Resources
                 default:
                     return errorTexture;
             }
+        }
+        public static Texture2D GetScaledTexture(Texture2D texture, float scale)
+        {
+            if(!scaledBulletCache.ContainsKey(scale))
+            {
+                RenderTarget2D target = new RenderTarget2D(graphics, (int)(texture.Width * scale), (int)(texture.Height * scale));
+
+                graphics.SetRenderTarget(target);
+                SpriteBatch spriteBatch = new SpriteBatch(graphics);
+                spriteBatch.Begin();
+                spriteBatch.Draw(texture, target.Bounds, Color.White);
+                spriteBatch.End();
+                graphics.SetRenderTarget(null);
+
+                scaledBulletCache[scale] = (Texture2D)target;
+            }
+
+            return scaledBulletCache[scale];
         }
 
         internal static Texture2D GetBulletTexture(BulletType bulletType)

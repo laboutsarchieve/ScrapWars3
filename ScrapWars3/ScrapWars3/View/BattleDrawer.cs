@@ -92,10 +92,10 @@ namespace ScrapWars3.View
                 spriteBatch.Draw(GameTextureRepo.GetBulletTexture(bullet.BulletType),
                                  screenPosition,
                                  null,
-                                 Color.Black,
+                                 bullet.ShooterTeam.TeamColor,
                                  0.0f,
                                  Vector2.Zero,
-                                 GameSettings.ArtScale,
+                                 GameSettings.ArtScale * bullet.BulletScale,
                                  SpriteEffects.None,
                                  0.5f);
             }

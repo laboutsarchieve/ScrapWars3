@@ -166,7 +166,7 @@ namespace ScrapWars3.Logic
 
                 foreach(Mech mech in battle.AllMechs)
                 {
-                    if(mech == bullet.Shooter)
+                    if( !mech.IsAlive || bullet.ShooterTeam.Mechs.Contains(mech))
                         continue;
 
                     if((mech.Position - bullet.Position).LengthSquared() < GameSettings.TileSize * Math.Max(mech.Size.X, mech.Size.Y))

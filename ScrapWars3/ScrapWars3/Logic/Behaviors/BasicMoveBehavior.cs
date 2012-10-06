@@ -12,6 +12,16 @@ namespace ScrapWars3.Logic.Behaviors
     {
         private int stepsSincePathfinder;        
 
+        public void EnterState(MechAiStateMachine stateMachine, Battle battle)
+        {
+            if(stateMachine.CurrentMainEnemy != null)
+                Pathfind(stateMachine, battle);
+        }
+        public void ExitState(MechAiStateMachine stateMachine, Battle battle)
+        {
+            stateMachine.FollowingPath = false;
+            stateMachine.Path = new List<Vector2>( );
+        }
         public void Update(MechAiStateMachine stateMachine, GameTime gameTime, Battle battle)
         {
             PlanLongTermMovement(stateMachine, gameTime, battle);
@@ -50,10 +60,12 @@ namespace ScrapWars3.Logic.Behaviors
         {
             if(stateMachine.FollowingPath && stateMachine.Path.Count > stateMachine.NodeOnPath)
             { 
-                if(!stateMachine.EnemyAtDesiredDistance())
-                {
-                    stateMachine.CurrentTargetPosition = stateMachine.Path[stateMachine.NodeOnPath];
+                if(stateMachine.EnemyAtDesiredDistance())       
+                {                    
+                    stateMachine.CurrentTargetPosition = stateMachine.Owner.Position;  
                 }
+                else
+                    stateMachine.CurrentTargetPosition = stateMachine.Path[stateMachine.NodeOnPath];
             }
         }
         private void Pathfind(MechAiStateMachine stateMachine, Battle battle)

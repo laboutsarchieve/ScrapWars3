@@ -60,7 +60,7 @@ namespace ScrapWars3
             GameTextureRepo.tileDirt = Content.Load<Texture2D>(@"art\progart_dirt");
             GameTextureRepo.tileGrass = Content.Load<Texture2D>(@"art\progart_grass");
             GameTextureRepo.tileSand = Content.Load<Texture2D>(@"art\progart_sand");
-            GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
+            GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");           
 
             GameTextureRepo.basicBullet = Content.Load<Texture2D>(@"art\progart_basic_bullet");
             GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
@@ -69,24 +69,22 @@ namespace ScrapWars3
             Color[] whitePixel = { Color.White };
             GameTextureRepo.pixel.SetData<Color>(whitePixel);
 
+            GameTextureRepo.debugMechA = Content.Load<Texture2D>(@"art\progart_MechA");
+            GameTextureRepo.debugMechB = Content.Load<Texture2D>(@"art\progart_MechB");
+            GameTextureRepo.debugMechC = Content.Load<Texture2D>(@"art\progart_MechC");
+
             FontRepo.generalFont = Content.Load<SpriteFont>(@"font\main_menu_font");
             FontRepo.selectScreenFont = FontRepo.generalFont; // These are the same for the moment
             FontRepo.titleFont = Content.Load<SpriteFont>(@"font\title_font");
 
             SoundRepo.basicBulletHit = Content.Load<SoundEffect>(@"sound\bullet_hit");
 
-            LoadDebugContent();
+            GameSettings.TileSize = GameTextureRepo.tileDirt.Width;
+            
             LoadProtoGameData();
 
             currentScreen = new MainMenu(this, GraphicsDevice, Window);
             previousScreen = currentScreen;
-        }
-        protected void LoadDebugContent()
-        {
-            GameTextureRepo.debugMechA = Content.Load<Texture2D>(@"art\progart_MechA");
-            GameTextureRepo.debugMechB = Content.Load<Texture2D>(@"art\progart_MechB");
-            GameTextureRepo.debugMechC = Content.Load<Texture2D>(@"art\progart_MechC");
-
         }
         private void LoadProtoGameData()
         {

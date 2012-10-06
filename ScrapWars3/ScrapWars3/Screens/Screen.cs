@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ScrapWars3.Resources;
 
 namespace ScrapWars3.Screens
 {
@@ -25,6 +26,7 @@ namespace ScrapWars3.Screens
             this.window = window;
 
             spriteBatch = new SpriteBatch(graphics);
+            GameTextureRepo.graphics = graphics;
         }
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(GameTime gameTime);

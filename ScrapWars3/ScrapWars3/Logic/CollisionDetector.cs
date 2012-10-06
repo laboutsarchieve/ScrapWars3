@@ -24,7 +24,7 @@ namespace ScrapWars3.Logic
             }
 
             return false;
-        }
+        }        
         internal static CollisionReport DetectCollision(Bullet bullet, Mech mech, GameTime gameTime)
         {
             CollisionObject bulletObject = CollisionObject.FromBullet(bullet);
@@ -50,7 +50,7 @@ namespace ScrapWars3.Logic
                 secondObject = objectOne;
             }
 
-            float stepSize = 0.01f;
+            float stepSize = 0.001f;
 
             for(int stepNum = 0; stepNum < gameTime.ElapsedGameTime.Milliseconds / 1000.0f / stepSize; stepNum++)
             {
