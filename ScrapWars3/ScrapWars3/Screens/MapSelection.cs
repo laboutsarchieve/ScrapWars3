@@ -44,7 +44,7 @@ namespace ScrapWars3.Screens
             : base(scrapWarsApp, graphics, window)
         {
             SetSelection(0);
-            mapSize = new Point(100, 100);
+            mapSize = new Point(75, 75);
         }
         public override void Refresh(GraphicsDevice graphics, GameWindow window)
         {

@@ -15,15 +15,15 @@ namespace ScrapWars3.Logic
         private BehaviorState moveBehavior;        
         private BehaviorState attackBehavior;        
         private Mech owner;
-        private Mech currentTarget;
+        private Mech currentMainEnemy;
         private BehaviorState globalBehavior;
         private Vector2 currentTargetPosition;
-        private float desiredDistance;
         private int nodeOnPath;
         private bool followingPath = false;
         private List<Vector2> path = new List<Vector2>();
 
         private static Random rng = new Random();
+        private float desiredDistance;
 
         public MechAiStateMachine(Mech owner, BehaviorState startMoveBehavior, BehaviorState startAttackBehavior, BehaviorState globalBehavior)
         {
@@ -46,22 +46,17 @@ namespace ScrapWars3.Logic
             globalBehavior.Update(this, gameTime, battle);
             attackBehavior.Update(this, gameTime, battle);
             moveBehavior.Update(this, gameTime, battle);
+        }
+        public float DistanceToMainEnemySq( )
+        {
+            if(CurrentMainEnemy == null)
+                return float.MaxValue;
 
-            if(followingPath)
-            {
-                float closeEnough = Math.Max(owner.Size.X, owner.Size.Y) * 1.5f;
-                if((currentTargetPosition - owner.Position).LengthSquared() < closeEnough * closeEnough)
-                {
-                    nodeOnPath++;
-                    if(nodeOnPath >= path.Count)
-                    {
-                        followingPath = false;
-                        return;
-                    }
-
-                    currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
-                }
-            }
+            return (Owner.Position - CurrentMainEnemy.Position).LengthSquared( );            
+        }
+        public bool EnemyAtDesiredDistance( )
+        {
+            return (Owner.Position - CurrentMainEnemy.Position).LengthSquared( ) < desiredDistance * desiredDistance;
         }
         public Vector2 CurrentTargetPosition
         {
@@ -82,9 +77,7 @@ namespace ScrapWars3.Logic
                 nodeOnPath = 0;
 
                 if(path.Count > 0)
-                {
-                    followingPath = true;
-                    desiredDistance = Math.Max(owner.Size.X, owner.Size.Y) * 1.5f;
+                {                    
                     currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
                 }
             }
@@ -97,10 +90,10 @@ namespace ScrapWars3.Logic
         {
             get { return owner; }
         }
-        internal Mech CurrentTarget
+        internal Mech CurrentMainEnemy
         {
-            get { return currentTarget; }
-            set { currentTarget = value; }
+            get { return currentMainEnemy; }
+            set { currentMainEnemy = value; }
         }
         public bool FollowingPath
         {

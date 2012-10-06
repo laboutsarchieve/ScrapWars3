@@ -12,11 +12,13 @@ using GameTools.Events;
 using ScrapWars3.Screens;
 using ScrapWars3.Resources;
 using ScrapWars3.Data;
+using ScrapWars3.View;
 
 namespace ScrapWars3
 {
     class ScrapWarsApp : Microsoft.Xna.Framework.Game
     {
+        private SoundEffectPlayer soundEngine;
         private GraphicsDeviceManager graphics;
         private Screen currentScreen;
         private Screen previousScreen;
@@ -41,6 +43,8 @@ namespace ScrapWars3
         }
         protected override void LoadContent()
         {
+            soundEngine = new SoundEffectPlayer( );
+
             ScreenTextureRepo.mainMenu = Content.Load<Texture2D>(@"art\progart_main_menu");
             ScreenTextureRepo.mapGen = Content.Load<Texture2D>(@"art\progart_map_gen_screen");
             ScreenTextureRepo.battleGUIFrame = Content.Load<Texture2D>(@"art\progart_battle_hud");
@@ -59,7 +63,6 @@ namespace ScrapWars3
             GameTextureRepo.tileWater = Content.Load<Texture2D>(@"art\progart_water");
 
             GameTextureRepo.basicBullet = Content.Load<Texture2D>(@"art\progart_basic_bullet");
-
             GameTextureRepo.errorTexture = Content.Load<Texture2D>(@"art\error");
 
             GameTextureRepo.pixel = new Texture2D(GraphicsDevice, 1, 1);
@@ -70,6 +73,7 @@ namespace ScrapWars3
             FontRepo.selectScreenFont = FontRepo.generalFont; // These are the same for the moment
             FontRepo.titleFont = Content.Load<SpriteFont>(@"font\title_font");
 
+            SoundRepo.basicBulletHit = Content.Load<SoundEffect>(@"sound\bullet_hit");
 
             LoadDebugContent();
             LoadProtoGameData();

@@ -86,7 +86,7 @@ namespace ScrapWars3.Data
 
             size = GameSettings.GetMechSize(mechType);
 
-            this.brain = new MechAiStateMachine(this, new DebugMoveBehavior(), new DebugAttackBehavior( ));
+            this.brain = new MechAiStateMachine(this, new BasicMoveBehavior(), new BasicAttackBehavior( ));
 
             mechColor = color;
 
@@ -107,7 +107,7 @@ namespace ScrapWars3.Data
         }
         private void Move(GameTime gameTime, Battle battle)
         {
-            // TODO: add velocity attribute
+            // TODO: add velocity attribute            
 
             Vector2 toTarget = brain.CurrentTargetPosition - position;
             float distance = toTarget.Length();
@@ -118,13 +118,10 @@ namespace ScrapWars3.Data
                 return;
 
             toTarget.Normalize();
-            ChangeFacing(facing = toTarget);
+            ChangeFacing(toTarget);
             toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-
-            if(towards)
-                Position += toTarget;
-            else
-                Position -= toTarget;
+            
+            Position += toTarget;          
         }
 
         private void ChangeFacing(Vector2 target)

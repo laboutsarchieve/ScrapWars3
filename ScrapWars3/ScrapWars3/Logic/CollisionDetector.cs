@@ -50,7 +50,7 @@ namespace ScrapWars3.Logic
                 secondObject = objectOne;
             }
 
-            float stepSize = 0.1f;
+            float stepSize = 0.01f;
 
             for(int stepNum = 0; stepNum < gameTime.ElapsedGameTime.Milliseconds / 1000.0f / stepSize; stepNum++)
             {
@@ -70,7 +70,7 @@ namespace ScrapWars3.Logic
                     }
                 }
 
-                secondObject.Step(stepSize);
+                mainObject.Step(stepSize);
             }
 
             return report;

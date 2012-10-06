@@ -111,7 +111,7 @@ namespace ScrapWars3.Logic
 
             PathNode currentPath = start;
             bool found = false;
-            while(toExplore.Count > 0 && currentPath.StepCost < map.Width * map.Height)
+            while(toExplore.Count > 0 && currentPath.StepCost < map.Width * 2)
             {
                 currentPath = toExplore.Pop();
                 if(currentPath.Step == goal)
@@ -155,7 +155,7 @@ namespace ScrapWars3.Logic
             mechBox.X = (int)location.X - (int)mech.Size.X / GameSettings.TileSize / 2 - 1;
             mechBox.Y = (int)location.Y - (int)mech.Size.Y / GameSettings.TileSize / 2 - 1;
 
-            return !map.ContainsTileType(mechBox, Tile.Water);
+            return !map.ContainsTileType(mechBox, Tile.Water) && map.IsInMap(mechBox);
         }
     }
 }

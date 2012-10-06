@@ -8,7 +8,7 @@ using ScrapWars3.Screens;
 
 namespace ScrapWars3.Logic.Behaviors
 {
-    class DebugAttackBehavior : BehaviorState
+    class BasicAttackBehavior : BehaviorState
     {
         private Mech currentTarget;
 
@@ -16,27 +16,20 @@ namespace ScrapWars3.Logic.Behaviors
         {
             if(battle.CurrentBattleState == BattleState.Unfinished)                
             {
-                if(currentTarget == null || !currentTarget.IsAlive)
+                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble( ) > 0.999)
                 { 
                     ChooseTarget(stateMachine, battle);                    
                 }
 
                 float gunRangeSq = stateMachine.Owner.MainGun.Range*stateMachine.Owner.MainGun.Range;
 
-                if(DistanceToTargetSq(stateMachine) < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
+                if(stateMachine.DistanceToMainEnemySq( ) < gunRangeSq && stateMachine.Rng.NextDouble() > 0.99)
                 {
-                    stateMachine.Owner.FacePoint(stateMachine.CurrentTarget.Position);
+                    stateMachine.Owner.FacePoint(stateMachine.CurrentMainEnemy.Position);
                     stateMachine.Owner.Shoot();
                 }
             }
             
-        }
-        private float DistanceToTargetSq(MechAiStateMachine stateMachine)
-        {
-            if(stateMachine.CurrentTarget == null)
-                return float.MaxValue;
-
-            return (stateMachine.Owner.Position - stateMachine.CurrentTarget.Position).LengthSquared( );
         }
         private void ChooseTarget(MechAiStateMachine stateMachine, Battle battle)
         {            
@@ -59,7 +52,9 @@ namespace ScrapWars3.Logic.Behaviors
             else
             { 
                 int enemyNumber = stateMachine.Rng.Next(0, possibleTargets.Count);
-                stateMachine.CurrentTarget = possibleTargets[enemyNumber];            
+                stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];        
+    
+                stateMachine.DesiredDistance = stateMachine.CurrentMainEnemy.MainGun.Range; 
             }
         }
     }

@@ -142,6 +142,7 @@
     <Compile Include="Resources\FontRepo.cs" />
     <Compile Include="Resources\GameTextureRepo.cs" />
     <Compile Include="Resources\ScreenTextureRepo.cs" />
+    <Compile Include="Resources\SoundRepo.cs" />
     <Compile Include="ScrapWarsApp.cs" />
     <Compile Include="ScrapWarsEventManager.cs" />
     <Compile Include="ExtendedKeyboard.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\TeamSelect.cs" />
     <Compile Include="View\BattleDrawer.cs" />
+    <Compile Include="View\SoundEffectPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentation\Naming.txt" />

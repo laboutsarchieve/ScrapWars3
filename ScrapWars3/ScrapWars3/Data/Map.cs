@@ -49,6 +49,16 @@ namespace ScrapWars3.Data
             return (x >= 0 && x <= tiles.GetLength(0) - 1 &&
                     y >= 0 && y <= tiles.GetLength(1) - 1);
         }
+        internal bool IsInMap(Rectangle area)
+        {
+            for(int x = area.X; x < area.X + area.Width; x++)
+            {
+                if(!IsOnMap(x, 0))
+                   return false;
+            }
+
+            return true;
+        }
         public Tile this[int x, int y]
         {
             get { return tiles[x, y]; }
