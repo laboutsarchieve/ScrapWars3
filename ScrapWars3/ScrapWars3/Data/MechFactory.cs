@@ -19,7 +19,7 @@ namespace ScrapWars3.Data
                 case MechType.DebugMechA:
                     {
                         mech = new Mech("DebugMechA", GetNextId(), 20, 4*GameSettings.TileSize, type);
-                        mech.MainGun = new Gun(5, 6*GameSettings.TileSize, 20*GameSettings.TileSize, 1, BulletType.Basic);
+                        mech.MainGun = new Gun(5, 6*GameSettings.TileSize, 20*GameSettings.TileSize, 1.25f, BulletType.Basic);
                         break;
                     }
                 case MechType.DebugMechB:
@@ -31,7 +31,7 @@ namespace ScrapWars3.Data
                 case MechType.DebugMechC:
                     {
                         mech = new Mech("DebugMechC", GetNextId(), 10, 5*GameSettings.TileSize, type);
-                        mech.MainGun = new Gun(1, 8*GameSettings.TileSize, 30*GameSettings.TileSize, 0.5f, BulletType.Basic);
+                        mech.MainGun = new Gun(1, 8*GameSettings.TileSize, 30*GameSettings.TileSize, 1, BulletType.Basic);
                         break;
                     }
                 default:

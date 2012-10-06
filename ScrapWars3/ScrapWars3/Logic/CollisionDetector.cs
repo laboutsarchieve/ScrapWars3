@@ -56,15 +56,15 @@ namespace ScrapWars3.Logic
             {
                 for(int x = 0; x < mainObject.ColorArray.GetLength(0); x++)
                 {
-                    for(int y = 0; y < mainObject.ColorArray.GetLength(0); y++)
+                    for(int y = 0; y < mainObject.ColorArray.GetLength(1); y++)
                     {
-                        Vector2 colorPosition = mainObject.GetTransformedScreenPosition(x, y);
+                        Vector2 colorScreenPosition = mainObject.GetTransformedScreenPosition(x, y);
                         Color colorOne = mainObject.ColorArray[x, y];
-                        Color colorTwo = secondObject.GetColorAtScreenPosition((int)colorPosition.X, (int)colorPosition.Y);
+                        Color colorTwo = secondObject.GetColorAtScreenPosition((int)colorScreenPosition.X, (int)colorScreenPosition.Y);
 
                         if(colorOne.A > 0 && colorTwo.A > 0)
                         {
-                            report.RecordCollision(colorPosition);
+                            report.RecordCollision(colorScreenPosition);
                             return report;
                         }
                     }

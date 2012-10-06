@@ -44,14 +44,11 @@ namespace ScrapWars3.Logic
         public void Step(float numSeconds)
         {
             upperLeft += velocity * numSeconds;
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
-            textureTransformationInverse = Matrix.Invert(textureTransformation);
-
             UpdateTransformation();
         }
         private void UpdateTransformation()
         {
-            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateScale(GameSettings.ArtScale.X) * Matrix.CreateRotationZ(facing);
+            textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
         }
 

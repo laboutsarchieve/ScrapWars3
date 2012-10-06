@@ -20,7 +20,7 @@ namespace ScrapWars3.View
             if(theEvent is BulletHitMechEvent)
             { 
                 SoundEffectInstance sound = SoundRepo.basicBulletHit.CreateInstance( );
-                sound.Volume = 0.025f;
+                sound.Volume = 0.025f * ((BulletHitMechEvent)theEvent).Bullet.BulletScale;
                 sound.Play( );
             }
 
