@@ -11,7 +11,7 @@ namespace ScrapWars3.Data
     {
         static Random rng = new Random();
         private int damage;
-        private float bulletSpeed;
+        private float bulletSpeed;        
         private float range;
         private float bulletScale;        
 
@@ -48,10 +48,17 @@ namespace ScrapWars3.Data
         public int Damage
         {
             get { return damage; }
+            set { damage = value; }
+        }
+        public float BulletSpeed
+        {
+            get { return bulletSpeed; }
+            set { bulletSpeed = value; }
         }
         public float Range
         {
             get { return range; }
+            set { range = value; }
         }
         public float BulletScale
         {

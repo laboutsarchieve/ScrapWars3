@@ -31,23 +31,23 @@ namespace ScrapWars3.Data
         private VectorSmoother smoothFacing;
         private Vector2 position;
         private Vector2 size;
-        private Gun mainGun;        
+        private Gun mainGun;
 
         private Color mechColor;
         private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
 
-        
+
         public Mech(string name, int mechId, int maxHp, int speed, MechType mechType)
         {
             Init(name, mechId, mechType, maxHp, speed, Color.White);
-            Subscribe( );
+            Subscribe();
         }
         public Mech(string name, int mechId, int maxHp, int speed, MechType mechType, Color color)
         {
             Init(name, mechId, mechType, maxHp, speed, color);
-            Subscribe( );
+            Subscribe();
         }
-        public Mech( Mech source, int id )
+        public Mech(Mech source, int id)
         {
             name = source.name;
             this.mechId = id;
@@ -76,20 +76,20 @@ namespace ScrapWars3.Data
 
             size = GameSettings.GetMechSize(mechType);
 
-            this.brain = new MechAiStateMachine(this, new BasicMoveBehavior(), new BasicAttackBehavior( ));
+            this.brain = new MechAiStateMachine(this, new BasicMoveBehavior(), new BasicAttackBehavior());
 
             mechColor = color;
             mainGun = Gun.DefaultGun;
         }
-        public void SaveAsDefaultState( )
+        public void SaveAsDefaultState()
         {
             defaultState = new Mech(this, -1);
         }
-        public void SaveAsCurrentState( )
+        public void SaveAsCurrentState()
         {
             previousState = new Mech(this, -1);
         }
-        public void RestoreDefaultState( )
+        public void RestoreDefaultState()
         {
             name = defaultState.name;
             mainGun = defaultState.MainGun;
@@ -155,13 +155,18 @@ namespace ScrapWars3.Data
             toTarget.Normalize();
             ChangeFacing(toTarget);
             toTarget *= maxSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-            
+
             Position += toTarget;
 
             if(battle.Map.ContainsTileType(BoundingRect, Tile.Water))
                 position -= toTarget;
         }
-
+        public void Damage(int damage)
+        {
+            currHp -= damage;
+            if(!IsAlive)
+                ScrapWarsEventManager.GetManager().SendEvent(new MechDiedEvent(this));
+        }
         private void ChangeFacing(Vector2 target)
         {
             facing = target;
@@ -214,6 +219,7 @@ namespace ScrapWars3.Data
         public int MaxSpeed
         {
             get { return maxSpeed; }
+            set { maxSpeed = value; }
         }
         public int CurrHp
         {
@@ -221,7 +227,7 @@ namespace ScrapWars3.Data
         }
         public bool IsAlive
         {
-            get{ return currHp > 0; }
+            get { return currHp > 0; }
         }
         public Rectangle BoundingRect
         {

@@ -11,6 +11,7 @@ namespace ScrapWars3.Logic
     class BattleInput
     {
         private Battle battle;
+        private int cardNum;
 
         public BattleInput(Battle battle)
         {
@@ -27,20 +28,34 @@ namespace ScrapWars3.Logic
                 battle.EndBattle();
 
             // TODO modify extended keyboard to facilitate "time between" logic
-            if(ExtendedKeyboard.IsKeyDown(Keys.Up) || ExtendedKeyboard.IsKeyDown(Keys.W))
+            if(ExtendedKeyboard.IsKeyDown(Keys.W))
                 MoveView(0, -1);
-            if(ExtendedKeyboard.IsKeyDown(Keys.Down) || ExtendedKeyboard.IsKeyDown(Keys.S))
+            if(ExtendedKeyboard.IsKeyDown(Keys.S))
                 MoveView(0, 1);
-            if(ExtendedKeyboard.IsKeyDown(Keys.Left) || ExtendedKeyboard.IsKeyDown(Keys.A))
+            if(ExtendedKeyboard.IsKeyDown(Keys.A))
                 MoveView(-1, 0);
-            if(ExtendedKeyboard.IsKeyDown(Keys.Right) || ExtendedKeyboard.IsKeyDown(Keys.D))
+            if(ExtendedKeyboard.IsKeyDown(Keys.D))
                 MoveView(1, 0);
+            
+            if(ExtendedKeyboard.IsKeyDown(Keys.Left))
+                MoveCardSelectLeft( );
+            if(ExtendedKeyboard.IsKeyDown(Keys.Right))
+                MoveCardSelectRight( );
 
             if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
             {
                 battle.BattlePaused = false;
                 battle.RoundStart = gameTime.TotalGameTime.TotalMilliseconds;
+                cardNum = 0;
             }
+        }        
+        private void MoveCardSelectLeft()
+        {
+            cardNum--;
+        }
+        private void MoveCardSelectRight()
+        {
+            cardNum++;
         }
         private void MoveView(int x, int y)
         {
