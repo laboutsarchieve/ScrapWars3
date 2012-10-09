@@ -10,6 +10,7 @@ namespace ScrapWars3.Logic
 {
     class Pathfinder
     {
+        // TODO: Figure out how to make this a struct
         class PathNode
         {
             float stepCost;

@@ -11,7 +11,7 @@ namespace ScrapWars3.Logic
     class BattleInput
     {
         private Battle battle;
-        private int cardNum;
+        private int cardNum; // This is currently unused
 
         public BattleInput(Battle battle)
         {

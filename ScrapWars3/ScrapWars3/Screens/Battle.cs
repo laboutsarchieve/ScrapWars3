@@ -79,6 +79,27 @@ namespace ScrapWars3.Screens
         {
             ScrapWarsEventManager.GetManager().Subscribe(this, AddBullet, "BulletFired");
         }
+        internal void EndBattle()
+        {
+            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
+            scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
+        }
+        public override void Refresh(GraphicsDevice graphics, GameWindow window)
+        {
+            mapChanged = true;
+            base.Refresh(graphics, window);
+        }
+        public override void Update(GameTime gameTime)
+        {
+            if (scrapWarsApp.IsActive)
+                battleInput.Update(gameTime);
+
+            battleLogic.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            battleDrawer.Draw(gameTime);
+        }
         public bool AddBullet(BaseGameEvent theEvent)
         {
             BulletFiredEvent bulletFired = (BulletFiredEvent)theEvent;
@@ -89,28 +110,7 @@ namespace ScrapWars3.Screens
         internal Team GetOtherTeam(Team team)
         {
             return (team == teamOne) ? teamTwo : teamOne;
-        }
-        public override void Refresh(GraphicsDevice graphics, GameWindow window)
-        {
-            mapChanged = true;
-            base.Refresh(graphics, window);
-        }
-        internal void EndBattle()
-        {
-            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
-            scrapWarsApp.RevertScreen(); // TODO: Make this show a battle report screen
-        }
-        public override void Update(GameTime gameTime)
-        {
-            if(scrapWarsApp.IsActive)
-                battleInput.Update(gameTime);
-
-            battleLogic.Update(gameTime);
-        }
-        public override void Draw(GameTime gameTime)
-        {
-            battleDrawer.Draw(gameTime);
-        }
+        }                
         internal Map Map
         {
             get { return map; }

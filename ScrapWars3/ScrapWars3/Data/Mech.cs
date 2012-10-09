@@ -34,8 +34,7 @@ namespace ScrapWars3.Data
         private Gun mainGun;
 
         private Color mechColor;
-        private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2;
-
+        private float IMAGE_FACING_OFFSET = 3 * (float)Math.PI / 2; // The images are facing down by default
 
         public Mech(string name, int mechId, int maxHp, int speed, MechType mechType)
         {
@@ -59,6 +58,10 @@ namespace ScrapWars3.Data
             mechColor = source.mechColor;
             size = source.size;
             brain = new MechAiStateMachine(source.brain);
+        }
+        ~Mech()
+        {
+            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
         }
         private void Init(string name, int mechId, MechType mechType, int maxHp, int maxSpeed, Color color)
         {
@@ -105,11 +108,7 @@ namespace ScrapWars3.Data
             maxSpeed = previousState.MaxSpeed;
             maxHp = previousState.maxHp;
             mechType = previousState.mechType;
-        }
-        ~Mech()
-        {
-            ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
-        }
+        }        
         public void Subscribe()
         {
             ScrapWarsEventManager.GetManager().Subscribe(this, AnalyzeCollision, "BulletHitMech");
@@ -144,42 +143,45 @@ namespace ScrapWars3.Data
             // TODO: add velocity attribute     
             // TODO: flocking
 
-            float effectiveSpeed = maxSpeed;
-
-            Tile mainTile = battle.Map[(int)position.X / GameSettings.TileSize, (int)position.Y / GameSettings.TileSize];
-
-            switch(mainTile)
+            if (brain.FollowingPath)
             {
-                case Tile.Grass:
-                    effectiveSpeed *= 1;
-                    break;
-                case Tile.Dirt:
-                    effectiveSpeed *= 0.75f;
-                    break;
-                case Tile.Sand:
-                    effectiveSpeed *= 0.5f;
-                    break;
-                default:
-                    effectiveSpeed *= 0.2f;
-                    break;
+                float effectiveSpeed = maxSpeed;
+
+                Tile mainTile = battle.Map[(int)position.X / GameSettings.TileSize, (int)position.Y / GameSettings.TileSize];
+
+                switch (mainTile)
+                {
+                    case Tile.Grass:
+                        effectiveSpeed *= 1;
+                        break;
+                    case Tile.Dirt:
+                        effectiveSpeed *= 0.75f;
+                        break;
+                    case Tile.Sand:
+                        effectiveSpeed *= 0.5f;
+                        break;
+                    default:
+                        effectiveSpeed *= 0.2f;
+                        break;
+                }
+
+                Vector2 toTarget = brain.CurrentMovementTarget - position;
+                float distance = toTarget.Length();
+
+                bool towards = distance > brain.DesiredDistance;
+
+                if (toTarget == Vector2.Zero)
+                    return;
+
+                toTarget.Normalize();
+                ChangeFacing(toTarget);
+                toTarget *= effectiveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+                Position += toTarget;
+
+                if (battle.Map.ContainsTileType(BoundingRect, Tile.Water))
+                    position -= toTarget;
             }
-
-            Vector2 toTarget = brain.CurrentTargetPosition - position;
-            float distance = toTarget.Length();
-
-            bool towards = distance > brain.DesiredDistance;
-
-            if(toTarget == Vector2.Zero)
-                return;
-
-            toTarget.Normalize();
-            ChangeFacing(toTarget);
-            toTarget *= effectiveSpeed * gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-
-            Position += toTarget;
-
-            if(battle.Map.ContainsTileType(BoundingRect, Tile.Water))
-                position -= toTarget;
         }
         public void Damage(int damage)
         {
@@ -195,7 +197,7 @@ namespace ScrapWars3.Data
         public void FacePoint(Vector2 target)
         {
             // TODO: This need to be non-instantanious
-
+            
             if(target == position) // A mech can't face its own center
                 return;
 
@@ -219,6 +221,11 @@ namespace ScrapWars3.Data
         {
             get { return mechId; }
         }
+        public Team Team
+        {
+            get { return team; }
+            set { team = value; }
+        }
         public float FacingAngle
         {
             get { return (float)Math.Atan2(facing.Y, facing.X); }
@@ -240,6 +247,16 @@ namespace ScrapWars3.Data
         {
             get { return maxSpeed; }
             set { maxSpeed = value; }
+        }        
+        public Color MechColor
+        {
+            get { return mechColor; }
+            set { mechColor = value; }
+        }
+        internal Gun MainGun
+        {
+            get { return mainGun; }
+            set { mainGun = value; }
         }
         public int CurrHp
         {
@@ -256,21 +273,6 @@ namespace ScrapWars3.Data
         public float ImageFacingOffset
         {
             get { return IMAGE_FACING_OFFSET; }
-        }
-        public Team Team
-        {
-            get { return team; }
-            set { team = value; }
-        }
-        public Color MechColor
-        {
-            get { return mechColor; }
-            set { mechColor = value; }
-        }
-        internal Gun MainGun
-        {
-            get { return mainGun; }
-            set { mainGun = value; }
-        }
+        }        
     }
 }

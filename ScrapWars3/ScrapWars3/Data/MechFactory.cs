@@ -11,8 +11,7 @@ namespace ScrapWars3.Data
         static int id = 0;
 
         public static Mech GetBaseMechFromType(MechType type)
-        {
-            // TODO: Set the each mech's stats based on its type
+        {            
             Mech mech;
             switch(type)
             {
@@ -40,6 +39,7 @@ namespace ScrapWars3.Data
                         break;
                     }
             }
+
             mech.SaveAsDefaultState( );
             return mech;
         }        

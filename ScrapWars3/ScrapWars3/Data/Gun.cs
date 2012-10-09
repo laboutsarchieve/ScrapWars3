@@ -11,10 +11,10 @@ namespace ScrapWars3.Data
     {
         static Random rng = new Random();
         private int damage;
-        private float bulletSpeed;        
+        private float bulletSpeed;
         private float range;
-        private float rateOfFire;
-        private float bulletScale;        
+        private float rateOfFire; // In Shots per Second
+        private float bulletScale;
         private int timeLastFired;
 
         private BulletType bulletType;        

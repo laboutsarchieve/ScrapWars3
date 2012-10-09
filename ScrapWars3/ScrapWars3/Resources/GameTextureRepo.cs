@@ -32,8 +32,7 @@ namespace ScrapWars3.Resources
         public static Dictionary<float, Texture2D> scaledBulletCache = new Dictionary<float,Texture2D>( );
 
         public static Texture2D GetMechTexture(MechType mechType)
-        {
-            // Big Fat
+        {            
             switch(mechType)
             {
                 case MechType.DebugMechA:

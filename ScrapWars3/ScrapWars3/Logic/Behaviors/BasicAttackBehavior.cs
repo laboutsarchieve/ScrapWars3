@@ -10,8 +10,6 @@ namespace ScrapWars3.Logic.Behaviors
 {
     class BasicAttackBehavior : BehaviorState
     {
-        private Mech currentTarget;
-
         public void EnterState(MechAiStateMachine stateMachine, Battle battle)
         {
             ChooseTarget(stateMachine, battle);
@@ -24,7 +22,7 @@ namespace ScrapWars3.Logic.Behaviors
         {
             if(battle.CurrentBattleState == BattleState.Unfinished)
             {
-                if(currentTarget == null || !currentTarget.IsAlive || stateMachine.Rng.NextDouble() > 0.99999)
+                if (stateMachine.CurrentMainEnemy == null || !stateMachine.CurrentMainEnemy.IsAlive || stateMachine.Rng.NextDouble() > 0.999)
                 {
                     ChooseTarget(stateMachine, battle);
                 }
@@ -54,13 +52,13 @@ namespace ScrapWars3.Logic.Behaviors
 
             if(possibleTargets.Count == 0)
             {
-                currentTarget = null;
+                stateMachine.CurrentMainEnemy = null;
                 stateMachine.FollowingPath = false;
             }
             else
             {
                 int enemyNumber = stateMachine.Rng.Next(0, possibleTargets.Count);
-                stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];
+                stateMachine.CurrentMainEnemy = possibleTargets[enemyNumber];                
 
                 stateMachine.DesiredDistance = stateMachine.Owner.MainGun.Range*0.75f;
             }

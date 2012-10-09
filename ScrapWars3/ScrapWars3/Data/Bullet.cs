@@ -13,10 +13,11 @@ namespace ScrapWars3.Data
         private float range;
         private float distTraveled;        
         private float speed;
+        private float bulletScale;
         private Vector2 position;
         private Vector2 direction;
         private BulletType bulletType;
-        private float bulletScale;
+        
 
         public Bullet(Team shooterTeam, int damage, float range, float bulletScale, BulletType bulletType, Vector2 startPosition, float speed, Vector2 direction)
         {
@@ -44,6 +45,14 @@ namespace ScrapWars3.Data
         {
             get { return shooterTeam; }
         }
+        public int Damage
+        {
+            get { return damage; }
+        }
+        public float BulletScale
+        {
+            get { return bulletScale; }
+        }
         public Vector2 Position
         {
             get { return position; }
@@ -55,15 +64,7 @@ namespace ScrapWars3.Data
         internal BulletType BulletType
         {
             get { return bulletType; }
-        }
-        public int Damage
-        {
-            get { return damage; }
-        }
-        public float BulletScale
-        {
-            get { return bulletScale; }            
-        }
+        }        
         public bool RangeExceeded
         {
             get{ return distTraveled > range; }

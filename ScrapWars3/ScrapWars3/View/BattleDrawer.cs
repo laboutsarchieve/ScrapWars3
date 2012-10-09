@@ -17,8 +17,7 @@ namespace ScrapWars3.View
         private SpriteBatch spriteBatch;
 
         private RenderTarget2D mapTexture;
-
-        private Vector2 startOfBatlefield;
+        private Vector2 startOfBattlefieldScreenArea;
 
         public BattleDrawer(Battle battle, GraphicsDevice graphics, SpriteBatch spriteBatch)
         {
@@ -26,7 +25,7 @@ namespace ScrapWars3.View
             this.graphics = graphics;
             this.spriteBatch = spriteBatch;
 
-            startOfBatlefield = new Vector2(0, GameSettings.Resolution.Y / 8);
+            startOfBattlefieldScreenArea = new Vector2(0, GameSettings.Resolution.Y / 8);
 
             mapTexture = new RenderTarget2D(graphics, GameSettings.TileSize * battle.Map.Width, GameSettings.TileSize * battle.Map.Height);
         }
@@ -59,7 +58,7 @@ namespace ScrapWars3.View
             if(battle.MapChanged)
                 RefreshMap();
 
-            spriteBatch.Draw((Texture2D)mapTexture, startOfBatlefield - GameSettings.TileSize * battle.UpperLeftOfView, Color.White);
+            spriteBatch.Draw((Texture2D)mapTexture, startOfBattlefieldScreenArea - GameSettings.TileSize * battle.UpperLeftOfView, Color.White);
 
             DrawMechs();
             DrawBullets();
@@ -70,7 +69,7 @@ namespace ScrapWars3.View
             {
                 if(mech.IsAlive)
                 { 
-                    Vector2 screenPosition = startOfBatlefield + mech.Position - GameSettings.TileSize * battle.UpperLeftOfView;
+                    Vector2 screenPosition = startOfBattlefieldScreenArea + mech.Position - GameSettings.TileSize * battle.UpperLeftOfView;
                     spriteBatch.Draw(GameTextureRepo.GetMechTexture(mech.MechType),
                                      screenPosition,
                                      null,
@@ -87,7 +86,7 @@ namespace ScrapWars3.View
         {
             foreach(Bullet bullet in battle.Bullets)
             {
-                Vector2 screenPosition = startOfBatlefield + bullet.Position - GameSettings.TileSize * battle.UpperLeftOfView;
+                Vector2 screenPosition = startOfBattlefieldScreenArea + bullet.Position - GameSettings.TileSize * battle.UpperLeftOfView;
 
                 spriteBatch.Draw(GameTextureRepo.GetBulletTexture(bullet.BulletType),
                                  screenPosition,

@@ -17,12 +17,21 @@ namespace ScrapWars3.View
         }
         public bool MakeSound( BaseGameEvent theEvent )
         {
-            if(theEvent is BulletHitMechEvent)
+            SoundEffectInstance sound = null;
+
+            switch(theEvent.EventType)
             { 
-                SoundEffectInstance sound = SoundRepo.basicBulletHit.CreateInstance( );
-                sound.Volume = 0.01f * (float)Math.Pow(2,((BulletHitMechEvent)theEvent).Bullet.BulletScale);
-                sound.Play( );
+                case "BulletHitMech":
+                    sound = SoundRepo.basicBulletHit.CreateInstance( );
+                    sound.Volume = 0.01f * (float)Math.Pow(2,((BulletHitMechEvent)theEvent).Bullet.BulletScale);
+                    break;
+                default:
+                    sound = SoundRepo.basicBulletHit.CreateInstance();
+                    sound.Volume = 0.0f;
+                    break;
             }
+
+            sound.Play();
 
             return false;
         }

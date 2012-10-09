@@ -9,21 +9,20 @@ using ScrapWars3.Data;
 
 namespace ScrapWars3.Logic
 {
-    // TODO: Have seperate moving and shooting AI
     class MechAiStateMachine
     {
-        private BehaviorState moveBehavior;
-        private BehaviorState attackBehavior;
         private Mech owner;
         private Mech currentMainEnemy;
+        private BehaviorState moveBehavior;
+        private BehaviorState attackBehavior;
         private BehaviorState globalBehavior;
-        private Vector2 currentTargetPosition;
+        private Vector2 currentMovementTarget;        
+        private List<Vector2> path = new List<Vector2>();
         private int nodeOnPath;
         private bool followingPath = false;
-        private List<Vector2> path = new List<Vector2>();
-
-        private Random rng = new Random();
         private float desiredDistance;
+
+        private Random rng = new Random();        
         private Battle battle;        
 
         public MechAiStateMachine(Mech owner, BehaviorState startMoveBehavior, BehaviorState startAttackBehavior, BehaviorState globalBehavior)
@@ -69,34 +68,6 @@ namespace ScrapWars3.Logic
         {
             return (Owner.Position - CurrentMainEnemy.Position).LengthSquared() < desiredDistance * desiredDistance;
         }
-        public Vector2 CurrentTargetPosition
-        {
-            get { return currentTargetPosition; }
-            set { currentTargetPosition = value; }
-        }
-        public float DesiredDistance
-        {
-            get { return desiredDistance; }
-            set { desiredDistance = value; }
-        }
-        public List<Vector2> Path
-        {
-            get { return path; }
-            set
-            {
-                path = value;
-                nodeOnPath = 0;
-
-                if(path.Count > 0)
-                {
-                    currentTargetPosition = GameSettings.TileSize * path[nodeOnPath];
-                }
-            }
-        }
-        internal BehaviorState GlobalBehavior
-        {
-            get { return globalBehavior; }
-        }
         internal Mech Owner
         {
             get { return owner; }
@@ -105,20 +76,10 @@ namespace ScrapWars3.Logic
         {
             get { return currentMainEnemy; }
             set { currentMainEnemy = value; }
-        }
-        public bool FollowingPath
+        }        
+        internal BehaviorState GlobalBehavior
         {
-            get { return followingPath; }
-            set { followingPath = value; }
-        }
-        public int NodeOnPath
-        {
-            get { return nodeOnPath; }
-            set { nodeOnPath = value; }
-        }
-        public Random Rng
-        {
-            get { return rng; }            
+            get { return globalBehavior; }
         }
         internal BehaviorState MoveBehavior
         {
@@ -133,12 +94,50 @@ namespace ScrapWars3.Logic
         internal BehaviorState AttackBehavior
         {
             get { return attackBehavior; }
-            set 
-            { 
+            set
+            {
                 attackBehavior.ExitState(this, battle);
                 attackBehavior = value;
                 attackBehavior.EnterState(this, battle);
             }
         }
+        public Vector2 CurrentMovementTarget
+        {
+            get { return currentMovementTarget; }
+            set { currentMovementTarget = value; }
+        }
+        public List<Vector2> Path
+        {
+            get { return path; }
+            set
+            {
+                path = value;
+                nodeOnPath = 0;
+
+                if (path.Count > 0)
+                {
+                    currentMovementTarget = GameSettings.TileSize * path[nodeOnPath];
+                }
+            }
+        }
+        public float DesiredDistance
+        {
+            get { return desiredDistance; }
+            set { desiredDistance = value; }
+        }        
+        public bool FollowingPath
+        {
+            get { return followingPath; }
+            set { followingPath = value; }
+        }
+        public int NodeOnPath
+        {
+            get { return nodeOnPath; }
+            set { nodeOnPath = value; }
+        }
+        public Random Rng
+        {
+            get { return rng; }            
+        }        
     }
 }

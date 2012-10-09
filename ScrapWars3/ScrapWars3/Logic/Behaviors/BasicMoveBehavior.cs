@@ -45,7 +45,7 @@ namespace ScrapWars3.Logic.Behaviors
             if(stateMachine.FollowingPath)
             {
                 float closeEnough = Math.Max(stateMachine.Owner.Size.X, stateMachine.Owner.Size.Y) * 1.5f;
-                if((stateMachine.CurrentTargetPosition - stateMachine.Owner.Position).LengthSquared() < closeEnough * closeEnough)
+                if((stateMachine.CurrentMovementTarget - stateMachine.Owner.Position).LengthSquared() < closeEnough * closeEnough)
                 {
                     stateMachine.NodeOnPath++;
                     if(stateMachine.NodeOnPath >= stateMachine.Path.Count)
@@ -59,13 +59,15 @@ namespace ScrapWars3.Logic.Behaviors
         private void PlanNextMove(MechAiStateMachine stateMachine, Battle battle)
         {
             if(stateMachine.FollowingPath && stateMachine.Path.Count > stateMachine.NodeOnPath)
-            { 
-                if(stateMachine.EnemyAtDesiredDistance())       
-                {                    
-                    stateMachine.CurrentTargetPosition = stateMachine.Owner.Position;  
+            {
+                if (stateMachine.EnemyAtDesiredDistance())
+                {
+                    stateMachine.CurrentMovementTarget = stateMachine.Owner.Position;                    
                 }
                 else
-                    stateMachine.CurrentTargetPosition = stateMachine.Path[stateMachine.NodeOnPath];
+                {
+                    stateMachine.CurrentMovementTarget = stateMachine.Path[stateMachine.NodeOnPath];                    
+                }
             }
         }
         private void Pathfind(MechAiStateMachine stateMachine, Battle battle)

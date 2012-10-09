@@ -13,11 +13,11 @@ namespace ScrapWars3.Logic
     {
         private Texture2D texture;
         private Vector2 upperLeft;
-        private Vector2 velocity;
-        private float facing;
+        private Vector2 velocity;        
         private Color[,] colorArray;
         private Matrix textureTransformation;
         private Matrix textureTransformationInverse;
+        private float facing;
 
         public CollisionObject(Texture2D texture, Vector2 upperLeft, Vector2 velocity, float facing)
         {
@@ -51,7 +51,6 @@ namespace ScrapWars3.Logic
             textureTransformation = Matrix.CreateTranslation(new Vector3(upperLeft.X, upperLeft.Y, 0)) * Matrix.CreateRotationZ(facing);
             textureTransformationInverse = Matrix.Invert(textureTransformation);
         }
-
         public Vector2 GetTransformedScreenPosition(int x, int y)
         {
             Vector2 position = new Vector2(x, y);
