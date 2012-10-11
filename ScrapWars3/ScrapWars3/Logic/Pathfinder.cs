@@ -163,8 +163,11 @@ namespace ScrapWars3.Logic
                 case Tile.Sand:
                     multiplier = 3.0f;
                     break;
+                case Tile.Water:
+                    multiplier = 1000.0f;
+                    break;
                 default:                    
-                    multiplier = 100.0f;
+                    multiplier = 10000.0f;
                     break;
             }
 
@@ -172,10 +175,7 @@ namespace ScrapWars3.Logic
         }
         private static bool CanStandOnTile(Vector2 location)
         {
-            mechBox.X = (int)location.X - (int)mech.Size.X / GameSettings.TileSize / 2 - 1;
-            mechBox.Y = (int)location.Y - (int)mech.Size.Y / GameSettings.TileSize / 2 - 1;
-
-            return !map.ContainsTileType(mechBox, Tile.Water) && map.IsInMap(mechBox);
+            return map.IsInMap(mechBox);
         }
     }
 }

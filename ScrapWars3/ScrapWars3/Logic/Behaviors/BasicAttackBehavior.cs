@@ -22,7 +22,7 @@ namespace ScrapWars3.Logic.Behaviors
         {
             if(battle.CurrentBattleState == BattleState.Unfinished)
             {
-                if (stateMachine.CurrentMainEnemy == null || !stateMachine.CurrentMainEnemy.IsAlive || stateMachine.Rng.NextDouble() > 0.999)
+                if (stateMachine.CurrentMainEnemy == null || !stateMachine.CurrentMainEnemy.IsAlive)
                 {
                     ChooseTarget(stateMachine, battle);
                 }

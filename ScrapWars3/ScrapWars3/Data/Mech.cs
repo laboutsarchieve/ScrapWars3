@@ -160,8 +160,11 @@ namespace ScrapWars3.Data
                     case Tile.Sand:
                         effectiveSpeed *= 0.5f;
                         break;
+                    case Tile.Water:
+                        effectiveSpeed *= 0.1f;
+                        break;
                     default:
-                        effectiveSpeed *= 0.2f;
+                        effectiveSpeed *= 0.0f;
                         break;
                 }
 
