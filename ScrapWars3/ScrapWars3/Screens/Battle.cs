@@ -79,6 +79,13 @@ namespace ScrapWars3.Screens
         {
             ScrapWarsEventManager.GetManager().Subscribe(this, AddBullet, "BulletFired");
         }
+        public bool AddBullet(BaseGameEvent theEvent)
+        {
+            BulletFiredEvent bulletFired = (BulletFiredEvent)theEvent;
+            bullets.Add(bulletFired.Bullet);
+
+            return true;
+        }
         internal void EndBattle()
         {
             ScrapWarsEventManager.GetManager().UpsubscribeFromAll(this);
@@ -99,14 +106,7 @@ namespace ScrapWars3.Screens
         public override void Draw(GameTime gameTime)
         {
             battleDrawer.Draw(gameTime);
-        }
-        public bool AddBullet(BaseGameEvent theEvent)
-        {
-            BulletFiredEvent bulletFired = (BulletFiredEvent)theEvent;
-            bullets.Add(bulletFired.Bullet);
-
-            return true;
-        }
+        }        
         internal Team GetOtherTeam(Team team)
         {
             return (team == teamOne) ? teamTwo : teamOne;
