@@ -93,8 +93,9 @@ namespace ScrapWars3
             List<Mech> mechs = new List<Mech>();
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
-            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));            
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));            
 
             foreach(Mech mech in mechs)
                 mech.MechColor = frag.TeamColor;
@@ -105,8 +106,10 @@ namespace ScrapWars3
             Team scrapyard = new Team("Scrapyard", 1, Color.Red);
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));            
 
             foreach(Mech mech in mechs)
                 mech.MechColor = scrapyard.TeamColor;
