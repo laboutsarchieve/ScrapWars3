@@ -21,6 +21,9 @@ namespace ScrapWars3.Data
 
         public Gun(int damage, float bulletSpeed, float range, float rateOfFire, float bulletScale, BulletType bulletType)
         {
+            float minBulletScale = 0.6f;
+            bulletScale = Math.Max(bulletScale, minBulletScale);
+
             this.damage = damage;
             this.bulletSpeed = bulletSpeed;            
             this.range = range;

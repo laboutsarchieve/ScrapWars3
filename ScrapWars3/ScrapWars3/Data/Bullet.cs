@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace ScrapWars3.Data
 {
-    class Bullet
+    struct Bullet
     {
         private Team shooterTeam;
         private int damage;

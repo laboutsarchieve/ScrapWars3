@@ -132,8 +132,10 @@ namespace ScrapWars3.Logic
         {
             for(int index = 0; index < battle.Bullets.Count; index++)
             {
+                // This odd bit is due to Bullet being a Struct
                 Bullet bullet = battle.Bullets[index];
                 bullet.Update(gameTime);
+                battle.Bullets[index] = bullet;
 
                 if(bullet.RangeExceeded)
                 {
