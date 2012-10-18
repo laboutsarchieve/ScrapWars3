@@ -143,11 +143,11 @@ namespace ScrapWars3.Logic
 
                     explored.Add(stepToConcider);
                     PathNode newNode = new PathNode(node, stepToConcider, stepCost);
-                    toExplore.Add(GetCost(newNode), newNode);
+                    toExplore.Add(GetCost(newNode, stepCost), newNode);
                 }
             }
         }
-        private static float GetCost(PathNode node)
+        private static float GetCost(PathNode node, float costOfLastStep)
         {
             Tile tileType = map[(int)node.Step.X, (int)node.Step.Y];
             float multiplier = 1;
@@ -163,19 +163,17 @@ namespace ScrapWars3.Logic
                 case Tile.Sand:
                     multiplier = 3.0f;
                     break;
-                default:                    
-                    multiplier = 100.0f;
+                default:
+                    multiplier = float.PositiveInfinity;
                     break;
             }
 
-            return (node.Step - goal).Length() + node.StepCost * multiplier;
+            return (node.Step - goal).Length() + node.StepCost + costOfLastStep*(multiplier - 1); // One is subtracted by the multiplier because costOfLastStep
+                                                                                                  // is included once in node.StepCost
         }
         private static bool CanStandOnTile(Vector2 location)
         {
-            mechBox.X = (int)location.X - (int)mech.Size.X / GameSettings.TileSize / 2 - 1;
-            mechBox.Y = (int)location.Y - (int)mech.Size.Y / GameSettings.TileSize / 2 - 1;
-
-            return !map.ContainsTileType(mechBox, Tile.Water) && map.IsInMap(mechBox);
+            return !CollisionDetector.ContainsTile(location, mech.Size, map, Tile.Water);
         }
     }
 }

@@ -10,21 +10,28 @@ namespace ScrapWars3.Logic
 {
     class CollisionDetector
     {
-        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType, int buffer)
+        public static bool IsMechOnTile(Mech mech, Map map, Tile tileType)
         {
-            Rectangle mechBox = mech.BoundingRect;
-            Rectangle scaledBox = new Rectangle(mechBox.X / GameSettings.TileSize - buffer,
-                                                mechBox.Y / GameSettings.TileSize - buffer,
-                                                mechBox.Width / GameSettings.TileSize + buffer,
-                                                mechBox.Height / GameSettings.TileSize + buffer);
+            return ContainsTile(mech.Position,
+                                mech.Size,
+                                map,
+                                tileType);
+                                
+        }
+        public static bool ContainsTile(Vector2 topLeft, Vector2 bottomRight, Map map, Tile tileType)
+        {   
+            Rectangle scaledBox = new Rectangle((int)(topLeft.X / GameSettings.TileSize),
+                                                (int)(topLeft.Y / GameSettings.TileSize),
+                                                (int)Math.Round(bottomRight.X / GameSettings.TileSize),
+                                                (int)Math.Round(bottomRight.Y / GameSettings.TileSize));
 
-            if(map.ContainsTileType(scaledBox, tileType))
+            if (map.ContainsTileType(scaledBox, tileType))
             {
                 return true;
             }
 
             return false;
-        }        
+        }   
         internal static CollisionReport DetectCollision(Bullet bullet, Mech mech, GameTime gameTime)
         {
             CollisionObject bulletObject = CollisionObject.FromBullet(bullet);

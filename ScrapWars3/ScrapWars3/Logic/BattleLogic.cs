@@ -54,7 +54,7 @@ namespace ScrapWars3.Logic
                     team.Mechs[mechNum].FacePoint(team.Mechs[mechNum].Position + facing);
 
                     // Test the mech's spawn area for water
-                    if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water, 1))
+                    if(CollisionDetector.IsMechOnTile(team.Mechs[mechNum], battle.Map, Tile.Water))
                     {
                         // If water is found, move the spawn area and try again
                         waterAvoidance += waterAvoidYMove;
