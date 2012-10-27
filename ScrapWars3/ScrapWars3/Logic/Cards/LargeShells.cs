@@ -8,6 +8,10 @@ namespace ScrapWars3.Logic.Cards
 {
     class LargeShells : Card
     {
+        public LargeShells()
+            : base("Large Shells")
+        {
+        }
         public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed)
         {
             foreach(Mech mech in mechs)

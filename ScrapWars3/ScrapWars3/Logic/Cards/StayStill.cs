@@ -8,6 +8,10 @@ namespace ScrapWars3.Logic.Cards
 {
     class StayStill : Card
     {
+        public StayStill()
+            : base("Stay Still")
+        {
+        }
         public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed)
         {
             foreach(Mech mech in mechs)

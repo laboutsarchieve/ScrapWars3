@@ -19,6 +19,7 @@ namespace ScrapWars3
         private static Vector2 maxResolution = new Vector2(1600, 1200);
         private static Vector2 artScale;
         private static Vector2 resolution;
+        public static int handSize;
 
         public static Vector2 GetMechSize(MechType mechType)
         {

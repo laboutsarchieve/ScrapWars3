@@ -8,6 +8,10 @@ namespace ScrapWars3.Logic.Cards
 {
     class OverDrive : Card
     {
+        public OverDrive()
+            : base("Over Drive")
+        {
+        }
         public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed)
         {
             foreach(Mech mech in mechs)

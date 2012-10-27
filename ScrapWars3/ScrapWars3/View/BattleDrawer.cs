@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ScrapWars3.Resources;
 using ScrapWars3.Data;
+using ScrapWars3.Logic.Cards;
 
 namespace ScrapWars3.View
 {
@@ -36,6 +37,7 @@ namespace ScrapWars3.View
             DrawBattleField();
             DrawMechs();
             DrawHud(gameTime);
+            DrawCardsNames();
             spriteBatch.End();
         }
         public void DrawHud(GameTime gameTime)
@@ -51,6 +53,23 @@ namespace ScrapWars3.View
                 float stringLeft = GameSettings.Resolution.X - FontRepo.generalFont.MeasureString(secondsString).X;
 
                 spriteBatch.DrawString(FontRepo.generalFont, secondsString, new Vector2(stringLeft, stringTop), Color.Black);
+            }
+        }
+        public void DrawCardsNames()
+        {
+            // TODO: This should draw small images corresponding to the card
+            // and have a seperate string with more details
+            int left = 10;
+
+            for (int index = 0; index < battle.playerHand.Count( ); index++)
+            {
+                Card currCard = battle.playerHand[index];
+                string name = currCard.GetName();
+                Color color = (index == battle.currCard) ? Color.Yellow : Color.Black;
+
+                spriteBatch.DrawString(FontRepo.generalFont, name, new Vector2(left, 10), color);
+
+                left += (int)(FontRepo.generalFont.MeasureString(name).X * 1.2f);
             }
         }
         public void DrawBattleField()

@@ -11,6 +11,7 @@ using ScrapWars3.Logic;
 using ScrapWars3.View;
 using GameTools.Events;
 using ScrapWars3.Data.Event;
+using ScrapWars3.Logic.Cards;
 
 namespace ScrapWars3.Screens
 {
@@ -40,6 +41,9 @@ namespace ScrapWars3.Screens
         private double roundStart = 0;
         private int timePerRound = 5000; // 15 seconds
 
+        public Card[] playerHand;
+        public int currCard;
+
         public Battle(ScrapWarsApp scrapWarsApp, GraphicsDevice graphics, GameWindow window, Map map, Team teamOne, Team teamTwo)
             : base(scrapWarsApp, graphics, window)
         {
@@ -51,7 +55,6 @@ namespace ScrapWars3.Screens
             this.teamTwo = teamTwo;
 
             bullets = new List<Bullet>();
-
             allMechs = new List<Mech>();
             foreach(Mech mech in teamOne.Mechs)
             {
@@ -67,6 +70,7 @@ namespace ScrapWars3.Screens
             mapChanged = true;
             battlePaused = true;
             upperLeftOfView = Vector2.Zero;
+            currCard = 0;
             GameSettings.TileSize = GameTextureRepo.tileDirt.Width;
 
             battleDrawer = new BattleDrawer(this, graphics, spriteBatch);
@@ -74,10 +78,20 @@ namespace ScrapWars3.Screens
             battleLogic = new BattleLogic(this);
 
             battleLogic.PlaceTeams(teamOne, teamTwo);
+
+            playerHand = new Card[GameSettings.handSize];
+            DrawCards();
         }
         private void SubscribeToEvents()
         {
             ScrapWarsEventManager.GetManager().Subscribe(this, AddBullet, "BulletFired");
+        }
+        private void DrawCards( )
+        {
+            for(int k = 0; k < GameSettings.handSize; k++)
+            {
+                playerHand[k] = CardRepository.GetRandomCard( );
+            }
         }
         public bool AddBullet(BaseGameEvent theEvent)
         {

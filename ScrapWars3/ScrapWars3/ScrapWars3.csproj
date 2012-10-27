@@ -112,10 +112,11 @@
   <ItemGroup>
     <Compile Include="Data\Bullet.cs" />
     <Compile Include="Data\BulletType.cs" />
+    <Compile Include="Data\CardRepository.cs" />
     <Compile Include="Data\Event\BulletFiredEvent.cs" />
     <Compile Include="Data\Event\MechDiedEvent.cs" />
     <Compile Include="Data\Gun.cs" />
-    <Compile Include="Logic\Behaviors\AttackWeakestBehvior.cs" />
+    <Compile Include="Logic\Behaviors\AttackWeakestBehavior.cs" />
     <Compile Include="Logic\Behaviors\BasicAttackBehavior.cs" />
     <Compile Include="Logic\Behaviors\BasicMoveBehavior.cs" />
     <Compile Include="Data\Map.cs" />
@@ -132,7 +133,7 @@
     <Compile Include="Logic\Behaviors\DummyBehavior.cs" />
     <Compile Include="Data\Event\BulletHitMechEvent.cs" />
     <Compile Include="Logic\Cards\AttackWeakest.cs" />
-    <Compile Include="Logic\Cards\BoostAttack.cs" />
+    <Compile Include="Logic\Cards\LargeShells.cs" />
     <Compile Include="Logic\Cards\BoostMove.cs" />
     <Compile Include="Logic\Cards\Card.cs" />
     <Compile Include="Logic\Cards\OverDrive.cs" />

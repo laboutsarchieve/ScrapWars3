@@ -9,11 +9,15 @@ namespace ScrapWars3.Logic.Cards
 {
     class AttackWeakest : Card
     {
-        public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed)
+        public AttackWeakest()
+            : base("Attack Weakest")
+        {
+        }
+        public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed) 
         {
             foreach(Mech mech in mechs)
             {
-                mech.Brain.AttackBehavior = (BehaviorState)new AttackWeakest( );
+                mech.Brain.AttackBehavior = (BehaviorState)new AttackWeakestBehavior( );
             }
 
             base.ApplyToMechs(mechs, lastTurnUsed);

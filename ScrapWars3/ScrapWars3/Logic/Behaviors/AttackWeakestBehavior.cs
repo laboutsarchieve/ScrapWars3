@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace ScrapWars3.Logic.Behaviors
 {
-    class AttackWeakestBehvior : BehaviorState
+    class AttackWeakestBehavior : BehaviorState
     {
         private Mech currentTarget;
 

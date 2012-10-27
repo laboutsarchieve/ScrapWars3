@@ -88,6 +88,7 @@ namespace ScrapWars3
         }
         private void LoadProtoGameData()
         {
+            GameSettings.handSize = 5;
             // This is faked at the moment
             Team frag = new Team("Frags", 0, Color.Blue);
             List<Mech> mechs = new List<Mech>();
@@ -104,12 +105,11 @@ namespace ScrapWars3
             mechs.Clear();
 
             Team scrapyard = new Team("Scrapyard", 1, Color.Red);
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechA));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
             mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
-            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechB));
-            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
-            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));
-            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));            
+            mechs.Add(MechFactory.GetBaseMechFromType(MechType.DebugMechC));    
 
             foreach(Mech mech in mechs)
                 mech.MechColor = scrapyard.TeamColor;

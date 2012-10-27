@@ -8,6 +8,10 @@ namespace ScrapWars3.Logic.Cards
 {
     class BoostMove : Card
     {
+        public BoostMove()
+            : base("Boost Move")
+        {
+        }
         public override void ApplyToMechs(Mech[] mechs, int lastTurnUsed)
         {
             foreach(Mech mech in mechs)
