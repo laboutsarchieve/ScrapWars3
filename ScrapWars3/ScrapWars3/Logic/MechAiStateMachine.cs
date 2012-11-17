@@ -22,7 +22,7 @@ namespace ScrapWars3.Logic
         private bool followingPath = false;
         private float desiredDistance;
 
-        private Random rng = new Random();        
+        private static Random rng = new Random();        
         private Battle battle;        
 
         public MechAiStateMachine(Mech owner, BehaviorState startMoveBehavior, BehaviorState startAttackBehavior, BehaviorState globalBehavior)
@@ -48,7 +48,7 @@ namespace ScrapWars3.Logic
             this.globalBehavior = sourceMechAiStateMachine.globalBehavior;            
             this.moveBehavior = sourceMechAiStateMachine.moveBehavior;
             this.attackBehavior = sourceMechAiStateMachine.attackBehavior;
-            this.rng = sourceMechAiStateMachine.Rng;
+            rng = sourceMechAiStateMachine.Rng;
         }
         internal void Think(GameTime gameTime, Battle battle)
         {

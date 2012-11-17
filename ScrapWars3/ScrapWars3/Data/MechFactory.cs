@@ -11,7 +11,7 @@ namespace ScrapWars3.Data
         static int id = 0;
 
         public static Mech GetBaseMechFromType(MechType type)
-        {            
+        {   
             Mech mech;
             switch(type)
             {
@@ -30,7 +30,7 @@ namespace ScrapWars3.Data
                 case MechType.DebugMechC:
                     {
                         mech = new Mech("DebugMechC", GetNextId(), 10, 5*GameSettings.TileSize, type);
-                        mech.MainGun = new Gun(1, 8*GameSettings.TileSize,30*GameSettings.TileSize, 1.5f, 1, BulletType.Basic);
+                        mech.MainGun = new Gun(1, 8*GameSettings.TileSize,30*GameSettings.TileSize, 1.5f, 0.75f, BulletType.Basic);
                         break;
                     }
                 default:
