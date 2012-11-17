@@ -60,8 +60,9 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GameTools">
-      <HintPath>common\GameTools.dll</HintPath>
+    <Reference Include="GameTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\x86\Common\GameTools.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -152,7 +153,6 @@
     <Compile Include="Resources\SoundRepo.cs" />
     <Compile Include="ScrapWarsApp.cs" />
     <Compile Include="ScrapWarsEventManager.cs" />
-    <Compile Include="ExtendedKeyboard.cs" />
     <Compile Include="Screens\Battle.cs" />
     <Compile Include="Screens\MapSelection.cs" />
     <Compile Include="Screens\MechCustomize.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using ScrapWars3.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using GameTools.Input;
 
 namespace ScrapWars3.Logic
 {

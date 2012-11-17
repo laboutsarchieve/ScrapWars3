@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ScrapWars3.Resources;
 using Microsoft.Xna.Framework.Input;
+using GameTools.Input;
 
 namespace ScrapWars3.Screens
 {

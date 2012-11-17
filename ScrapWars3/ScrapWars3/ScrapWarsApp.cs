@@ -13,6 +13,7 @@ using ScrapWars3.Screens;
 using ScrapWars3.Resources;
 using ScrapWars3.Data;
 using ScrapWars3.View;
+using GameTools.Input;
 
 namespace ScrapWars3
 {
