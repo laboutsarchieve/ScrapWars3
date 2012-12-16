@@ -50,7 +50,7 @@ namespace ScrapWars3.Data
         {
             name = source.name;
             this.mechId = id;
-            mainGun = source.MainGun;
+            mainGun = new Gun(source.MainGun);
             maxSpeed = source.MaxSpeed;
             currHp = source.currHp;
             maxHp = source.maxHp;

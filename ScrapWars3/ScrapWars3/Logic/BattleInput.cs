@@ -36,21 +36,24 @@ namespace ScrapWars3.Logic
                 MoveView(-1, 0);
             if(ExtendedKeyboard.IsKeyDown(Keys.D))
                 MoveView(1, 0);
-            
-            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Left))
-                MoveCardSelectLeft( );
-            if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Right))
-                MoveCardSelectRight( );
 
-            if(ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
+            if (battle.BattlePaused)
             {
-                battle.BattlePaused = false;
-                battle.RoundStart = gameTime.TotalGameTime.TotalMilliseconds;
-                battle.currCard = 0;
-                //TODO: This should be moved to battle logic
-                
-                battle.playerHand[battle.currCard].ApplyToMechs(battle.TeamOne.Mechs, 0);
-                
+
+                if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Left))
+                    MoveCardSelectLeft();
+                if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Right))
+                    MoveCardSelectRight();
+
+                if (ExtendedKeyboard.IsKeyDownAfterUp(Keys.Space))
+                {
+                    battle.BattlePaused = false;
+                    battle.RoundStart = gameTime.TotalGameTime.TotalMilliseconds;
+                    //TODO: This should be moved to battle logic
+
+                    battle.playerHand[battle.currCard].ApplyToMechs(battle.TeamOne.Mechs, 0);
+                    battle.lastCardPlayed = battle.playerHand[battle.currCard];
+                }
             }
         }        
         private void MoveCardSelectLeft()

@@ -174,5 +174,7 @@ namespace ScrapWars3.Screens
             get { return currentBattleState; }
             set { currentBattleState = value; }
         }
+
+        public Card lastCardPlayed { get; set; }
     }
 }

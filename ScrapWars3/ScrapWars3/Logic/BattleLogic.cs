@@ -114,8 +114,11 @@ namespace ScrapWars3.Logic
             UpdateBullets(gameTime);
             HandleCollisions(gameTime);
 
-            if(gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart > battle.TimePerRound)
+            if (gameTime.TotalGameTime.TotalMilliseconds - battle.RoundStart > battle.TimePerRound)
+            {
                 battle.BattlePaused = true;
+                battle.lastCardPlayed.UnapplyToMechs(battle.TeamOne.Mechs);
+            }
         }
         private void UpdateMech(GameTime gameTime)
         {
@@ -173,7 +176,7 @@ namespace ScrapWars3.Logic
 
                     if((mech.Position - bullet.Position).LengthSquared() < GameSettings.TileSize * Math.Max(mech.Size.X, mech.Size.Y))
                     {
-                        CollisionReport report = CollisionDetector.DetectCollision(bullet, mech, gameTime);
+                        CollisionReport report = CollisionDetector.DetectBulletCollision(bullet, mech, gameTime);
                         if(report.CollisionOccured == true)
                         {
                             ScrapWarsEventManager.GetManager().SendEvent(new BulletHitMechEvent(mech, bullet));

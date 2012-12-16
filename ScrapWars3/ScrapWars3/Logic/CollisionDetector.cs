@@ -32,7 +32,8 @@ namespace ScrapWars3.Logic
 
             return false;
         }   
-        internal static CollisionReport DetectCollision(Bullet bullet, Mech mech, GameTime gameTime)
+        // BUG: This doesn't work for large bullets
+        internal static CollisionReport DetectBulletCollision(Bullet bullet, Mech mech, GameTime gameTime)
         {
             CollisionObject bulletObject = CollisionObject.FromBullet(bullet);
             CollisionObject mechObject = CollisionObject.FromMech(mech);

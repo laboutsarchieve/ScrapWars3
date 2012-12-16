@@ -31,6 +31,16 @@ namespace ScrapWars3.Data
             this.bulletScale = bulletScale;
             this.bulletType = bulletType;
         }
+
+        public Gun(Gun source)
+        {
+            this.damage = source.damage;
+            this.bulletSpeed = source.bulletSpeed;
+            this.range = source.range;
+            this.rateOfFire = source.rateOfFire;
+            this.bulletScale = source.bulletScale;
+            this.bulletType = source.bulletType;
+        }
         public void Fire(Mech shooter, Vector2 position, Vector2 direction, int time)
         {
             if (time - timeLastFired > 1000/rateOfFire)
